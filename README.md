@@ -73,7 +73,7 @@ cd syncrobrain
 
 Linux / macOS：`./dev.sh && ./dev-mvp.sh`
 
-Logto 统一登录需另启 [LuminaryWorks/identity](https://github.com/LuminaryWorks/identity)。详见 [ONBOARDING.md](./ONBOARDING.md)。
+Logto 统一登录需另启 [LuminaryWorks/identity](https://github.com/LuminaryWorks/identity)（Audience `https://api.iotchain.local`）。资源权限由 gateway **Casbin**（`iot.*`）计算，不写进 JWT。详见 [ONBOARDING.md](./ONBOARDING.md) · [spec/index.md](./spec/index.md) · [IAM 规格](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md)。
 
 ## LuminaryWorks 生态
 

@@ -40,7 +40,8 @@ Edge ──MQTT──► SyncroBrain ──► 可选：DataLuminary / DoerFlow 
 
 ## 原则
 
-- 登录走 LuminaryWorks 共享 Logto + `@luminary/auth-core`  
+- 登录走 LuminaryWorks 共享 Logto + `@luminaryworks/auth-core`；资源 ACL 用本产品 Casbin（`iot.*`），见 [identity-and-permissions](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md)  
+
 - 图表**首选 DataTalk**，ThingsBoard Widget 非主路径
 - **垂直深耕**：切入大厂不愿做的长尾行业（行业 Decoder + 专属 BI），不争夺消费级通用 IoT
 - **数据主权**：支持私有化与贴牌 App，满足 GDPR、NIS2、信创与《数据安全法》诉求

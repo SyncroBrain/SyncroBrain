@@ -11,6 +11,16 @@
 | [device-domain.md](./device-domain.md) | 设备域模型与 API |
 | [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态层产品规划 |
 
+## 身份与权限
+
+| 层 | 决策 |
+|----|------|
+| AuthN | Logto OIDC（`IDP_*` / `VITE_IDP_*`）；Audience `https://api.iotchain.local` |
+| AuthZ | 产品内 Casbin，命名空间 `iot.*`（JWT 不携带业务 ACL） |
+| 规格 | [LuminaryWorks identity-and-permissions](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md) |
+
+实现：`iot-gateway` `@luminaryworks/auth-core` + `src/modules/casbin`；控制台 OIDC PKCE（`:5180`）。
+
 ## IoT 权限命名空间
 
 | 权限码 | 说明 |
