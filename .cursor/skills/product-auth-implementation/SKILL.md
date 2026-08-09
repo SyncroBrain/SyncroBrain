@@ -18,8 +18,8 @@ Follow MetaRepo spec: `LuminaryWorks/spec/identity-and-permissions.md`.
 3. **Login UI = Experience API / OIDC PKCE Headless.** Do not fork Logto `packages/experience` as the default path. Do not call Management API from the browser.
 4. Use shared packages when available:
    - Backend: `@luminaryworks/auth-core` (JWKS verify + `LuminaryJwtAuthGuard`)
-   - Frontend: `@luminary/auth-react` (OIDC PKCE)
-   - Optional: `@luminary/pal` as abstraction over Casbin adapter
+   - Frontend: `@luminaryworks/auth-react` (OIDC PKCE)
+   - Optional: `@luminaryworks/pal` as abstraction over Casbin adapter
 5. Map Logto `sub` → local `user_id` on first authenticated request (upsert).
 6. List/detail APIs return `permissions: { view, edit, delete, ... }` computed by Casbin.
 
@@ -51,7 +51,7 @@ IDP_MODE=logto
 
 ### B. Frontend (React SPA)
 
-1. Wrap app with `LuminaryAuthProvider` from `@luminary/auth-react`.
+1. Wrap app with `LuminaryAuthProvider` from `@luminaryworks/auth-react`.
 2. Routes: `/auth/callback`, login entry that starts OIDC (or Experience Headless flows).
 3. Attach `Authorization: Bearer <access_token>` to API client.
 4. Drive UI from resource `permissions` fields — do not hardcode role names for buttons.
