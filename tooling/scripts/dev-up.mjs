@@ -44,14 +44,6 @@ if (createdEnv.length > 0) {
   console.log(`\n📝 Created env from examples:\n   ${createdEnv.join("\n   ")}`);
 }
 
-if (!process.env.NODE_AUTH_TOKEN && !process.env.GITHUB_TOKEN) {
-  console.warn(`
-⚠️  NODE_AUTH_TOKEN / GITHUB_TOKEN 未设置
-   iot-gateway 安装 @luminaryworks/auth-core 需要 GitHub Packages 令牌
-   或在 iot-gateway/.npmrc 中配置 file: 指向 LuminaryWorks/shared
-`);
-}
-
 if (!skipDocker) {
   const compose = join(metaRoot, "deploy/docker-compose.dev.yml");
   if (!existsSync(compose)) {
@@ -95,16 +87,14 @@ for (const key of installOrder) {
       cwd: dir,
       stdio: "inherit",
       shell: true,
-      env: {
+        env: {
         ...process.env,
-        NODE_AUTH_TOKEN:
-          process.env.NODE_AUTH_TOKEN ?? process.env.GITHUB_TOKEN ?? "",
       },
     });
   } catch {
     console.error(`❌ pnpm install failed in ${proj.path}`);
     if (key === "iot-gateway") {
-      console.error("   Check NODE_AUTH_TOKEN and iot-gateway/.npmrc");
+      console.error("   Check iot-gateway/.npmrc points at registry.npmjs.org for @luminaryworks");
     }
     process.exit(1);
   }
