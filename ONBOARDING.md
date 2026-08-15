@@ -41,7 +41,7 @@ Linux / macOS：`chmod +x dev.sh dev-mvp.sh && ./dev.sh && ./dev-mvp.sh`
 
 可选参数：`.\dev.ps1 -SkipDocker` · `.\dev.ps1 -RequiredOnly`（只拉必选子仓）
 
-**前置**：`iot-gateway` 安装 `@luminaryworks/auth-core` 需设置 `NODE_AUTH_TOKEN`（GitHub Packages），或在 `.npmrc` 指向本地 `LuminaryWorks/shared`。
+**前置**：`iot-gateway` 从 npmjs 安装公开包 `@luminaryworks/auth-core`。无需 GitHub Packages token。
 
 ## 初始化（仅 clone）
 
