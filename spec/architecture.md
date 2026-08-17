@@ -65,7 +65,7 @@ HTTP 服务继续使用 NestJS + **Fastify**（`FastifyAdapter`），见仓库 N
 - 控制面 / 数据面分离；私有化默认只回传健康与版本元数据且可关闭
 - 对象存储用于报告 PDF 与归档；审计事件只追加
 
-字段与状态机：[device-domain.md](./device-domain.md)。默认阈值：[industry-pack.md](./industry-pack.md)。边缘、通知与 SLO：[reliability.md](./reliability.md)。信封草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。默认阈值：[industry-pack.md](./industry-pack.md)。边缘缓存、通知与演练：[reliability.md](./reliability.md)。信封草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。
+字段与状态机：[device-domain.md](./device-domain.md)。默认阈值：[industry-pack.md](./industry-pack.md)。边缘、通知与 SLO：[reliability.md](./reliability.md)。信封草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。
 
 ## 5. 有证据后再引入
 

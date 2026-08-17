@@ -108,8 +108,11 @@ DataTalk 大屏、BlockyEdu 课程、DoerFlow、VistaRemote 是**可选兄弟能
 | 文档 | 说明 |
 |------|------|
 | [coldguard.md](./coldguard.md) | 首款产品：ICP、MVP、定价、停止条件 |
+| [industry-pack.md](./industry-pack.md) | 实验室冷藏 Pack 默认值 |
+| [reliability.md](./reliability.md) | 到达率、断网、责任 |
 | [architecture.md](./architecture.md) | 领域内核 + Cloud Lite + 适配层 |
 | [device-domain.md](./device-domain.md) | Site / Asset / Incident 等模型 |
 | [ecosystem.md](./ecosystem.md) | 独立可售与可选集成 |
 | [licensing.md](./licensing.md) | 许可边界 |
 | [plan/README.md](../plan/README.md) | Validation → Wedge → Repeatability → Platform |
+| [plan/validation.md](../plan/validation.md) | 当前 90 天执行手册 |

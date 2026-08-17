@@ -10,7 +10,7 @@
 | [reliability.md](./reliability.md) | SLO、断网、通知、演练、责任边界 |
 | [platform-vision.md](./platform-vision.md) | 楔子与长期平台、初期红线 |
 | [architecture.md](./architecture.md) | 领域内核 + Cloud Lite + 适配层 |
-| [device-domain.md](./device-domain.md) | Site / Asset / Incident 等模型；v0.1 Device API |
+| [device-domain.md](./device-domain.md) | Site / Asset / Incident / DutyRoster；v0.1 Device API |
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品均为可选 |
 | [licensing.md](./licensing.md) | Polyform-NC、商业许可、公开节奏 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台 / 官网原型提示词 |
@@ -64,6 +64,8 @@ Wedge 角色与权限（实现可分批；无值班表不得「已上线」）�
 | `qa_owner` | 上表 + calibration/report/export + escalate；站点策略覆盖 |
 | `auditor` | report/view + audit/view + incident/view（无 ack） |
 | `tenant_admin` | `iot.tenant:manage` 与站点开户 |
+
+`vendor` 只进通知名单，无默认登录。值班 SLA 数字在 [industry-pack.md](./industry-pack.md)，权限码以本表为准。
 
 ## 长期扩展权限（不进入 MVP）
 
