@@ -65,7 +65,7 @@ HTTP 服务继续使用 NestJS + **Fastify**（`FastifyAdapter`），见仓库 N
 - 控制面 / 数据面分离；私有化默认只回传健康与版本元数据且可关闭
 - 对象存储用于报告 PDF 与归档；审计事件只追加
 
-字段与状态机：[device-domain.md](./device-domain.md)。
+字段与状态机：[device-domain.md](./device-domain.md)。默认阈值：[industry-pack.md](./industry-pack.md)。边缘、通知与 SLO：[reliability.md](./reliability.md)。信封草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。默认阈值：[industry-pack.md](./industry-pack.md)。边缘缓存、通知与演练：[reliability.md](./reliability.md)。信封草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。
 
 ## 5. 有证据后再引入
 
@@ -111,7 +111,7 @@ RPC 与阈值下发必须留下 AuditEvent。不得把「控制台点一下」�
 | `v1/devices/{token}/attributes` | ↑↓ | 仅当 TB 适配器启用 |
 | `coldguard/v1/{tenantId}/{siteId}/{assetId}/telemetry` | ↑ | **目标**信封 topic（Wedge 起逐步切换） |
 
-当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。领域 API 升级另开合同版本，禁止静默破坏 v1。
+当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)，索引见 [`contracts/README.md`](../contracts/README.md)。领域 API 升级另开合同版本，禁止静默破坏 v1。
 
 ## 7. Cloud Lite compose（目标）
 
@@ -146,6 +146,8 @@ docker compose (deploy/)
 ## 9. 参考
 
 - [coldguard.md](./coldguard.md) — 产品边界
+- [industry-pack.md](./industry-pack.md) — cold-lab 默认策略
+- [reliability.md](./reliability.md) — 演练与责任
 - [device-domain.md](./device-domain.md) — 领域模型
 - [licensing.md](./licensing.md) — 许可与依赖
 - [EMQX](https://www.emqx.io/) · [ThingsBoard CE](https://thingsboard.io/docs/) — 可选 / 上游

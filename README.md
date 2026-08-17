@@ -95,10 +95,13 @@ ColdGuard **独立可售**。下表均为可选，不是上线前置。
 |------|------|
 | [spec/index.md](./spec/index.md) | 规格索引 |
 | [spec/coldguard.md](./spec/coldguard.md) | 首款产品 |
+| [spec/industry-pack.md](./spec/industry-pack.md) | 实验室冷藏 Pack 默认值 |
+| [spec/reliability.md](./spec/reliability.md) | SLO、演练、责任边界 |
 | [spec/platform-vision.md](./spec/platform-vision.md) | 愿景与红线 |
 | [spec/architecture.md](./spec/architecture.md) | Cloud Lite 与适配层 |
 | [spec/licensing.md](./spec/licensing.md) | 开源边界与商业许可 |
-| [plan/README.md](./plan/README.md) | Validation → Wedge → Repeatability → Platform |
+| [plan/README.md](./plan/README.md) | 阶段门 |
+| [plan/validation.md](./plan/validation.md) | 当前 90 天执行手册 |
 | [syncrobrain/docs](https://github.com/syncrobrain/docs) | **对外** RsPress 文档站 |
 
 ## License

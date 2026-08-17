@@ -100,7 +100,7 @@ Industry Pack v1（冷藏实验室）版本化打包：Schema、Decoder、默认
 | Wedge（3–6 月） | 3 个付费试点；试点转化 ≥60%；告警到达可验证；至少 1 个可公开案例 |
 | 停止条件 | 30 次访谈后仍无 3 家愿付费，或 3 个试点要求完全不同的工作流 → **停止开发并更换垂直** |
 
-阶段门与工程证据见 [plan/README.md](../plan/README.md)。文档声称的进度不得作为融资或客户尽调证据。
+阶段门见 [plan/README.md](../plan/README.md)；**本周动作**见 [plan/validation.md](../plan/validation.md)。文档声称的进度不得作为融资或客户尽调证据。
 
 ## 9. 关联规格
 
@@ -109,6 +109,9 @@ Industry Pack v1（冷藏实验室）版本化打包：Schema、Decoder、默认
 | [platform-vision.md](./platform-vision.md) | 楔子与长期平台关系 |
 | [architecture.md](./architecture.md) | Cloud Lite 与领域内核 |
 | [device-domain.md](./device-domain.md) | 领域模型与权限 |
+| [industry-pack.md](./industry-pack.md) | cold-lab 默认阈值与 BOM 原则 |
+| [reliability.md](./reliability.md) | 告警到达、断网、责任边界 |
 | [ecosystem.md](./ecosystem.md) | 独立可售与可选集成 |
 | [licensing.md](./licensing.md) | 开源边界与商业许可 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台原型提示词 |
+| [plan/validation.md](../plan/validation.md) | 当前 90 天动作 |

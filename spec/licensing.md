@@ -39,12 +39,18 @@ ColdGuard 收费 SKU 上线前须确认 Entitlement 已登记 `syncrobrain` prod
 
 ## 4. 第三方许可证清单（合同前必做）
 
-首个外部商业合同前须完成并归档：
+首个外部商业合同前须完成并归档（Cloud Lite 最小清单；启用 TB 后再补一行）：
 
-- 直接依赖与主要运行时组件的 SPDX / 许可证表（至少：EMQX、ThingsBoard CE 若启用、PostgreSQL、TimescaleDB、Logto 客户端、NestJS/React 依赖中的 copyleft 风险）
-- 私有化交付 SBOM
-- 上游 NOTICE / 版权保留要求
-- 「我们修改过哪些上游、补丁如何回馈或隔离」记录
+| 组件 | 预期 SPDX（须核对当时版本） | 备注 |
+|------|------------------------------|------|
+| EMQX OSS | Apache-2.0（核对发行版） | 上游，不混授 |
+| PostgreSQL | PostgreSQL License | |
+| TimescaleDB | 核对社区版 vs 授权版 | 禁止把授权条款写成「我们的 Apache」 |
+| NestJS / Fastify / React | MIT 为主；须跑 license checker | copyleft 命中则替换或隔离 |
+| Logto 客户端 | 上游许可证 | 私有化可换客户 IdP |
+| ThingsBoard CE | 仅在适配器启用时列入 | 默认 Cloud Lite **不**交付 |
+
+另须：私有化 SBOM、NOTICE 保留、「改过哪些上游」记录。
 
 未完成清单前，不得对外签署含开源合规陈述的合同，也不得把冲突文档放入融资数据室。
 

@@ -234,6 +234,8 @@ Do NOT add "template marketplace" or "publish decoder to all tenants".
 | 文档 | 说明 |
 |------|------|
 | [coldguard.md](../coldguard.md) | 产品承诺与 MVP |
+| [industry-pack.md](../industry-pack.md) | 默认阈值与总览口径 |
+| [reliability.md](../reliability.md) | 演练与「受保护」条件 |
 | [platform-vision.md](../platform-vision.md) | 楔子与红线 |
 | [architecture.md](../architecture.md) | Cloud Lite |
 | [ecosystem.md](../ecosystem.md) | 独立可售 |

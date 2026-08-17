@@ -6,13 +6,17 @@
 | 文档 | 说明 |
 |------|------|
 | [coldguard.md](./coldguard.md) | 首款可售产品：ICP、MVP、定价、停止条件 |
+| [industry-pack.md](./industry-pack.md) | cold-lab Pack 默认阈值、升级矩阵、BOM 原则 |
+| [reliability.md](./reliability.md) | SLO、断网、通知、演练、责任边界 |
 | [platform-vision.md](./platform-vision.md) | 楔子与长期平台、初期红线 |
 | [architecture.md](./architecture.md) | 领域内核 + Cloud Lite + 适配层 |
 | [device-domain.md](./device-domain.md) | Site / Asset / Incident 等模型；v0.1 Device API |
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品均为可选 |
 | [licensing.md](./licensing.md) | Polyform-NC、商业许可、公开节奏 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台 / 官网原型提示词 |
-| [plan/README.md](../plan/README.md) | Validation → Wedge → Repeatability → Platform |
+| [plan/README.md](../plan/README.md) | 阶段门总览 |
+| [plan/validation.md](../plan/validation.md) | **当前**：0–90 天访谈、诊断、台架证据 |
+| [contracts/README.md](../contracts/README.md) | 已发布 v1 vs 遥测信封草案 |
 | [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站（RsPress，公开仓） |
 | [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态层产品规划（若与本仓冲突，**以本仓 ColdGuard 规格为准**） |
 
@@ -51,6 +55,16 @@
 | `iot.device:manage` | **遗留** v0.1 注册/禁用 |
 | `iot.device:control` | **遗留** 指令下发（须同时写 AuditEvent） |
 
+Wedge 角色与权限（实现可分批；无值班表不得「已上线」）：
+
+| 角色 | 权限（最小） |
+|------|----------------|
+| `oncall_ops` | site/asset/incident 只读 + `iot.incident:ack` |
+| `facilities` | 同上 + ack；处置证据 |
+| `qa_owner` | 上表 + calibration/report/export + escalate；站点策略覆盖 |
+| `auditor` | report/view + audit/view + incident/view（无 ack） |
+| `tenant_admin` | `iot.tenant:manage` 与站点开户 |
+
 ## 长期扩展权限（不进入 MVP）
 
 | 权限码 | 说明 | 解锁 |
@@ -66,7 +80,7 @@
 
 | 阶段门 | 一句话 |
 |--------|--------|
-| Validation | 访谈与设计伙伴；验证付费意愿 |
+| Validation | 访谈与设计伙伴；验证付费意愿。手册：[plan/validation.md](../plan/validation.md) |
 | Wedge | 3 个付费试点，Cloud Lite + ColdGuard |
 | Repeatability | 可复制交付与渠道 |
 | Platform | 冷藏资产 OS 与第二垂直 |

@@ -1,10 +1,10 @@
 # SyncroBrain 领域模型 (v0.2)
 
-> **状态**：Wedge 规格；HTTP v0.1 仍以 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 为准  
+> **状态**：Wedge 目标模型；HTTP v0.1 仍以 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 为准  
 > **产品边界**：[coldguard.md](./coldguard.md)  
 > **实现落点**：iot-gateway 领域模块（NestJS + Fastify）；Casbin 命名空间 `iot.*`
 
-本文把历史「Device CRUD」扩成 ColdGuard 需要的站点 / 资产 / 事件模型。**不在本次修改 OpenAPI 文件**；新实体进入合同前须另开 `contracts/*.v2.yaml` 评审。
+本文把历史「Device CRUD」扩成 ColdGuard 需要的站点 / 资产 / 事件模型。现行 OpenAPI 不在此改；信封草案见 [`contracts/drafts/telemetry-envelope.md`](../contracts/drafts/telemetry-envelope.md)。新 HTTP 合同须另开版本评审。
 
 ## 1. 层级
 
@@ -27,14 +27,15 @@ Tenant
 |------|----------|------|
 | Tenant | id, name, billingRef | 商业租户；对齐 Entitlement `syncrobrain` |
 | Organization | id, tenantId, name | 可对应同一园区内多法人 |
-| Site | id, orgId, name, timezone, address | QA 报告与值班的基本单位 |
+| Site | id, orgId, name, timezone, address | QA 报告与值班的基本单位；无 `DutyRoster` 不得标已上线 |
 | Zone | id, siteId, name | 楼层 / 房间 / 冷库分区 |
+| DutyRoster | id, siteId, weekday, shift, role, contactRef | 站点 × 班次 × 角色；Ack SLA 按此升级 |
 
 ### 2.2 资产与传感
 
 | 实体 | 关键字段 | 说明 |
 |------|----------|------|
-| Asset | id, siteId, zoneId?, name, kind, vendor, model, status | `kind`: fridge / freezer / cold_room / incubator / gateway |
+| Asset | id, siteId, zoneId?, name, kind, vendor, model, status | `kind`: fridge / freezer_20 / freezer_80 / cold_room / gateway（`incubator` 不进 cold-lab v1） |
 | SensorChannel | id, assetId, type, unit, schemaVersion, sampleIntervalSec | `type`: temperature / door / power / gateway_online |
 | Calibration | id, channelId, certificateRef, validFrom, validTo, vendor | 过期须在总览暴露 |
 | Device（遗留） | id, tenantId, externalUserId, name, protocol, status, metadata | v0.1 API 主键；Wedge 映射到 Asset 或 Gateway |
@@ -110,7 +111,7 @@ MQTT（开发 POC）：
 | Topic | Payload | 说明 |
 |-------|---------|------|
 | `iot/v1/{deviceId}/presence` | `{"status":"online"\|"offline"}` | 上下线 |
-| `iot/v1/{deviceId}/telemetry` | JSON | 当前仅接入；质量信封在 Wedge 补齐 |
+| `iot/v1/{deviceId}/telemetry` | JSON | 当前仅接入；质量信封草案见 `contracts/drafts/telemetry-envelope.md` |
 
 本地模拟：`npm run mqtt:presence -- <device-uuid> online`（在 `iot-gateway`）。
 
@@ -129,18 +130,14 @@ MQTT（开发 POC）：
 | GET | `/api/v1/reports/:id` | `iot.report:view` |
 | POST | `/api/v1/reports/:id/export` | `iot.report:export` |
 | GET | `/api/v1/audit-events` | `iot.audit:view` |
+| GET/PUT | `/api/v1/sites/:id/duty-roster` | `iot.site:manage` |
 
 完整权限表见 [index.md](./index.md)。
 
-## 7. Industry Pack（冷藏实验室 v1）
+## 7. Industry Pack
 
-Pack 是版本化制品，不是控制台里随手改的脚本：
+权威默认值与冻结规则：[industry-pack.md](./industry-pack.md)（`cold-lab` / `0.1-draft`）。
 
-- 通道 Schema 与 Decoder
-- 默认 Policy（温度窗、门开、断电、离线）
-- SOP / 升级矩阵 / 值班角色
-- 月报与演练报告模板
-- QA 总览布局
-- 认证传感器 / 网关 BOM
+Pack 是版本化制品，不是控制台里随手改的脚本。不能被 3 个客户复用的改动按专业服务交付，不打进 Pack 主版本。
 
-不能被 3 个客户复用的改动按专业服务交付，不打进 Pack 主版本。
+遥测信封 JSON 草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。SLO 与通知：[reliability.md](./reliability.md)。
