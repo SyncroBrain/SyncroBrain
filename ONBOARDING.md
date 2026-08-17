@@ -103,7 +103,7 @@ Logto Redirect：`http://localhost:5180/auth/callback`
 
 | 场景 | 做法 |
 |------|------|
-| 改规格 / 里程碑 | 在 MetaRepo 根目录提交 `spec/` `plan/` |
+| 改规格 / 阶段门 | 在 MetaRepo 根目录提交 `spec/` `plan/`；进度语言见 [plan/README.md](./plan/README.md)（Validation → Wedge → Repeatability → Platform） |
 | 只改后端 | `cd iot-gateway` → commit → push 到 `syncrobrain/iot-gateway` |
 | 只改控制台 | `cd iot-console-web` → push 到 `iot-console-web` |
 | 只改官网 | `cd website` → push 到 `website` |

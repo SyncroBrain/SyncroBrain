@@ -4,35 +4,34 @@
 
 <h1 align="center">SyncroBrain · 万物智脑</h1>
 
-开源、轻量化、**AI 驱动**的 IoT PaaS — 深耕 **B 端垂直行业**与**白牌出海**，以数万级私有化成本为硬件厂商与产业集群提供行业解调、专属 BI 与贴牌 App。
+实验室与园区冷藏设备的**合规监控与事件闭环**。长期平台名是 SyncroBrain；当前唯一优先交付是 **ColdGuard**。
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
-> **组织主页**：[github.com/syncrobrain](https://github.com/syncrobrain) · 资料源文件见 [`assets/github/`](./assets/github/)
-> **核心链路**：设备（端）→ MQTT（管道）→ 物联网平台（大脑）→ 终端 App（展示）
+> **组织主页资料**：[`assets/github/`](./assets/github/)  
+> **承诺**：不更换现有冰箱，把多品牌冷藏变成可审计、可告警、可追责的一套系统。
 
 ## 解决什么问题
 
 | 痛点 | 方案 |
 |------|------|
-| 硬件厂商缺乏 IoT 能力 | 开源 PaaS + App 模板，无需自建底层 |
-| 大厂不愿做的长尾行业 | 行业 Decoder（Modbus/BACnet/OPC-UA）+ DataTalk 专属 BI |
-| 数据合规与主权 | 私有化部署，满足 GDPR / NIS2 / 信创；White-label App |
-| 白牌出海又不想被平台绑定 | 开源适配层 + 联合 ESP32/T5 芯片，搭建自有品牌云 |
-| 涂鸦仅设备管理 | **AI 推理 + DoerFlow 链上交易 + DataTalk 大屏** |
-| 接入门槛高 | **BlockyEdu** AI 辅助工程师快速对接 |
+| 人工抄表、微信群告警、多品牌 App | ColdGuard：温度 / 门磁 / 断电 / 网关离线 + 确认与升级 |
+| 审计取证耗天数 | 事件时间线、校准记录、不可变审计日志 |
+| 数据必须留在园区 | Cloud Lite 可私有化；默认可关闭遥测回传 |
+| 不想被平台锁死 | 标准 MQTT / REST，CSV/API 可迁出 |
 
-详见 [`spec/platform-vision.md`](./spec/platform-vision.md) · [`spec/architecture.md`](./spec/architecture.md) · [`spec/ecosystem.md`](./spec/ecosystem.md)
+不在首年承诺：通用 IoT 能力清单、AI Agent 市场、链上收益、原生 App、ThingsBoard 全家桶。详见 [`spec/coldguard.md`](./spec/coldguard.md) · [`spec/platform-vision.md`](./spec/platform-vision.md)。
 
-> **LuminaryWorks**：[域名与品牌决策](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/domain-and-branding.md)
+## 架构（领域产品在上）
 
-## 四层架构
+| 层 | 默认（Cloud Lite） | 说明 |
+|----|-------------------|------|
+| 体验 | ColdGuard Web / PWA | QA 工作台；不暴露 ThingsBoard UI |
+| 领域 | NestJS（Fastify） | 站点 / 资产 / 事件 / 校准 / 审计 / 报告 |
+| 消息与数据 | EMQX + PostgreSQL/Timescale | 分钟级采样与质量标记 |
+| 边缘 | 认证传感器 + 网关 | 本地阈值、断网缓存、校准证书 |
+| 适配（按证据） | ThingsBoard / DataTalk | 可选，不是 MVP 默认栈 |
 
-| 层 | 选型 | 职责 |
-|----|------|------|
-| **Edge** | ESPHome / Tasmota | 硬件标准化、OTA |
-| **Pipe** | EMQX (OSS) | B 端 MQTT 管道（低频次采集；dev 用 Mosquitto POC） |
-| **Brain** | ThingsBoard CE + iot-gateway | 设备影子、规则引擎；LuminaryWorks 生态编排 |
-| **Client** | Flutter/RN + iot-console-web | 控制监控；**DataTalk** 专业图表 |
+权威：[`spec/architecture.md`](./spec/architecture.md)。
 
 ## 仓库结构（MetaRepo + 多仓）
 
@@ -45,8 +44,8 @@ syncrobrain/platform/              # MetaRepo（私有）
 ├── iot-gateway/                 # → 独立仓
 ├── iot-console-web/             # → 独立仓
 ├── website/                     # → 独立仓
-├── docs/                        # → 公开文档仓
-└── deploy/                      # → Docker compose
+├── docs/                        # → 独立仓
+└── deploy/                      # → 独立仓
 ```
 
 ```powershell
@@ -77,25 +76,31 @@ Logto 统一登录需另启 [LuminaryWorks/identity](https://github.com/Luminary
 
 ## LuminaryWorks 生态
 
-| 项目 | 官网 | 在 IoT 场景的角色 |
-|------|------|------------------|
-| [LuminaryWorks](https://luminaryworks.dev) | [luminaryworks.dev](https://luminaryworks.dev) | 生态编排、统一身份 |
-| [DataLuminary](https://dataluminary.dev) | [dataluminary.dev](https://dataluminary.dev) | DataTalk 图表 / AI 数据洞察 |
-| [BlockyEdu](https://blockyedu.com) | [blockyedu.com](https://blockyedu.com) | 工程师接入实验与 AI 辅导 |
-| [DoerFlow](https://doerflow.dev) | [doerflow.dev](https://doerflow.dev) | AI 服务与链上任务网络 |
-| [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 设备远程桌面运维 |
-| [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 摄像头 AI 告警（规划） |
+ColdGuard **独立可售**。下表均为可选，不是上线前置。
+
+| 项目 | 官网 | 关系 |
+|------|------|------|
+| [LuminaryWorks](https://luminaryworks.dev) | [luminaryworks.dev](https://luminaryworks.dev) | 共享身份 |
+| [DataLuminary](https://dataluminary.dev) | [dataluminary.dev](https://dataluminary.dev) | 可选大屏适配 |
+| [BlockyEdu](https://blockyedu.com) | [blockyedu.com](https://blockyedu.com) | 可选培训 |
+| [DoerFlow](https://doerflow.dev) | [doerflow.dev](https://doerflow.dev) | 不进入 MVP |
+| [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 可选远程桌面 |
+| [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 视频 AI；首年不做 |
+
+口径：SyncroBrain + 五家兄弟产品。见 [`spec/ecosystem.md`](./spec/ecosystem.md)。
 
 ## 文档
 
 | 文档 | 说明 |
 |------|------|
-| [spec/platform-vision.md](./spec/platform-vision.md) | 平台愿景与初期红线 |
-| [spec/architecture.md](./spec/architecture.md) | 四层架构 |
-| [spec/ecosystem.md](./spec/ecosystem.md) | 工程规格 — LuminaryWorks 角色 |
-| [syncrobrain/docs](https://github.com/syncrobrain/docs) | **对外** — RsPress 文档站（公开仓） |
-| [plan/README.md](./plan/README.md) | 里程碑 |
+| [spec/index.md](./spec/index.md) | 规格索引 |
+| [spec/coldguard.md](./spec/coldguard.md) | 首款产品 |
+| [spec/platform-vision.md](./spec/platform-vision.md) | 愿景与红线 |
+| [spec/architecture.md](./spec/architecture.md) | Cloud Lite 与适配层 |
+| [spec/licensing.md](./spec/licensing.md) | 开源边界与商业许可 |
+| [plan/README.md](./plan/README.md) | Validation → Wedge → Repeatability → Platform |
+| [syncrobrain/docs](https://github.com/syncrobrain/docs) | **对外** RsPress 文档站 |
 
 ## License
 
-[Polyform Noncommercial License 1.0.0](LICENSE) (Polyform-NC). Non-commercial use permitted. Commercial use requires a separate license from SyncroBrain.
+[Polyform Noncommercial License 1.0.0](LICENSE) (Polyform-NC). Non-commercial use permitted. Commercial use requires a separate license from SyncroBrain. Narrative: [`spec/licensing.md`](./spec/licensing.md).

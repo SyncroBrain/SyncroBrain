@@ -1,14 +1,14 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/syncrobrain/.github/main/profile/banner.png">
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/syncrobrain/.github/main/profile/banner.png">
-  <img alt="SyncroBrain — 万物智脑 · AI-native IoT PaaS" src="https://raw.githubusercontent.com/syncrobrain/.github/main/profile/banner.png" width="100%">
+  <img alt="SyncroBrain — ColdGuard · 实验室冷藏合规" src="https://raw.githubusercontent.com/syncrobrain/.github/main/profile/banner.png" width="100%">
 </picture>
 
 <h1 align="center">SyncroBrain · 万物智脑</h1>
 
 <p align="center">
-  <strong>Open-source, AI-native IoT PaaS</strong> for B2B verticals, white-label OEMs, and private cloud deploy.<br/>
-  开源可私有化 · 深耕垂直行业 · 白牌出海 · 数万级部署成本
+  <strong>ColdGuard</strong> — auditable cold-storage monitoring and incident close-loop for regulated labs.<br/>
+  不更换现有冰箱 · 可告警、可确认、可追责 · 可私有化
 </p>
 
 <p align="center">
@@ -21,16 +21,18 @@
 
 ## What we build
 
-**SyncroBrain** connects devices over MQTT, orchestrates them on an open IoT stack, and layers AI + BI on top — without locking you into a consumer-smart-home SaaS.
+**ColdGuard** is the first product: multi-brand laboratory fridges, freezers, and cold rooms — temperature, door, power, and gateway offline — with acknowledgement, escalation, calibration records, and exportable audit evidence.
 
-| Layer | Stack | Role |
-|------:|-------|------|
-| **Edge** | ESPHome / Tasmota | Hardware standardization, OTA |
-| **Pipe** | EMQX | B2B MQTT messaging |
-| **Brain** | ThingsBoard CE + Gateway | Device shadow, rules, protocol decoders |
-| **Client** | Console + App templates | Control, monitoring, DataTalk BI |
+SyncroBrain is the long-term platform name. We do not sell “open-source MQTT + AI + blockchain” as the MVP.
 
-**We focus on:** Modbus / BACnet / OPC-UA → business KPIs, industry dashboards, white-label apps, GDPR / NIS2 / 信创-friendly private deploy.
+| Layer | Default (Cloud Lite) | Role |
+|------:|----------------------|------|
+| **Experience** | ColdGuard Web / PWA | QA workbench and reports |
+| **Domain** | NestJS gateway | Site, asset, incident, calibration, audit |
+| **Data / pipe** | EMQX + PostgreSQL/Timescale | Telemetry with quality flags |
+| **Edge** | Certified sensors + gateway | Local thresholds, offline buffer |
+
+ThingsBoard / DataTalk are optional adapters after evidence, not the default stack. Native mobile apps are not year-one.
 
 **We do not:** million-device consumer IoT, generic smart-home hubs, or rebuilding MQTT from scratch.
 
@@ -38,28 +40,30 @@
 
 | Repo | Visibility | Description |
 |------|------------|-------------|
-| [platform](https://github.com/syncrobrain/platform) | Public | Meta-repo — spec, plan, contracts, multi-repo orchestration |
+| [platform](https://github.com/syncrobrain/platform) | Private | Meta-repo — spec, plan, contracts |
 | [docs](https://github.com/syncrobrain/docs) | Public | RsPress documentation site |
-| [iot-gateway](https://github.com/syncrobrain/iot-gateway) | Private | NestJS orchestration (JWT, shadow, MQTT) |
-| [iot-console-web](https://github.com/syncrobrain/iot-console-web) | Private | Web console (React + Rsbuild) |
+| [iot-gateway](https://github.com/syncrobrain/iot-gateway) | Private | Domain services (JWT, assets, MQTT) |
+| [iot-console-web](https://github.com/syncrobrain/iot-console-web) | Private | ColdGuard QA console (React) |
 | [website](https://github.com/syncrobrain/website) | Private | Marketing site → [syncrobrain.com](https://syncrobrain.com) |
-| [deploy](https://github.com/syncrobrain/deploy) | Private | Docker Compose dev stack |
+| [deploy](https://github.com/syncrobrain/deploy) | Private | Docker Compose (Cloud Lite target) |
 
 ## LuminaryWorks ecosystem
 
-SyncroBrain is the **connect** layer in the [LuminaryWorks](https://github.com/LuminaryWorks/LuminaryWorks) family:
+ColdGuard is sellable on its own. Sibling products are optional:
 
 ```text
-设备 ──MQTT──► SyncroBrain ──► DataLuminary · BlockyEdu · DoerFlow · VistaRemote
+边缘网关 ──MQTT──► SyncroBrain ColdGuard ──► 可选 DataLuminary · BlockyEdu · VistaRemote
 ```
+
+DoerFlow / on-chain earnings are not part of the MVP narrative.
 
 ## Quick links
 
-- 🌐 [syncrobrain.com](https://syncrobrain.com)
-- 📖 [Documentation](https://github.com/syncrobrain/docs)
-- 🚀 [Getting started](https://github.com/syncrobrain/platform/blob/main/ONBOARDING.md)
-- 📧 [1@zhoulujun.cn](mailto:1@zhoulujun.cn)
+- [syncrobrain.com](https://syncrobrain.com)
+- [Documentation](https://github.com/syncrobrain/docs)
+- [Getting started](https://github.com/syncrobrain/platform/blob/main/ONBOARDING.md)
+- [1@zhoulujun.cn](mailto:1@zhoulujun.cn)
 
 <p align="center">
-  <sub>Connect every device. Give it a brain.</sub>
+  <sub>Auditable cold storage. Alerts that close.</sub>
 </p>

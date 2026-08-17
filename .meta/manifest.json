@@ -8,21 +8,25 @@
     "docs",
     "deploy"
   ],
-  "devUpInstallOrder": ["iot-gateway", "iot-console-web", "website"],
+  "devUpInstallOrder": [
+    "iot-gateway",
+    "iot-console-web",
+    "website"
+  ],
   "projects": {
     "iot-gateway": {
       "path": "iot-gateway",
       "remote": "git@github.com:syncrobrain/iot-gateway.git",
       "remoteHttps": "https://github.com/syncrobrain/iot-gateway.git",
       "required": true,
-      "description": "NestJS 编排层（JWT、设备影子、MQTT）"
+      "description": "NestJS 领域服务（JWT、站点/资产、MQTT）"
     },
     "iot-console-web": {
       "path": "iot-console-web",
       "remote": "git@github.com:syncrobrain/iot-console-web.git",
       "remoteHttps": "https://github.com/syncrobrain/iot-console-web.git",
       "required": true,
-      "description": "Web 控制台（React + Rsbuild + Logto PKCE）"
+      "description": "ColdGuard QA 控制台（React + Rsbuild + Logto PKCE）"
     },
     "website": {
       "path": "website",
@@ -43,7 +47,7 @@
       "remote": "git@github.com:syncrobrain/deploy.git",
       "remoteHttps": "https://github.com/syncrobrain/deploy.git",
       "required": false,
-      "description": "Docker Compose 开发栈（PostgreSQL、Redis、MQTT）"
+      "description": "Docker Compose（Cloud Lite：PostgreSQL、Redis、MQTT）"
     }
   }
 }

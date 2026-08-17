@@ -1,59 +1,69 @@
 # SyncroBrain 与 LuminaryWorks 生态
 
 > **品牌**：SyncroBrain · **中文名**：万物智脑  
-> **组织**：[github.com/syncrobrain](https://github.com/syncrobrain) · **域名**：[syncrobrain.com](https://syncrobrain.com)
+> **组织**：[github.com/syncrobrain](https://github.com/syncrobrain) · **域名**：[syncrobrain.com](https://syncrobrain.com)  
+> **可售产品**：[ColdGuard](./coldguard.md) 独立成交；兄弟产品均为可选集成。
 
-规划摘要：[LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md)
+规划摘要（生态仓）：[LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md)。若该摘要仍写全家桶、链上或裸里程碑，**以本仓规格为准**。
 
-## 独立价值
+## 独立可售
 
-厂商可**仅部署 SyncroBrain**：EMQX + ThingsBoard + 控制台 + App 模板，获得不输涂鸦核心能力的开源私有化方案，无需购买 DataLuminary 或 DoerFlow。
+客户可**只买 ColdGuard**：Cloud Lite（EMQX + 领域服务 + PostgreSQL/Timescale + Web），获得多品牌冷藏合规监控与事件闭环。
 
-## 在 LuminaryWorks 六产品中的位置
+- **不需要**同时采购 DataLuminary、DoerFlow、VistaRemote、VistaCast、BlockyEdu。
+- **不需要**默认部署 ThingsBoard。
+- Entitlement 登记 `syncrobrain` productCode 是**收费 SKU 上线门槛**，不是「先接齐 LuminaryWorks 全家桶才能卖」。
+- 不成交不推兄弟产品。
+
+历史表述「EMQX + ThingsBoard + App 模板 = 开源涂鸦」已废止。
+
+## 在 LuminaryWorks 产品家族中的位置
+
+口径：**SyncroBrain + 五家兄弟产品**。不要写成互相冲突的「五产品 / 六产品」。LuminaryWorks 是组织与共享身份层，不计入可售 SKU 数。
 
 | 维度 | 说明 |
 |------|------|
-| **连接** | 物理设备与云端的 MQTT 管道与多租户大脑 |
-| **编排** | iot-console 聚合跳转，不复制兄弟产品业务代码 |
-| **AI 差异化** | 对比涂鸦：叠加 DataTalk 大屏、DoerFlow 链上 AI、BlockyEdu 接入辅导 |
+| **连接 / 合规楔子** | ColdGuard：站点、资产、告警闭环、校准、审计 |
+| **编排** | 控制台可链到兄弟产品，但不复制其业务代码，也不是成交前提 |
+| **可选增强** | DataTalk 大屏、BlockyEdu 课程、VistaRemote 远程桌面 — Repeatability/Platform 按合同启用 |
 
 ```text
-Edge ──MQTT──► SyncroBrain ──► 可选：DataLuminary / DoerFlow / VistaRemote / VistaCast / BlockyEdu
+边缘网关 ──MQTT──► SyncroBrain ColdGuard（可独立运行）
+                         └── 可选：DataLuminary / DoerFlow / VistaRemote / VistaCast / BlockyEdu
 ```
 
-## 兄弟产品
+## 兄弟产品（全部可选）
 
-| 产品 | 官网 | 在 IoT 场景 |
-|------|------|------------|
-| [LuminaryWorks](https://luminaryworks.dev) | [luminaryworks.dev](https://luminaryworks.dev) | 生态编排、统一身份 |
-| [DataLuminary](https://dataluminary.dev) | [dataluminary.dev](https://dataluminary.dev) | DataTalk 设备监控大屏 |
-| [BlockyEdu](https://blockyedu.com) | [blockyedu.com](https://blockyedu.com) | ESPHome/MQTT 实验课、工程师 AI 辅导 |
-| [DoerFlow](https://doerflow.dev) | [doerflow.dev](https://doerflow.dev) | 设备 Agent 市场与链上收益 |
-| [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 设备远程桌面运维 |
-| [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 摄像头 AI 告警（规划） |
+| 产品 | 官网 | 对 ColdGuard 的关系 |
+|------|------|---------------------|
+| [LuminaryWorks](https://luminaryworks.dev) | [luminaryworks.dev](https://luminaryworks.dev) | 共享身份（Logto）；不是必须同栈部署的业务产品 |
+| [DataLuminary](https://dataluminary.dev) | [dataluminary.dev](https://dataluminary.dev) | 可选 DashboardPort；QA 主路径在本产品报告 |
+| [BlockyEdu](https://blockyedu.com) | [blockyedu.com](https://blockyedu.com) | 可选工程师培训；不是安装包 |
+| [DoerFlow](https://doerflow.dev) | [doerflow.dev](https://doerflow.dev) | 不进入 MVP；禁止作为 ColdGuard 销售话术 |
+| [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 可选网关远程桌面 |
+| [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 视频 AI；首年不做 |
+
+旧名 **VibeEdu / VibeAgent** 已废止，分别对应 BlockyEdu / DoerFlow。对外材料不得再出现旧名。
 
 ## AI 边界
 
-- **产品内**：设备、MQTT、规则引擎、遥测 hook。不自建 IoT LLM 栈。
-- **中央平台**：可选摘要 / RAG / quota。事件可桥到 DataLuminary 数据集。
-- Entitlement 若尚未登记 `syncrobrain` productCode，先补目录再接线。
+- **产品内（MVP）**：遥测质量、阈值、告警升级、报告。不自建 IoT LLM，不做链上结算。
+- **中央平台**：可选摘要 / RAG / quota，须有客户预算后再接线。
+- 计费：Entitlement `syncrobrain` 未登记则**不得上线收费 SKU**；登记后仍不必绑定其他 productCode。
 
 权威：[LuminaryWorks/spec/ai-platform.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/ai-platform.md)。
 
-## 生态文档
-
-- [LuminaryWorks 宣传站](https://luminaryworks.dev)
-- [LuminaryWorks 域名与品牌](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/domain-and-branding.md)
-- 本仓愿景：[spec/platform-vision.md](./platform-vision.md)
-
 ## 原则
 
-- 登录走 LuminaryWorks 共享 Logto + `@luminaryworks/auth-core`；资源 ACL 用本产品 Casbin（`iot.*`），见 [identity-and-permissions](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md)  
+- 登录走共享 Logto + `@luminaryworks/auth-core`；资源 ACL 用本产品 Casbin（`iot.*`），见 [identity-and-permissions](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md) 与 [index.md](./index.md)
+- QA 图表与报告**主路径在 ColdGuard**；DataTalk 不是默认依赖
+- **垂直深耕**：先一个园区冷藏合规，再扩资产类型；不争夺消费级通用 IoT
+- **数据主权**：Cloud Lite 可私有化；默认只回传健康 / 版本元数据且可关闭
+- **不造轮子**：Broker / 时序用开源；自研集中在领域内核与 Industry Pack
+- **初期红线**：有限资产点、分钟级采样 + 断网保护、明确付钱人 — [platform-vision.md §7](./platform-vision.md#7-初期红线)
 
-- 图表**首选 DataTalk**，ThingsBoard Widget 非主路径
-- **垂直深耕**：切入大厂不愿做的长尾行业（行业 Decoder + 专属 BI），不争夺消费级通用 IoT
-- **数据主权**：支持私有化与贴牌 App，满足 GDPR、NIS2、信创与《数据安全法》诉求
-- **不造轮子**：MQTT / 时序 / 规则引擎用 EMQX、ThingsBoard、ClickHouse 等开源栈；自研集中在 iot-gateway 编排与 DataTalk BI
-- **初期红线**：B 端低频次采集、明确产业集群客户画像 — 详见 [platform-vision.md §7](./platform-vision.md#7-初期红线规避小平台倒闭的死穴)
+## 许可
+
+见 [licensing.md](./licensing.md)。厂商可私有化 ≠ 自研代码 Apache/MIT。
 
 > 历史品牌 **LuminaryIoTChain** 指同一产品，已升级为 **SyncroBrain**。

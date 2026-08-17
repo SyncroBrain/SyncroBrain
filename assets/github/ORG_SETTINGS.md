@@ -7,7 +7,7 @@
 粘贴到 GitHub Organization settings：
 
 ```text
-Open-source AI-native IoT PaaS · 万物智脑 — B2B verticals, private deploy & white-label. syncrobrain.com
+ColdGuard · lab cold-storage compliance & incident close-loop. Private deploy. syncrobrain.com
 ```
 
 ## 组织头像

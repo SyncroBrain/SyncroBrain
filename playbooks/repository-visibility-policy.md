@@ -1,23 +1,28 @@
 # SyncroBrain 仓库可见性策略
 
-> 对齐 [BlockyEdu 可见性策略](https://github.com/BlockyEdu/VibeEdu/blob/master/playbooks/repository-visibility-policy.md)
+> 对齐 LuminaryWorks 产品仓惯例：对外 docs 公开，核心代码私有。勿再把已废止的 VibeEdu 仓库路径当作权威。
 
 ## 原则
 
 | 类型 | 可见性 | 原因 |
 |------|--------|------|
-| **docs**（RsPress 文档站） | **Public** | 降低硬件厂商接入门槛；SEO 与社区 |
-| MetaRepo（platform：spec/plan/contracts） | **Private** | 工程治理、未发布路线图 |
-| iot-gateway / iot-console-web | **Private** | 商业交付前核心代码 |
+| **docs**（RsPress 文档站） | **Public** | 降低接入与试点沟通成本；SEO |
+| MetaRepo（platform：spec/plan/contracts） | **Private** | 工程治理、未发布路线图与商业规格 |
+| iot-gateway / iot-console-web | **Private** | 领域内核与 QA 工作台；商业许可见 [spec/licensing.md](../spec/licensing.md) |
 | website | **Private** | 品牌站点与部署密钥（Cloudflare） |
 | deploy | **Private** | 含默认密钥模板与内网拓扑 |
-| app-mobile（规划） | **Private** | 与涂鸦类竞品差异化 |
+| app-mobile | **不建**（首年 PWA） | 原生 App 非 MVP |
+
+GitHub 组织首页的 MetaRepo 链接若显示为 Public，以本表为准：**platform 为 Private**。profile README 不得把私有仓写成 Public。
 
 ## 开源节奏
 
-1. **先公开 docs + contracts（OpenAPI）**，代码保持私有直至 IoT-M3 稳定。
-2. 核心编排层（iot-gateway）评估 Apache-2.0 发布时机见 `spec/licensing.md`（待补充）。
-3. ThingsBoard CE / EMQX 遵循上游协议，不混授。
+1. **现在**：公开 `syncrobrain/docs`。contracts 随私有 MetaRepo 维护，需要对外对接时再抽取发布。核心代码保持私有。
+2. **Wedge 稳定后**：评估是否公开架构说明与认证 BOM（不含领域内核）。
+3. **iot-gateway 是否改为 Apache-2.0**：仅在 [spec/licensing.md](../spec/licensing.md) 的董事会评估通过后；默认首年不开放核心编排。
+4. ThingsBoard CE / EMQX 遵循上游协议，**不混授**成 SyncroBrain 许可。
+
+禁止对外写「核心平台已 Apache/MIT」——根目录 [LICENSE](../LICENSE) 为 Polyform-NC。
 
 ## 新人权限
 

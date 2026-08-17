@@ -1,24 +1,24 @@
-# SyncroBrain v0.app 设计提示词
+# SyncroBrain ColdGuard v0.app 设计提示词
 
 > **用途**：复制下方英文提示词到 [v0.app](https://v0.app) 生成 UI 原型。  
-> **依据**：LuminaryWorks 生态规划 + SyncroBrain `spec/` 产品文档。  
-> **技术栈**：与 `services/iot-console-web` 一致 — **Ant Design 6**，不用 Tailwind / shadcn/ui。  
-> **更新**：2026-06
+> **依据**：[coldguard.md](../coldguard.md) · [architecture.md](../architecture.md) · 本目录规格。  
+> **技术栈**：与 `iot-console-web` 一致 — **Ant Design 6**，不用 Tailwind / shadcn/ui。  
+> **更新**：2026-08
 
 ## 设计约束（所有页面通用）
 
 | 维度 | 要求 |
 |------|------|
-| 品牌 | **SyncroBrain** · 中文 **万物智脑** · [syncrobrain.com](https://syncrobrain.com) |
-| Slogan | *An AI-native operating system for connected devices.* |
-| 定位 | B 端开源 IoT PaaS，**非**消费级智能家居 |
-| 受众 | 硬件厂商、集成商、白牌出海、垂直行业（充电桩/储能/冷链/工业传感） |
+| 品牌 | **SyncroBrain** · 产品名 **ColdGuard** · 中文 **万物智脑** · [syncrobrain.com](https://syncrobrain.com) |
+| Slogan | *Auditable cold storage. Alerts that close.* |
+| 定位 | 实验室冷藏合规监控与事件闭环；**不是**通用 IoT PaaS 能力清单 |
+| 受众 | QA / 质量负责人、实验室运营、设施值班；渠道安装员为次要 |
 | 技术栈 | React 19 · **Ant Design 6 (`antd`)** · **@ant-design/icons** · react-router-dom · Rsbuild SPA |
 | 主题 | `ConfigProvider` + `locale={zhCN}`，`token: { colorPrimary: "#1677ff", colorError: "#ea3636", borderRadius: 8 }` |
 | 样式 | 仅用 antd `token` / `style` / `className` 微调；**禁止** Tailwind CSS、shadcn/ui、Lucide |
-| 气质 | 企业级、可信、数据主权/私有化；避免涂鸦式 C 端卡通感 |
+| 气质 | 受监管实验室、可追责、数据不出园区；避免消费级卡通与「链上收益」 |
 | 语言 | 默认中英双语 UI（`zh-CN` 主，`en` 副标题） |
-| 生态 | 页脚或侧栏可露出 LuminaryWorks 兄弟产品入口，但不抢主品牌 |
+| 生态 | MVP **不**在主视觉放兄弟产品入口、设备总数虚荣指标、或区块链 |
 
 ### 每条提示词前缀（建议一并粘贴）
 
@@ -28,164 +28,132 @@ Do NOT use Tailwind CSS, shadcn/ui, Lucide, or Radix.
 Wrap app in ConfigProvider with zhCN locale.
 Theme token: colorPrimary #1677ff, colorError #ea3636, borderRadius 8.
 Use antd Layout, Card, Table, Tag, Button, Space, Row, Col, Menu, Typography, etc.
+Do NOT show blockchain, token earnings, ecosystem app store, or device-count vanity metrics as primary KPIs.
 ```
 
-### 生态角色速查
+### 信息架构（控制台）
 
 ```text
-SyncroBrain（连）  ↔  DoerFlow（赚）
-DataLuminary（看见） · BlockyEdu（学） · VistaRemote（控） · VistaCast（看，规划）
+风险总览 → 事件（确认/升级）→ 资产与传感点 → 校准 → 报告 / 审计导出 → 站点设置
 ```
 
-### 四层架构（视觉叙事可用）
-
-```text
-Edge（ESPHome）→ Pipe（EMQX）→ Brain（ThingsBoard + Gateway）→ Client（Console + App）
-```
+不要用「Devices / Telemetry / Rules / Ecosystem」当一级导航主叙事。
 
 ---
 
-## 提示词 1：官网 Landing Page（syncrobrain.com）
+## 提示词 1：官网 Landing（ColdGuard 结果优先）
 
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
+Do NOT lead with MQTT, AI agents, blockchain, or sibling-product grids.
 
-Design a modern B2B SaaS marketing landing page for "SyncroBrain" (万物智脑) — an open-source, AI-native IoT PaaS for connected devices.
+Design a B2B marketing landing page for SyncroBrain ColdGuard (万物智脑 · ColdGuard):
+multi-brand laboratory cold-storage compliance monitoring and incident close-loop for CRO / IVD / pharma R&D labs in a single biotech park.
 
 Tech: React SPA, antd 6, @ant-design/icons, ConfigProvider locale zhCN.
 Theme token: colorPrimary #1677ff, borderRadius 8.
 
-Structure: antd Layout with Header, Content, Footer. Use Row/Col grid, Card, Button, Typography, Table, Tag, Divider, Space.
+Structure: Layout Header, Content, Footer. Row/Col, Card, Button, Typography, Table, Tag, Divider, Space.
 
 Header:
 - Typography.Title level 4: SyncroBrain
-- Typography.Text type="secondary": 万物智脑
-- Nav Space: Features, Architecture, Compare, Ecosystem, Pricing
-- Button type="primary": Get Started
+- Typography.Text type="secondary": ColdGuard
+- Nav: Product, Audit, Deploy, Pricing
+- Button type="primary": 申请试点
 - Button: GitHub
 
-Hero (Row, gutter 48):
-- Col span 12:
-  - Typography.Title: Connect every device. Give it a brain.
-  - Typography.Paragraph: 连接设备的 AI 原生操作系统 — 开源可私有化，数万级成本替代闭源 IoT 平台
-  - Space: Button type="primary" size="large" + Button size="large"
-- Col span 12: Card with abstract SVG/placeholder — device nodes syncing to central brain via MQTT lines
+Hero:
+- Title: 30 天内，把多品牌冷藏设备变成可审计、可告警、可追责的一套系统
+- Paragraph: 不更换现有冰箱。降低样本损失风险，把审计取证从数天压缩到数小时。每次异常都有确认、升级和处置记录。
+- Primary CTA: 48 小时合规差距诊断
+- Secondary CTA: 查看样例报告
 
-Social proof (Space wrap, Tag bordered=false):
-Open Source · Private Deploy · GDPR / NIS2 Ready · White-label
+Proof tags: 可私有化 · 断网续采 · 校准可追溯 · 标准 MQTT/REST 可迁出
 
-Features (Row, 3 Col span 8, Card hoverable):
-1. CloudSyncOutlined — Syncro Pipe — EMQX MQTT, B2B low-frequency telemetry
-2. BulbOutlined — AI Brain — ThingsBoard + DataLuminary BI + DoerFlow agents
-3. SafetyCertificateOutlined — Sovereign Cloud — on-prem, data stays in region
+Outcomes (3 Cards):
+1. 少损失 — 温度 / 门磁 / 断电 / 网关离线
+2. 快审计 — 事件时间线与不可抵赖日志
+3. 可追责 — 确认人、升级路径、月度合规报告
 
-Architecture section (Card):
-- Steps or horizontal Row of 4 Cards: Edge (ESPHome) → Pipe (EMQX) → Brain (ThingsBoard) → Client (Console)
-- Typography.Text code style for labels
+NOT a platform capability laundry list. Do NOT mention ThingsBoard UI, DataTalk, DoerFlow, or token rewards.
 
-vs Tuya (Table, columns: Dimension | Tuya | SyncroBrain):
-- Closed SaaS vs Open Source Private
-- Device management vs AI + BI + Agent marketplace
-- Platform lock-in vs standard MQTT/REST
+Who it is for: 园区内民营实验室，20–200 台混品牌冰箱；决策者是 QA。
+Who it is not for: 公立医院招标、运输车队、消费级智能家居.
 
-Vertical industries (Row, 4 Cards): EV charging, Cold chain, Industrial Modbus/BACnet, White-label OEM
+Pricing (3 Cards): 付费 30 天验证 · 标准云版（按受保护资产点）· 私有化 + SLA
+Caption: 价格为待验证区间；拒绝免费 POC.
 
-Ecosystem (Row, 5 Cards, one bordered primary):
-DataLuminary · BlockyEdu · DoerFlow · VistaRemote · VistaCast — SyncroBrain highlighted as "Connect"
-
-Pricing (2 Cards side by side): Self-host · Enterprise SLA
-
-Footer: syncrobrain.com links, LuminaryWorks parent
-
-Style: dark Header (#001529 antd default), light Content (#f5f5f5), professional B2B — NOT consumer smart-home
+Footer: syncrobrain.com · Polyform-NC 自研代码 · 商业使用需许可
+Style: dark Header (#001529), light Content (#f5f5f5), regulated-industry trust.
 ```
 
 ---
 
-## 提示词 2：IoT 控制台 Dashboard（iot-console-web 主界面）
+## 提示词 2：QA 风险总览（控制台首页）
 
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
+Primary KPIs must be risk and close-loop, NOT total devices or MQTT message count.
 
-Design a B2B IoT admin console for "SyncroBrain" (万物智脑), matching iot-console-web patterns.
-
-Tech: React, antd 6, @ant-design/icons, react-router-dom, ConfigProvider zhCN.
-Theme: colorPrimary #1677ff, colorError #ea3636, borderRadius 8.
+B2B console home for SyncroBrain ColdGuard, matching iot-console-web (antd 6, Rsbuild).
 
 Layout:
-- antd Layout style minHeight 100vh
-- Layout.Sider collapsible, theme dark, width 220:
-  - Logo area: SyncroBrain / 万物智脑
-  - Menu mode inline, items: Dashboard, Devices, Telemetry, Rules, Alerts, Decoders, Ecosystem, Settings
-  - Icons from @ant-design/icons (DashboardOutlined, HddOutlined, etc.)
-- Layout.Header: tenant name, Tag for Gateway status (green Online / red Offline), Dropdown user menu with Logout
-- Layout.Content padding 24, maxWidth 1200, margin auto
+- Layout.Sider collapsible, dark, width 220:
+  Logo: SyncroBrain / ColdGuard
+  Menu: 风险总览, 事件, 资产, 校准, 报告, 审计, 站点设置
+  Icons from @ant-design/icons
+- Header: 站点名「园区 A · 中心实验室」, Tag 值班中, user Dropdown Logout
+- Content padding 24, maxWidth 1200
 
-Dashboard home:
+Row 1 — 4 Statistic cards:
+- 未关闭事件: 3 (warning)
+- 超 SLA 未确认: 1 (error)
+- 校准将过期(30天): 4
+- 受保护资产点: 42 （label 明确为付费资产点，不是注册设备虚荣数）
 
-Row 1 — 4 Col span 6, Card with Statistic:
-- Total Devices: 1247 (HddOutlined)
-- Online Now: 1103, valueStyle green, Badge status processing
-- Alerts (24h): 3, valueStyle #faad14
-- MQTT Messages (24h): 48.2K
+Row 2:
+- Col 16 Card「站点风险热图」: simple table or list of zones with temperature status tags (正常 / 超阈 / 离线)
+- Col 8 Card「待我确认」: List of incidents with Ack buttons
 
-Row 2 — Col span 16 + Col span 8:
-- Card title "Device Status": placeholder Area chart (antd @ant-design/charts or simple div chart)
-- Card title "Recent Alerts": List with Tag colors error/warning/default per severity
+Row 3 Card「最近事件」Table:
+columns: 严重度 Tag, 资产, 类型(温度/门磁/断电/离线), 开始时间, 状态(open/acked/escalated), 值班人, 操作(确认)
+4–6 sample rows for ultra-low freezers and cold rooms. No EV piles, no ecosystem tiles.
 
-Row 3 — Typography.Title level 5: 生态能力
-- Row 4x Col span 6, Card hoverable onClick:
-  - DataLuminary — CloudOutlined — 数据洞察 / DataTalk BI
-  - BlockyEdu — CodeOutlined — IoT 课程 / ESPHome 实验
-  - DoerFlow — AppstoreOutlined — Agent 市场 / 链上收益
-  - VistaRemote — DesktopOutlined — 远程运维
+Empty state: Empty + Button 发起告警演练
 
-Row 4 — Typography.Title level 5: 设备
-- Space marginBottom 16: Button type="primary" 注册设备, Button 刷新, Input.Search, Select protocol filter
-- Table rowKey="id", columns: 名称, 协议 (Tag), 状态 (Tag green/red/default), 最后上报, 创建时间, 操作 (Dropdown: 查看/禁用/远程)
-- 5 sample rows: cold-chain-sensor-07, ev-pile-controller-12, etc.
-
-Empty state: antd Empty description="暂无设备" + Button type="primary" 注册演示设备
-
-Chinese UI labels, Tooltip with English on icon buttons. Dense enterprise console like AWS IoT + antd Pro layout.
+Chinese labels, English tooltip on icon buttons. Dense, QA-trustworthy.
 ```
 
 ---
 
-## 提示词 3：设备详情页（Device Detail）
+## 提示词 3：事件时间线（确认 / 升级 / 证据）
 
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
+This is the money page: incident close-loop. No remote-desktop or chain links.
 
-Device detail page for SyncroBrain IoT console.
+Incident detail for ColdGuard.
 
-Tech: React, antd 6, @ant-design/icons, ConfigProvider zhCN, theme colorPrimary #1677ff.
+Breadcrumb: 事件 / INC-2026-0142 · 超低温冰箱-07 温度超阈
 
-Breadcrumb: 设备 / cold-chain-sensor-07
+Page header:
+- Title: -18.4°C 超过 -20°C 下限
+- Tags: 严重, 未确认, 温度, 演练|真实 用 Tag 区分
+- Buttons: 确认, 升级, 登记处置, 导出证据包
+- Do NOT show VistaRemote / DataTalk / 下发任意 RPC as primary actions
 
-Page header (Space wrap):
-- Typography.Title level 4, editable: cold-chain-sensor-07
-- Tag color="success": 在线
-- Tag: MQTT
-- Space: Button type="primary" 下发指令, Button 远程运维 (VistaRemote), Button 在 DataTalk 中查看, Button danger 禁用设备
+Row:
+Col 16 Tabs: 时间线 | 遥测 | 处置证据 | 相关校准
+- 时间线 Timeline: 超阈开单 → 企微已送达 → 超时未确认 → 升级设施负责人 → …
+- 遥测: placeholder line + quality tags (ok / backfill / late)
+- 处置: Form 备注 + Upload 照片 + 关闭原因
 
-Row gutter 24:
-Col span 16:
-- Tabs items: 概览 | 遥测 | 属性 | RPC | 日志
-- 概览 tab:
-  - Descriptions bordered title="设备信息": 设备 ID (Typography.Text copyable), 租户, 注册人, 创建时间, 最后遥测
-  - Row 3x Statistic in Cards: 温度 4.2°C, 湿度 62%, 电量 87%
-  - Card title="MQTT Topic": Typography.Paragraph copyable code blocks for v1/devices/{token}/telemetry and iot/v1/{deviceId}/presence
+Col 8:
+- Descriptions: 站点, 区域, 资产, 传感点, 策略版本, 开单时间
+- Card 升级 SLA: 距下次升级 12 分钟
+- Card 通知: 企微 已达, SMS 失败（失败必须可见）
 
-Col span 8:
-- Card title="连接状态": Descriptions — EMQX 正常, 最后心跳 12s 前
-- Card title="规则": List 2 items
-- Card title="告警": Alert type="warning" message="温度超过阈值"
-- Card title="生态入口": Space direction vertical with Link buttons
-
-Bottom: Card title="活动记录" — Timeline with presence/telemetry/rule events
-
-Same Layout.Sider dark sidebar as dashboard. B2B data-dense, readable.
+Same dark Sider as overview.
 ```
 
 ---
@@ -195,82 +163,78 @@ Same Layout.Sider dark sidebar as dashboard. B2B data-dense, readable.
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
 
-Minimal SSO login page for SyncroBrain IoT console.
+Minimal SSO login for SyncroBrain ColdGuard console.
 
-Tech: React, antd 6, @ant-design/icons, ConfigProvider zhCN, theme colorPrimary #1677ff.
+Tech: React, antd 6, ConfigProvider zhCN, colorPrimary #1677ff.
+Layout: full viewport, background #001529 (solid, no gradient).
 
-Layout: full viewport, background linear-gradient dark (#001529 to #002140).
+Centered Card maxWidth 400:
+- Title: SyncroBrain
+- Text secondary: ColdGuard · 实验室冷藏合规
+- Button primary block: 使用组织账号登录
+- Caption: Powered by Logto · syncrobrain.com
+- Links: 隐私政策, 文档
 
-Row justify center align middle style minHeight 100vh:
-- Col xs={24} md={12} (hidden on mobile): Typography.Title level 2 white + Typography.Paragraph "Sync devices. Sync intelligence." + abstract MQTT network illustration (div/SVG)
-- Col xs={24} md={10}:
-  - Card style maxWidth 400, margin auto:
-    - Typography.Title level 3 center: SyncroBrain
-    - Typography.Text type="secondary" block center: 万物智脑
-    - Typography.Paragraph type="secondary" center: IoT Platform Console
-    - Button type="primary" block size="large" icon={<LoginOutlined />}: 使用 LuminaryWorks 登录
-    - Typography.Text type="secondary" style fontSize 12, block center marginTop 16: Powered by Logto · syncrobrain.com
-    - Divider
-    - Space center: Link 隐私政策, Link 文档
-
-No email/password Form — SSO button only. Clean enterprise trust.
+No email/password form. No ecosystem product names. No MQTT network hero illustration required.
 ```
 
 ---
 
-## 提示词 5：行业 Decoder 配置页（差异化能力）
+## 提示词 5：审计报告与校准记录
+
+```
+IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
+Target user is QA preparing an audit, not an OEM protocol engineer.
+
+Two stacked views in the same console shell (dark Sider: 报告 / 校准).
+
+View A — 月度合规报告:
+- Title: 2026-07 中心实验室冷藏合规
+- Descriptions: 站点, 期间, 生成人, Industry Pack 版本
+- Statistic row: 事件 17, 平均确认时长 11 分钟, 漏报调查 0, 校准超期 2
+- Table of incidents with export buttons
+- Buttons: 下载 PDF, 导出 CSV（API 可迁出）
+- Alert: 审计日志只追加，不可改
+
+View B — 校准:
+- Table: 传感点, 资产, 证书编号, 有效期, 状态 Tag(有效/30天内到期/已过期), 厂商
+- Button: 登记校准证书
+- No Node-RED / ThingsBoard rule-chain marketing copy
+```
+
+---
+
+## 提示词 6：站点扩容（租户模板）
 
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
 
-Industry protocol decoder page for SyncroBrain — differentiator vs Tuya.
+Site expansion wizard for ColdGuard. Founder or channel installer adds assets without a custom branch.
 
-Tech: React, antd 6, @ant-design/icons, ConfigProvider zhCN, theme colorPrimary #1677ff.
+Steps component: 站点信息 → 区域 → 资产与传感点 → 应用 Industry Pack → 告警演练
+- Site form: 名称, 时区, 值班表
+- Assets table inline editable: 冰箱/冷柜/冷库/网关, 品牌混杂
+- Pack Select: 冷藏实验室 v1（阈值/SOP/月报/BOM）
+- Final step: Button 发起演练（必须覆盖温度、门磁、断电、网关离线）
 
-Standard console Layout with dark Sider (same as dashboard).
-
-Content:
-- Typography.Title level 4: 行业协议解调 / Industry Decoders
-- Alert type="info" showIcon: Transform Modbus / BACnet / OPC-UA registers into business KPIs
-
-Row gutter 16:
-Col span 6:
-- Input.Search placeholder 搜索 Decoder
-- Menu mode inline, groups: 能源, 冷链, 农业, 工业
-- Selected: Cold Chain Temperature Monitor
-
-Col span 18:
-- Card title="Cold Chain Temperature Monitor":
-  - Descriptions: 源协议 Modbus RTU
-  - Table editable or Form.List mapping rows:
-    寄存器 40001 → temperature (°C, float32, scale 0.1)
-    寄存器 40002 → humidity (%)
-    寄存器 40003 → door_open (boolean)
-  - Card size small title="输出 Topic": Typography.Text code copyable iot/v1/{deviceId}/telemetry
-  - Card size small title="Payload 预览": pre/code JSON syntax block
-  - Space: Button 测试 Decoder, Button type="primary" 保存, Button 部署到租户
-
-Alert type="info" message="Powered by Node-RED / ThingsBoard rule chain"
-
-Target: integration engineers at hardware OEMs. Technical, approachable.
+Do NOT add "template marketplace" or "publish decoder to all tenants".
 ```
 
 ---
 
 ## 使用建议
 
-1. **生成顺序**：先 Landing → Console Dashboard → Device Detail → 其余页面；后续提示加 *"Match the SyncroBrain antd design from previous generation"*。
-2. **v0 偏好**：v0 默认倾向 shadcn/Tailwind，**每条提示务必带上 IMPORTANT 前缀**，或在 v0 项目设置中指定 React + antd。
-3. **落地对齐**：生成代码可直接迁入 `services/iot-console-web`（已有 antd 6 + Rsbuild + react-router-dom）。
-4. **品牌更名**：现有控制台仍显示 `LuminaryIoTChain`，v0 稿统一用 **SyncroBrain / 万物智脑**。
-5. **生态链接**：代码中旧名 VibeEdu / VibeAgent 已升级为 **BlockyEdu / DoerFlow**，提示词已用新名。
+1. **生成顺序**：Landing → 风险总览 → 事件时间线 → 报告/校准 → 站点扩容 → 登录。
+2. **v0 偏好**：每条必须带 IMPORTANT 前缀，或在项目中指定 React + antd。
+3. **落地**：生成代码迁入 `iot-console-web`（antd 6 + Rsbuild）。官网迁入 `website` 时以 ColdGuard 结果文案为准，删除平台能力清单。
+4. **废止**：旧提示词中的生态四宫格、链上收益、设备 1247 台、VibeEdu/VibeAgent、Flutter App 入口，均不得再作为主视觉。
 
 ## 相关文档
 
 | 文档 | 说明 |
 |------|------|
-| [spec/platform-vision.md](../../spec/platform-vision.md) | 平台愿景与初期红线 |
-| [spec/architecture.md](../../spec/architecture.md) | 四层架构 |
-| [spec/ecosystem.md](../../spec/ecosystem.md) | LuminaryWorks 生态集成 |
-| [services/iot-console-web](../../services/iot-console-web) | 现有 antd 控制台实现 |
-| [LuminaryWorks syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 产品规划摘要 |
+| [coldguard.md](../coldguard.md) | 产品承诺与 MVP |
+| [platform-vision.md](../platform-vision.md) | 楔子与红线 |
+| [architecture.md](../architecture.md) | Cloud Lite |
+| [ecosystem.md](../ecosystem.md) | 独立可售 |
+| [licensing.md](../licensing.md) | 许可 |
