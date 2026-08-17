@@ -32,6 +32,14 @@ Edge ──MQTT──► SyncroBrain ──► 可选：DataLuminary / DoerFlow 
 | [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 设备远程桌面运维 |
 | [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 摄像头 AI 告警（规划） |
 
+## AI 边界
+
+- **产品内**：设备、MQTT、规则引擎、遥测 hook。不自建 IoT LLM 栈。
+- **中央平台**：可选摘要 / RAG / quota。事件可桥到 DataLuminary 数据集。
+- Entitlement 若尚未登记 `syncrobrain` productCode，先补目录再接线。
+
+权威：[LuminaryWorks/spec/ai-platform.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/ai-platform.md)。
+
 ## 生态文档
 
 - [LuminaryWorks 宣传站](https://luminaryworks.dev)
