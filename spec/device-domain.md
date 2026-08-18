@@ -136,7 +136,7 @@ MQTT（开发 POC）：
 
 ## 7. Industry Pack
 
-权威默认值与冻结规则：[industry-pack.md](./industry-pack.md)（`cold-lab` / `0.1-draft`）。
+权威默认值与冻结规则：[industry-pack.md](./industry-pack.md)。机器可读副本：[packs/cold-lab.0.1-draft.json](./packs/cold-lab.0.1-draft.json)（须与本文一致；冲突以本文为准）。
 
 Pack 是版本化制品，不是控制台里随手改的脚本。不能被 3 个客户复用的改动按专业服务交付，不打进 Pack 主版本。
 

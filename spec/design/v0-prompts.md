@@ -234,6 +234,7 @@ Do NOT add "template marketplace" or "publish decoder to all tenants".
 | 文档 | 说明 |
 |------|------|
 | [coldguard.md](../coldguard.md) | 产品承诺与 MVP |
+| [samples/monthly-compliance-report.example.md](./samples/monthly-compliance-report.example.md) | 虚构月报（演示用） |
 | [industry-pack.md](../industry-pack.md) | 默认阈值与总览口径 |
 | [reliability.md](../reliability.md) | 演练与「受保护」条件 |
 | [platform-vision.md](../platform-vision.md) | 楔子与红线 |

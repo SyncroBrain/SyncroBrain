@@ -16,6 +16,8 @@
 | [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台 / 官网原型提示词 |
 | [plan/README.md](../plan/README.md) | 阶段门总览 |
 | [plan/validation.md](../plan/validation.md) | **当前**：0–90 天访谈、诊断、台架证据 |
+| [plan/validation/week-1.md](../plan/validation/week-1.md) | 第 1–2 周作业包与演示脚本 |
+| [playbooks/gap-diagnosis.md](../playbooks/gap-diagnosis.md) | 48 小时差距诊断交付模板 |
 | [contracts/README.md](../contracts/README.md) | 已发布 v1 vs 遥测信封草案 |
 | [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站（RsPress，公开仓） |
 | [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态层产品规划（若与本仓冲突，**以本仓 ColdGuard 规格为准**） |

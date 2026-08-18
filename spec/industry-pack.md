@@ -103,4 +103,4 @@ MVP 资产 `kind`：`fridge` · `freezer_20` · `freezer_80` · `cold_room` · `
 | `1.x` | 兼容修订（文案、默认 SLA 微调） |
 | `2.0` | 打破通道 Schema 或资产 kind |
 
-第二个垂直（食品冷库等）必须新 slug，禁止把实验室窗温硬编码进领域内核。
+机器可读默认值（与本文冲突时以本文为准）：[packs/cold-lab.0.1-draft.json](./packs/cold-lab.0.1-draft.json)。

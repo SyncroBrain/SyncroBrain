@@ -107,3 +107,7 @@
 | 演示脚本 + 版本号 | 即使只是原型 |
 
 工程仓未 clone 时，不得主张「系统已在生产运行」。见 [README.md](./README.md) 证据规则。
+
+真访谈、报价、现场照片：只放 [evidence/](./validation/evidence/)，默认不提交。
+
+**第 1–2 周作业包（今天用）：** [validation/week-1.md](./validation/week-1.md)

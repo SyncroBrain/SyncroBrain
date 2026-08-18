@@ -1,0 +1,85 @@
+{
+  "slug": "cold-lab",
+  "version": "0.1-draft",
+  "status": "validation-defaults",
+  "spec": "spec/industry-pack.md",
+  "kinds": [
+    "fridge",
+    "freezer_20",
+    "freezer_80",
+    "cold_room",
+    "gateway"
+  ],
+  "excludedKinds": [
+    "incubator"
+  ],
+  "channels": {
+    "temperature": {
+      "unit": "Cel",
+      "sampleIntervalSec": 60,
+      "openAfterSamples": 2
+    },
+    "door": {
+      "unit": "1",
+      "heartbeatSec": 60,
+      "edge": true
+    },
+    "power": {
+      "unit": "1",
+      "heartbeatSec": 60,
+      "edge": true
+    },
+    "gateway_online": {
+      "unit": "1",
+      "sampleIntervalSec": 60
+    }
+  },
+  "policy": {
+    "temperatureWindows": {
+      "fridge": {
+        "minC": 2,
+        "maxC": 8,
+        "warnBandC": 0.5,
+        "criticalAfterSec": 180
+      },
+      "freezer_20": {
+        "minC": -25,
+        "maxC": -15,
+        "warnBandC": 1,
+        "criticalAfterSec": 180
+      },
+      "freezer_80": {
+        "minC": -86,
+        "maxC": -70,
+        "warnBandC": 2,
+        "criticalAfterSec": 180
+      },
+      "cold_room": {
+        "minC": null,
+        "maxC": null,
+        "note": "required-at-site-onboarding"
+      }
+    },
+    "doorOpenTimeoutSec": 180,
+    "doorOpenTimeoutColdRoomSec": 300,
+    "gatewayOfflineSec": 180,
+    "powerLoss": {
+      "severity": "critical",
+      "openImmediately": true
+    },
+    "dedupeOpenIncidentPerChannel": true
+  },
+  "ackSlaSec": {
+    "critical": 600,
+    "warning": 1800
+  },
+  "escalate": {
+    "critical": [
+      "facilities",
+      "qa_owner"
+    ],
+    "warning": [
+      "facilities"
+    ]
+  }
+}
