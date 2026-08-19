@@ -18,7 +18,7 @@
 | **Vertical Fit**（6–12 月） | 从项目中选垂直 | 冻结可复用 Pack | 3 个项目共用 ≥70% 工作流 |
 | Repeatability / Platform / Scale | 草案 | 见历史商业规划 | 仅 Vertical Fit 通过后解锁 |
 
-**当前内部状态：Build。** 执行手册：[build.md](./build.md)。
+**当前内部状态：Build（第 7–8 周交付已齐，待人工勾选 DoD 关门）。** 执行手册：[build.md](./build.md) · 冻结清单：[build-freeze.md](./build-freeze.md)。
 
 [validation.md](./validation.md) 降为 **Showcase 之后的渠道/产品验证附录**（零预算触达与付费信号）。**不再阻塞** 8 周建设。ColdGuard 实验室访谈清单不作为当前必做。
 

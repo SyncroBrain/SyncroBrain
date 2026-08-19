@@ -31,7 +31,7 @@ cd syncrobrain
 .\dev-mvp.ps1
 ```
 
-Linux / macOS：`chmod +x dev.sh dev-mvp.sh && ./dev.sh && ./dev-mvp.sh`
+Linux / macOS：`chmod +x dev.sh && ./dev.sh`（现已 `compose up --build` 含 Gateway/Console）。改代码再用 `./dev-mvp.sh` 前请先 `docker compose stop iot-gateway iot-console`。
 
 | 脚本 | 作用 |
 |------|------|
@@ -71,17 +71,24 @@ cd D:\www\LuminaryWorks\shared
 pnpm install && pnpm build
 ```
 
-### 2. 基础设施
+### 2. 一键全栈（推荐演示 / 关门）
+
+须先停宿主机占用 `:13200` / `:5180` 的 `pnpm dev`。
 
 ```bash
 cd deploy
-docker compose -f docker-compose.dev.yml up -d
-# PostgreSQL :5438（Gateway；避开 entitlement :5434）
-# ThingsBoard CE :8080（UI/API）· MQTT :1883
+docker compose -f docker-compose.dev.yml up -d --build
+# PostgreSQL :5438 · ThingsBoard CE :8080 / MQTT :1883
+# Gateway :13200 · Console :5180
 # 首次启动 TB 需 1–2 分钟。默认 sysadmin@thingsboard.org / sysadmin（立刻改密）
+# 运维：deploy/OPS.md · 安全：deploy/SECURITY.md
 ```
 
-### 3. iot-gateway
+打开 `http://localhost:5180`。Gateway 健康检查：`http://localhost:13200/api/v1/health`
+
+### 3. 改代码时用宿主机进程
+
+停应用容器后：`docker compose -f docker-compose.dev.yml stop iot-gateway iot-console`
 
 ```bash
 cd iot-gateway
@@ -89,8 +96,6 @@ cp .env.example .env
 pnpm install --no-frozen-lockfile && pnpm migration:run && pnpm dev
 # http://localhost:13200/api/v1/health
 ```
-
-### 4. iot-console-web
 
 ```bash
 cd iot-console-web

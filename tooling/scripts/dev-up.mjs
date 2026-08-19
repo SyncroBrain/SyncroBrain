@@ -49,8 +49,8 @@ if (!skipDocker) {
   if (!existsSync(compose)) {
     console.warn("⚠️  deploy/ not cloned — skip docker (run ./init.sh)");
   } else {
-    console.log("\n🐳 docker compose up -d (postgres :5438, ThingsBoard CE :8080 / MQTT :1883)...");
-    execSync(`docker compose -f "${compose}" up -d`, {
+    console.log("\n🐳 docker compose up -d --build (PG :5438, TB :8080, gateway :13200, console :5180)...");
+    execSync(`docker compose -f "${compose}" up -d --build`, {
       cwd: join(metaRoot, "deploy"),
       stdio: "inherit",
       shell: true,

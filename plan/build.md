@@ -12,7 +12,7 @@
 
 | 项 | 标准 |
 |----|------|
-| 一键启动 | `deploy` Compose 拉起 TB CE + PostgreSQL + gateway + console |
+| 一键启动 | `deploy` Compose 拉起 TB CE + Gateway PG + Gateway + Console（`--build`；需 MetaRepo 兄弟目录） |
 | MQTT | 模拟器经 TB topic 上报，Console/TB 可见遥测 |
 | Pack | `cold-lab/0.1-draft` 可加载 Device Profile / Rule / Alarm / Dashboard |
 | 告警演示 | 超温（或模拟）产生 TB Alarm，可确认 |
@@ -33,8 +33,8 @@
 | 4 | Pack 导入：`cold-lab/0.1-draft` → TB Device Profile + Rule Chain（`POST /projects/:id/packs/apply`）。**本机已通**：Profile `cold-lab-fridge-0.1-draft`，新 Asset 已挂接 | 自研规则引擎 |
 | 5 | Alarm 列表/确认（TB Alarm）；`ALARM_WEBHOOK_URL` 通知。**本机已通**：create → list → ack，webhook `delivered:true` | 完整 Incident 内核 |
 | 6 | Console 项目向导；`POST /demos/cold-lab` 一键演示。**本机已通**：Project→Pack→Site→Asset + MQTT token | DataTalk、原生 App |
-| 7 | 备份/恢复步骤、环境变量、离线镜像说明 | 商业计费完整实现（开关即可） |
-| 8 | 演示脚本录像文字版、安全基线、冻结功能列表 | 新运行时组件 |
+| 7 | 备份/恢复、环境变量目录、离线镜像脚本；告警/遥测 CSV。**本机已通**：`deploy/OPS.md` + `scripts/backup.sh`；`GET /alarms/export.csv`、`GET /assets/:id/telemetry/export.csv` | 商业计费完整实现（开关即可） |
+| 8 | 演示脚本录像文字版、安全基线、冻结功能列表。**已交付**：[validation/demo-script.md](./validation/demo-script.md) · [../deploy/SECURITY.md](../deploy/SECURITY.md) · [build-freeze.md](./build-freeze.md) | 新运行时组件 |
 
 ## 3. 明确不做（Build）
 
@@ -53,6 +53,8 @@ ColdGuard 差距诊断模板仍可用于将来垂直销售，不是本周必做�
 
 ## 5. 演示脚本（目标 10 分钟）
 
+完整录像文字版：[validation/demo-script.md](./validation/demo-script.md)。
+
 1. `docker compose up`，打开 Console  
 2. 加载 `cold-lab` Pack  
 3. 启动模拟器，看到温度曲线  
@@ -60,6 +62,12 @@ ColdGuard 差距诊断模板仍可用于将来垂直销售，不是本周必做�
 5. 导出 CSV  
 6. 说明：运行时是 TB CE；许可与升级走 SyncroBrain  
 
-## 6. 证据夹
+## 6. 冻结与安全
+
+- 功能边界：[build-freeze.md](./build-freeze.md)  
+- 安全基线：[../deploy/SECURITY.md](../deploy/SECURITY.md)  
+- 运维目录：[../deploy/OPS.md](../deploy/OPS.md)
+
+## 7. 证据夹
 
 Build 完成物进 git / docs（可公开安装说明）。客户名录与报价仍放 [validation/evidence/](./validation/evidence/)，不提交。
