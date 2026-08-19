@@ -1,90 +1,60 @@
 # SyncroBrain 规格索引
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)  
-> **当前产品**：[ColdGuard](./coldguard.md) — 实验室冷藏合规监控与事件闭环。SyncroBrain 是长期平台名，不是 MVP 首屏。
+> **当前产品**：Cloud Lite — ThingsBoard CE 运行时 + 交付编排。  
+> **ColdGuard**：[coldguard.md](./coldguard.md) 是首个 **Reference Pack**，不是唯一可售 SKU。
 
 | 文档 | 说明 |
 |------|------|
-| [coldguard.md](./coldguard.md) | 首款可售产品：ICP、MVP、定价、停止条件 |
-| [industry-pack.md](./industry-pack.md) | cold-lab Pack 默认阈值、升级矩阵、BOM 原则 |
-| [reliability.md](./reliability.md) | SLO、断网、通知、演练、责任边界 |
-| [platform-vision.md](./platform-vision.md) | 楔子与长期平台、初期红线 |
-| [architecture.md](./architecture.md) | 领域内核 + Cloud Lite + 适配层 |
-| [device-domain.md](./device-domain.md) | Site / Asset / Incident / DutyRoster；v0.1 Device API |
-| [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品均为可选 |
-| [licensing.md](./licensing.md) | Polyform-NC、商业许可、公开节奏 |
-| [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台 / 官网原型提示词 |
-| [plan/README.md](../plan/README.md) | 阶段门总览 |
-| [plan/validation.md](../plan/validation.md) | **当前**：0–90 天访谈、诊断、台架证据 |
-| [plan/validation/week-1.md](../plan/validation/week-1.md) | 第 1–2 周作业包与演示脚本 |
-| [playbooks/gap-diagnosis.md](../playbooks/gap-diagnosis.md) | 48 小时差距诊断交付模板 |
-| [contracts/README.md](../contracts/README.md) | 已发布 v1 vs 遥测信封草案 |
-| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站（RsPress，公开仓） |
-| [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态层产品规划（若与本仓冲突，**以本仓 ColdGuard 规格为准**） |
+| [platform-vision.md](./platform-vision.md) | 交付平台愿景与红线 |
+| [architecture.md](./architecture.md) | TB CE + Gateway + Console |
+| [plan/README.md](../plan/README.md) | Build → Showcase → First Revenue → Vertical Fit |
+| [plan/build.md](../plan/build.md) | **当前**：8 周工程手册 |
+| [coldguard.md](./coldguard.md) | 参考 Pack：实验室冷藏 |
+| [industry-pack.md](./industry-pack.md) | Pack 制品与 `cold-lab` 默认值 |
+| [reliability.md](./reliability.md) | 垂直场景 SLO（Build 先用 TB Alarm） |
+| [device-domain.md](./device-domain.md) | 领域模型；v0.1 Device API；TB 映射 |
+| [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
+| [licensing.md](./licensing.md) | 自研 Polyform-NC；TB Apache-2.0 |
+| [design/v0-prompts.md](./design/v0-prompts.md) | Console / 官网原型 |
+| [plan/validation.md](../plan/validation.md) | 附录：渠道触达（不阻塞 Build） |
+| [contracts/README.md](../contracts/README.md) | 已发布 v1 vs 草案 |
+| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站 |
+| [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态摘要（冲突时以本仓为准） |
 
-对外材料与融资数据室禁止引用仍写裸 M1–M5、VibeEdu/VibeAgent、或「核心已 Apache/MIT」的旧稿。
+禁止对外引用裸 M1–M5、VibeEdu/VibeAgent、或「自研核心已 Apache/MIT」。
 
 ## 身份与权限
 
 | 层 | 决策 |
 |----|------|
-| AuthN | Logto OIDC（`IDP_*` / `VITE_IDP_*`）；Audience `https://api.iotchain.local`；私有化可接客户现有 IdP |
-| AuthZ | 产品内 Casbin，命名空间 `iot.*`（JWT 不携带业务 ACL） |
-| 规格 | [LuminaryWorks identity-and-permissions](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md) |
+| AuthN | Logto OIDC 或演示登录；私有化可接客户 IdP。Audience `https://api.iotchain.local` |
+| AuthZ | 产品内 Casbin `iot.*`（JWT 不带业务 ACL） |
+| TB | Gateway 使用 TB 服务账号调用 REST；终端用户尽量不直接持有 TB 系统管理员 |
 
-实现：`iot-gateway` `@luminaryworks/auth-core` + `src/modules/casbin`；控制台 OIDC PKCE（`:5180`）。不自研通用 IAM。
+实现：`iot-gateway` `@luminaryworks/auth-core` + Casbin；控制台 PKCE（`:5180`）。不自研通用 IAM。
 
-## ColdGuard 权限（Wedge 目标）
-
-实现可分批接入；未实现的码不得出现在对外已发布 API 文档中。
+## Build 权限（最小）
 
 | 权限码 | 说明 |
 |--------|------|
-| `iot.site:view` | 查看站点 / 区域 |
-| `iot.site:manage` | 创建与配置站点 |
-| `iot.asset:view` | 查看资产与传感点 |
-| `iot.asset:manage` | 登记资产 / 网关 / 通道 |
-| `iot.incident:view` | 查看事件 |
-| `iot.incident:ack` | 确认告警 |
-| `iot.incident:escalate` | 升级告警 |
-| `iot.calibration:view` | 查看校准证书 |
-| `iot.calibration:manage` | 登记 / 更新校准 |
-| `iot.report:view` | 查看合规报告 |
-| `iot.report:export` | 导出报告与 CSV |
-| `iot.audit:view` | 查看审计日志 |
-| `iot.tenant:manage` | 租户与角色 |
-| `iot.device:view` | **遗留** v0.1 设备列表 |
-| `iot.device:manage` | **遗留** v0.1 注册/禁用 |
-| `iot.device:control` | **遗留** 指令下发（须同时写 AuditEvent） |
+| `iot.tenant:manage` | 项目/租户 |
+| `iot.site:view` / `iot.site:manage` | 站点 |
+| `iot.asset:view` / `iot.asset:manage` | 映射 TB 设备/资产 |
+| `iot.device:view` / `iot.device:manage` / `iot.device:control` | 遗留 v0.1 + RPC（须审计） |
+| `iot.pack:apply` | 应用 Industry Pack（Build 新增；未实现不得写入已发布 OpenAPI） |
 
-Wedge 角色与权限（实现可分批；无值班表不得「已上线」）：
+## Vertical Fit 权限（不阻塞 Build）
 
-| 角色 | 权限（最小） |
-|------|----------------|
-| `oncall_ops` | site/asset/incident 只读 + `iot.incident:ack` |
-| `facilities` | 同上 + ack；处置证据 |
-| `qa_owner` | 上表 + calibration/report/export + escalate；站点策略覆盖 |
-| `auditor` | report/view + audit/view + incident/view（无 ack） |
-| `tenant_admin` | `iot.tenant:manage` 与站点开户 |
+`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view` 等见历史 ColdGuard 表，随行业内核启用。
 
-`vendor` 只进通知名单，无默认登录。值班 SLA 数字在 [industry-pack.md](./industry-pack.md)，权限码以本表为准。
+长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.ai:subscribe`、`iot.chain:earn` 仍不进入 Build。
 
-## 长期扩展权限（不进入 MVP）
-
-| 权限码 | 说明 | 解锁 |
-|--------|------|------|
-| `iot.rule:edit` | 通用规则编排（超出 Pack 覆盖） | Repeatability 以后 |
-| `iot.template:publish` | 模板市场上架 | Platform |
-| `iot.ai:subscribe` | 订阅 DoerFlow AI | 有付费需求再开 |
-| `iot.chain:earn` | 设备链上收益配置 | 不进入 ColdGuard |
-
-## 阶段门（本仓唯一进度语言）
-
-禁止用裸 `M1` / `M2` / `IoT-M3` 与生态其他仓对齐进度。映射与证据要求见 [plan/README.md](../plan/README.md)。
+## 阶段门
 
 | 阶段门 | 一句话 |
 |--------|--------|
-| Validation | 访谈与设计伙伴；验证付费意愿。手册：[plan/validation.md](../plan/validation.md) |
-| Wedge | 3 个付费试点，Cloud Lite + ColdGuard |
-| Repeatability | 可复制交付与渠道 |
-| Platform | 冷藏资产 OS 与第二垂直 |
+| Build | 可部署 TB Cloud Lite |
+| Showcase | 文档与演示可被陌生人复现 |
+| First Revenue | 第一笔许可或部署费 |
+| Vertical Fit | 3 个项目共用一个 Pack |

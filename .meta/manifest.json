@@ -19,14 +19,14 @@
       "remote": "git@github.com:syncrobrain/iot-gateway.git",
       "remoteHttps": "https://github.com/syncrobrain/iot-gateway.git",
       "required": true,
-      "description": "NestJS 领域服务（JWT、站点/资产、MQTT）"
+      "description": "NestJS Fastify：Pack、许可、ThingsBoard REST 编排"
     },
     "iot-console-web": {
       "path": "iot-console-web",
       "remote": "git@github.com:syncrobrain/iot-console-web.git",
       "remoteHttps": "https://github.com/syncrobrain/iot-console-web.git",
       "required": true,
-      "description": "ColdGuard QA 控制台（React + Rsbuild + Logto PKCE）"
+      "description": "产品入口（React + Rsbuild + Logto PKCE）"
     },
     "website": {
       "path": "website",
@@ -47,7 +47,7 @@
       "remote": "git@github.com:syncrobrain/deploy.git",
       "remoteHttps": "https://github.com/syncrobrain/deploy.git",
       "required": false,
-      "description": "Docker Compose（Cloud Lite：PostgreSQL、Redis、MQTT）"
+      "description": "Docker Compose（Cloud Lite：ThingsBoard CE、PostgreSQL）"
     }
   }
 }

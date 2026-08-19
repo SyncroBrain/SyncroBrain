@@ -37,7 +37,7 @@ Linux / macOS：`chmod +x dev.sh dev-mvp.sh && ./dev.sh && ./dev-mvp.sh`
 |------|------|
 | `init.sh` / `init.ps1` | 仅 clone 子仓 |
 | **`dev.sh` / `dev.ps1`** | clone + env + docker + install + migrate |
-| `dev-mvp.ps1` | 启动 gateway (:13100) + console (:5180) |
+| `dev-mvp.ps1` | 启动 gateway (:13200) + console (:5180) |
 
 可选参数：`.\dev.ps1 -SkipDocker` · `.\dev.ps1 -RequiredOnly`（只拉必选子仓）
 
@@ -73,26 +73,28 @@ pnpm install && pnpm build
 
 ### 2. 基础设施
 
-```powershell
-cd D:\www\syncrobrain\deploy
+```bash
+cd deploy
 docker compose -f docker-compose.dev.yml up -d
+# PostgreSQL :5438（Gateway；避开 entitlement :5434）
+# ThingsBoard CE :8080（UI/API）· MQTT :1883
+# 首次启动 TB 需 1–2 分钟。默认 sysadmin@thingsboard.org / sysadmin（立刻改密）
 ```
 
 ### 3. iot-gateway
 
-```powershell
-cd D:\www\syncrobrain\services\iot-gateway
-copy .npmrc.example .npmrc
-copy .env.example .env
-pnpm install --no-frozen-lockfile && pnpm dev
-# http://localhost:13100
+```bash
+cd iot-gateway
+cp .env.example .env
+pnpm install --no-frozen-lockfile && pnpm migration:run && pnpm dev
+# http://localhost:13200/api/v1/health
 ```
 
 ### 4. iot-console-web
 
-```powershell
-cd D:\www\syncrobrain\services\iot-console-web
-copy .env.development.example .env.development
+```bash
+cd iot-console-web
+cp .env.development.example .env.development
 pnpm install && pnpm dev
 # http://localhost:5180
 ```
@@ -103,7 +105,7 @@ Logto Redirect：`http://localhost:5180/auth/callback`
 
 | 场景 | 做法 |
 |------|------|
-| 改规格 / 阶段门 | 在 MetaRepo 根目录提交 `spec/` `plan/`；进度语言见 [plan/README.md](./plan/README.md)（Validation → Wedge → Repeatability → Platform） |
+| 改规格 / 阶段门 | 在 MetaRepo 提交 `spec/` `plan/`；当前阶段 **Build**，见 [plan/build.md](./plan/build.md) |
 | 只改后端 | `cd iot-gateway` → commit → push 到 `syncrobrain/iot-gateway` |
 | 只改控制台 | `cd iot-console-web` → push 到 `iot-console-web` |
 | 只改官网 | `cd website` → push 到 `website` |
@@ -113,5 +115,6 @@ Logto Redirect：`http://localhost:5180/auth/callback`
 
 ## 数据存储与登录
 
-- OLTP：PostgreSQL `:5434` — [datastore](https://github.com/LuminaryWorks/docs/blob/main/docs/develop/datastore.md)
-- 统一登录：`@luminaryworks/auth-core` — [identity-roadmap](https://github.com/LuminaryWorks/docs/blob/main/docs/develop/identity-roadmap.md)
+- OLTP：PostgreSQL `:5438`（Gateway `iot_core`）；ThingsBoard 用镜像内嵌 PG（volume `syncrobrain_tb_data`）
+- 统一登录：未设 `IDP_ISSUER` 时演示 JWT；`CASBIN_DEV_OPEN=true` 为本地开放策略
+- 运行时：ThingsBoard CE `http://127.0.0.1:8080`

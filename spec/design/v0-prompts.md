@@ -1,24 +1,30 @@
-# SyncroBrain ColdGuard v0.app 设计提示词
+# SyncroBrain Console v0.app 设计提示词
 
-> **用途**：复制下方英文提示词到 [v0.app](https://v0.app) 生成 UI 原型。  
-> **依据**：[coldguard.md](../coldguard.md) · [architecture.md](../architecture.md) · 本目录规格。  
-> **技术栈**：与 `iot-console-web` 一致 — **Ant Design 6**，不用 Tailwind / shadcn/ui。  
+> **用途**：复制到 [v0.app](https://v0.app)。  
+> **主产品**：Cloud Lite 项目入口（Pack、部署、TB 运行时状态）。ColdGuard 仅为参考工作台。  
+> **技术栈**：`iot-console-web` — **Ant Design 6**，不用 Tailwind / shadcn/ui。  
 > **更新**：2026-08
 
 ## 设计约束（所有页面通用）
 
 | 维度 | 要求 |
 |------|------|
-| 品牌 | **SyncroBrain** · 产品名 **ColdGuard** · 中文 **万物智脑** · [syncrobrain.com](https://syncrobrain.com) |
-| Slogan | *Auditable cold storage. Alerts that close.* |
-| 定位 | 实验室冷藏合规监控与事件闭环；**不是**通用 IoT PaaS 能力清单 |
-| 受众 | QA / 质量负责人、实验室运营、设施值班；渠道安装员为次要 |
+| 品牌 | **SyncroBrain** · 中文 **万物智脑** · [syncrobrain.com](https://syncrobrain.com) |
+| Slogan | *Ship a private IoT stack in days. Packs, not from-scratch.* |
+| 定位 | 基于 ThingsBoard CE 的可交付 IoT 底座；ColdGuard 是参考 Pack |
+| 受众 | 集成商、硬件团队、企业 IT；实验室 QA 仅参考演示 |
 | 技术栈 | React 19 · **Ant Design 6 (`antd`)** · **@ant-design/icons** · react-router-dom · Rsbuild SPA |
 | 主题 | `ConfigProvider` + `locale={zhCN}`，`token: { colorPrimary: "#1677ff", colorError: "#ea3636", borderRadius: 8 }` |
-| 样式 | 仅用 antd `token` / `style` / `className` 微调；**禁止** Tailwind CSS、shadcn/ui、Lucide |
-| 气质 | 受监管实验室、可追责、数据不出园区；避免消费级卡通与「链上收益」 |
-| 语言 | 默认中英双语 UI（`zh-CN` 主，`en` 副标题） |
-| 生态 | MVP **不**在主视觉放兄弟产品入口、设备总数虚荣指标、或区块链 |
+| 样式 | 仅用 antd `token` / `style` / `className`；**禁止** Tailwind / shadcn / Lucide |
+| 气质 | 工程可信、可私有化；避免消费级卡通与链上 |
+| 语言 | `zh-CN` 主，`en` 副 |
+| 生态 | 主视觉不放兄弟产品宫格、区块链、设备虚荣总数 |
+
+### 信息架构（控制台）
+
+```text
+项目总览 → Pack → 设备（TB 映射）→ 告警 → 演示（ColdGuard）→ 部署/备份 → 设置
+```
 
 ### 每条提示词前缀（建议一并粘贴）
 
@@ -31,17 +37,11 @@ Use antd Layout, Card, Table, Tag, Button, Space, Row, Col, Menu, Typography, et
 Do NOT show blockchain, token earnings, ecosystem app store, or device-count vanity metrics as primary KPIs.
 ```
 
-### 信息架构（控制台）
-
-```text
-风险总览 → 事件（确认/升级）→ 资产与传感点 → 校准 → 报告 / 审计导出 → 站点设置
-```
-
-不要用「Devices / Telemetry / Rules / Ecosystem」当一级导航主叙事。
+不要把「Devices / Telemetry / Rules / Ecosystem」当唯一叙事；设备来自 ThingsBoard 映射。
 
 ---
 
-## 提示词 1：官网 Landing（ColdGuard 结果优先）
+## 提示词 1：官网 Landing（Cloud Lite 交付优先）
 
 ```
 IMPORTANT: Use Ant Design 6 (antd) and @ant-design/icons ONLY. No Tailwind, no shadcn/ui.
@@ -224,20 +224,18 @@ Do NOT add "template marketplace" or "publish decoder to all tenants".
 
 ## 使用建议
 
-1. **生成顺序**：Landing → 风险总览 → 事件时间线 → 报告/校准 → 站点扩容 → 登录。
-2. **v0 偏好**：每条必须带 IMPORTANT 前缀，或在项目中指定 React + antd。
-3. **落地**：生成代码迁入 `iot-console-web`（antd 6 + Rsbuild）。官网迁入 `website` 时以 ColdGuard 结果文案为准，删除平台能力清单。
-4. **废止**：旧提示词中的生态四宫格、链上收益、设备 1247 台、VibeEdu/VibeAgent、Flutter App 入口，均不得再作为主视觉。
+1. **生成顺序**：Landing（Cloud Lite）→ 项目总览 → Pack → 告警 → ColdGuard 演示页 → 登录。
+2. **v0 偏好**：每条必须带 IMPORTANT 前缀。
+3. **落地**：迁入 `iot-console-web`。官网以「可交付 TB 私有化」为主，ColdGuard 作案例而非唯一承诺。
+4. **废止**：生态四宫格、链上、设备虚荣数、VibeEdu/VibeAgent、Flutter 主入口。
 
 ## 相关文档
 
 | 文档 | 说明 |
 |------|------|
-| [coldguard.md](../coldguard.md) | 产品承诺与 MVP |
-| [samples/monthly-compliance-report.example.md](./samples/monthly-compliance-report.example.md) | 虚构月报（演示用） |
-| [industry-pack.md](../industry-pack.md) | 默认阈值与总览口径 |
-| [reliability.md](../reliability.md) | 演练与「受保护」条件 |
-| [platform-vision.md](../platform-vision.md) | 楔子与红线 |
-| [architecture.md](../architecture.md) | Cloud Lite |
+| [platform-vision.md](../platform-vision.md) | 交付平台 |
+| [architecture.md](../architecture.md) | TB Cloud Lite |
+| [coldguard.md](../coldguard.md) | 参考 Pack |
+| [plan/build.md](../../plan/build.md) | 当前 8 周 |
 | [ecosystem.md](../ecosystem.md) | 独立可售 |
 | [licensing.md](../licensing.md) | 许可 |

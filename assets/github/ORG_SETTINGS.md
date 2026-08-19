@@ -7,7 +7,7 @@
 粘贴到 GitHub Organization settings：
 
 ```text
-ColdGuard · lab cold-storage compliance & incident close-loop. Private deploy. syncrobrain.com
+Private IoT delivery on ThingsBoard CE. Packs, on-prem, commercial license. syncrobrain.com
 ```
 
 ## 组织头像

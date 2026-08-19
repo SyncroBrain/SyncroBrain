@@ -1,7 +1,7 @@
 # ColdGuard 可靠性、通知与责任边界
 
-> **状态**：Wedge 目标；Validation 用台架证明「能到达、能补传、能演练」。  
-> 领域状态机：[device-domain.md](./device-domain.md)  
+> **状态**：Vertical Fit 目标。Build 阶段用 TB Alarm + 一种通知即可演示。  
+> 完整冷藏 SLO 仅在该垂直成为付费产品后签署进合同。  
 > 默认阈值：[industry-pack.md](./industry-pack.md)
 
 漏报、短信失败、无人确认是产品风险，不是运维花絮。合同与 UI 必须写清谁对什么负责。

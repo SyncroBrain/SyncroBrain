@@ -4,32 +4,32 @@
 
 <h1 align="center">SyncroBrain · 万物智脑</h1>
 
-实验室与园区冷藏设备的**合规监控与事件闭环**。长期平台名是 SyncroBrain；当前唯一优先交付是 **ColdGuard**。
+基于 **ThingsBoard CE** 的可交付 IoT 解决方案平台：30 分钟起演示，7 天内完成私有化项目底座。
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
-> **组织主页资料**：[`assets/github/`](./assets/github/)  
-> **承诺**：不更换现有冰箱，把多品牌冷藏变成可审计、可告警、可追责的一套系统。
+> **当前阶段**：**Build** — [plan/build.md](./plan/build.md)  
+> **ColdGuard** 是参考 Industry Pack，不是唯一可售产品。
 
 ## 解决什么问题
 
 | 痛点 | 方案 |
 |------|------|
-| 人工抄表、微信群告警、多品牌 App | ColdGuard：温度 / 门磁 / 断电 / 网关离线 + 确认与升级 |
-| 审计取证耗天数 | 事件时间线、校准记录、不可变审计日志 |
-| 数据必须留在园区 | Cloud Lite 可私有化；默认可关闭遥测回传 |
-| 不想被平台锁死 | 标准 MQTT / REST，CSV/API 可迁出 |
+| 项目从零接设备、规则、看板 | Cloud Lite：TB CE + Pack 模板 + Compose |
+| 私有化与升级难复制 | 标准安装、备份、版本清单 |
+| 不想被闭源云锁死 | 标准 MQTT / REST；TB 可迁出 |
+| 行业方案散落在客户分支 | 版本化 Industry Pack |
 
-不在首年承诺：通用 IoT 能力清单、AI Agent 市场、链上收益、原生 App、ThingsBoard 全家桶。详见 [`spec/coldguard.md`](./spec/coldguard.md) · [`spec/platform-vision.md`](./spec/platform-vision.md)。
+不承诺：消费级百万设备、AI/链上市场、默认 EMQX 全家桶。详见 [`spec/platform-vision.md`](./spec/platform-vision.md)。
 
-## 架构（领域产品在上）
+## 架构（Cloud Lite）
 
-| 层 | 默认（Cloud Lite） | 说明 |
-|----|-------------------|------|
-| 体验 | ColdGuard Web / PWA | QA 工作台；不暴露 ThingsBoard UI |
-| 领域 | NestJS（Fastify） | 站点 / 资产 / 事件 / 校准 / 审计 / 报告 |
-| 消息与数据 | EMQX + PostgreSQL/Timescale | 分钟级采样与质量标记 |
-| 边缘 | 认证传感器 + 网关 | 本地阈值、断网缓存、校准证书 |
-| 适配（按证据） | ThingsBoard / DataTalk | 可选，不是 MVP 默认栈 |
+| 层 | 默认 | 说明 |
+|----|------|------|
+| 入口 | iot-console-web | 项目、Pack、部署状态 |
+| 编排 | iot-gateway（NestJS Fastify） | Pack、许可、TB REST、身份 |
+| 运行时 | **ThingsBoard CE** | MQTT、设备、遥测、规则、告警、看板 |
+| 数据 | PostgreSQL | TB 默认存储 |
+| 可选（非 Build） | EMQX / DataTalk | 合同或 SLO 触发 |
 
 权威：[`spec/architecture.md`](./spec/architecture.md)。
 
@@ -37,15 +37,15 @@
 
 ```text
 syncrobrain/platform/              # MetaRepo（私有）
-├── .meta/                       # manifest.json — 子仓 SSOT
-├── syncrobrain.code-workspace   # VS Code / Cursor 多根工作区
+├── .meta/                       # manifest.json
+├── syncrobrain.code-workspace
 ├── spec/ plan/ contracts/ playbooks/
-├── init.ps1 / init.sh / dev.ps1 # clone + 一键 bootstrap
-├── iot-gateway/                 # → 独立仓
-├── iot-console-web/             # → 独立仓
-├── website/                     # → 独立仓
-├── docs/                        # → 独立仓
-└── deploy/                      # → 独立仓
+├── init.ps1 / init.sh / dev.ps1
+├── iot-gateway/
+├── iot-console-web/
+├── website/
+├── docs/
+└── deploy/
 ```
 
 ```powershell
@@ -59,51 +59,46 @@ cd syncrobrain
 | **Public** | `syncrobrain/docs` |
 | **Private** | platform、iot-gateway、iot-console-web、website、deploy |
 
-**不用** git submodule / subtree。新人上手：[ONBOARDING.md](./ONBOARDING.md)。拆解：[plan/repository-split.md](./plan/repository-split.md)。
+不用 git submodule / subtree。[ONBOARDING.md](./ONBOARDING.md) · [plan/repository-split.md](./plan/repository-split.md)。
 
-## 快速开始（一键）
+## 快速开始
 
 ```powershell
 git clone git@github.com:syncrobrain/platform.git syncrobrain
 cd syncrobrain
-.\dev.ps1          # clone 子仓 · docker · pnpm install · 迁移
-.\dev-mvp.ps1      # 启动 gateway + console
+.\dev.ps1
+.\dev-mvp.ps1
 ```
 
 Linux / macOS：`./dev.sh && ./dev-mvp.sh`
 
-Logto 统一登录需另启 [LuminaryWorks/identity](https://github.com/LuminaryWorks/identity)（Audience `https://api.iotchain.local`）。资源权限由 gateway **Casbin**（`iot.*`）计算，不写进 JWT。详见 [ONBOARDING.md](./ONBOARDING.md) · [spec/index.md](./spec/index.md) · [IAM 规格](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/identity-and-permissions.md)。
+Logto 为可选统一登录（Audience `https://api.iotchain.local`）。Casbin `iot.*` 在 gateway。Build 可用演示登录。
 
 ## LuminaryWorks 生态
 
-ColdGuard **独立可售**。下表均为可选，不是上线前置。
+Cloud Lite **独立可售**。下表可选。
 
-| 项目 | 官网 | 关系 |
-|------|------|------|
-| [LuminaryWorks](https://luminaryworks.dev) | [luminaryworks.dev](https://luminaryworks.dev) | 共享身份 |
-| [DataLuminary](https://dataluminary.dev) | [dataluminary.dev](https://dataluminary.dev) | 可选大屏适配 |
-| [BlockyEdu](https://blockyedu.com) | [blockyedu.com](https://blockyedu.com) | 可选培训 |
-| [DoerFlow](https://doerflow.dev) | [doerflow.dev](https://doerflow.dev) | 不进入 MVP |
-| [VistaRemote](https://remote.vistacast.dev) | [remote.vistacast.dev](https://remote.vistacast.dev) | 可选远程桌面 |
-| [VistaCast](https://vistacast.dev) | [vistacast.dev](https://vistacast.dev) | 视频 AI；首年不做 |
-
-口径：SyncroBrain + 五家兄弟产品。见 [`spec/ecosystem.md`](./spec/ecosystem.md)。
+| 项目 | 关系 |
+|------|------|
+| [LuminaryWorks](https://luminaryworks.dev) | 可选共享身份 |
+| [DataLuminary](https://dataluminary.dev) | 可选大屏；默认 TB Dashboard |
+| [BlockyEdu](https://blockyedu.com) | 可选培训 |
+| [DoerFlow](https://doerflow.dev) | 不进入 Build |
+| [VistaRemote](https://remote.vistacast.dev) | 可选 |
+| [VistaCast](https://vistacast.dev) | 首年不做 |
 
 ## 文档
 
 | 文档 | 说明 |
 |------|------|
-| [spec/index.md](./spec/index.md) | 规格索引 |
-| [spec/coldguard.md](./spec/coldguard.md) | 首款产品 |
-| [spec/industry-pack.md](./spec/industry-pack.md) | 实验室冷藏 Pack 默认值 |
-| [spec/reliability.md](./spec/reliability.md) | SLO、演练、责任边界 |
-| [spec/platform-vision.md](./spec/platform-vision.md) | 愿景与红线 |
-| [spec/architecture.md](./spec/architecture.md) | Cloud Lite 与适配层 |
-| [spec/licensing.md](./spec/licensing.md) | 开源边界与商业许可 |
-| [plan/README.md](./plan/README.md) | 阶段门 |
-| [plan/validation.md](./plan/validation.md) | 当前 90 天执行手册 |
-| [syncrobrain/docs](https://github.com/syncrobrain/docs) | **对外** RsPress 文档站 |
+| [spec/index.md](./spec/index.md) | 索引 |
+| [spec/platform-vision.md](./spec/platform-vision.md) | 愿景 |
+| [spec/architecture.md](./spec/architecture.md) | TB Cloud Lite |
+| [plan/build.md](./plan/build.md) | **当前** 8 周 |
+| [spec/coldguard.md](./spec/coldguard.md) | 参考 Pack |
+| [spec/licensing.md](./spec/licensing.md) | NC + TB Apache-2.0 |
+| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站 |
 
 ## License
 
-[Polyform Noncommercial License 1.0.0](LICENSE) (Polyform-NC). Non-commercial use permitted. Commercial use requires a separate license from SyncroBrain. Narrative: [`spec/licensing.md`](./spec/licensing.md).
+[Polyform Noncommercial License 1.0.0](LICENSE) applies to SyncroBrain original code. ThingsBoard CE is Apache-2.0 (upstream). Narrative: [`spec/licensing.md`](./spec/licensing.md).

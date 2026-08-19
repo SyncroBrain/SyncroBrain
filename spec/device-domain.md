@@ -1,10 +1,10 @@
-# SyncroBrain 领域模型 (v0.2)
+# SyncroBrain 领域模型 (v0.3)
 
-> **状态**：Wedge 目标模型；HTTP v0.1 仍以 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 为准  
-> **产品边界**：[coldguard.md](./coldguard.md)  
-> **实现落点**：iot-gateway 领域模块（NestJS + Fastify）；Casbin 命名空间 `iot.*`
+> **状态**：Build 先做 **Project/Site ↔ ThingsBoard Device** 映射；完整 ColdGuard 实体是 Vertical Fit 目标。  
+> **HTTP v0.1**：仍以 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 为准。  
+> **运行时**：设备、遥测、Alarm 的权威在 TB CE；Gateway 存映射与 Pack 版本。见 [architecture.md](./architecture.md)。
 
-本文把历史「Device CRUD」扩成 ColdGuard 需要的站点 / 资产 / 事件模型。现行 OpenAPI 不在此改；信封草案见 [`contracts/drafts/telemetry-envelope.md`](../contracts/drafts/telemetry-envelope.md)。新 HTTP 合同须另开版本评审。
+现行 OpenAPI 不在此改。新 HTTP 合同另开评审。信封草案 [`contracts/drafts/telemetry-envelope.md`](../contracts/drafts/telemetry-envelope.md) 用于 Pack 内部规范化，**设备生产路径用 TB MQTT topic**。
 
 ## 1. 层级
 
@@ -17,7 +17,7 @@ Tenant
                           └── SensorChannel   # 温度 / 门磁 / 断电 / 网关心跳
 ```
 
-网关（Gateway）是一种 Asset 或 Asset 附属设备，须能独立表示离线。校准挂在 SensorChannel，不挂在租户级「一台设备」上。
+Build：`Asset` / 遗留 `Device` 必须带 `tbDeviceId`（及可选 `tbTenantId`）。网关离线以 TB 活动状态为准。校准等实体不阻塞 8 周交付。
 
 ## 2. 实体
 
@@ -106,14 +106,14 @@ open → acked → escalated → in_progress → resolved → closed
 | POST | `/api/v1/devices` | `iot.device:manage` | 注册 |
 | GET | `/api/v1/devices/:id` | `iot.device:view` | 详情 |
 
-MQTT（开发 POC）：
+MQTT：
 
-| Topic | Payload | 说明 |
-|-------|---------|------|
-| `iot/v1/{deviceId}/presence` | `{"status":"online"\|"offline"}` | 上下线 |
-| `iot/v1/{deviceId}/telemetry` | JSON | 当前仅接入；质量信封草案见 `contracts/drafts/telemetry-envelope.md` |
+| Topic | 说明 |
+|-------|------|
+| `v1/devices/me/telemetry` 或 `v2/t` | **Build 生产**：ThingsBoard MQTT API |
+| `iot/v1/{deviceId}/presence` | **遗留** POC，不再作为 Cloud Lite 路径 |
 
-本地模拟：`npm run mqtt:presence -- <device-uuid> online`（在 `iot-gateway`）。
+本地 TB 模拟用 mosquitto_pub 或 Pack 脚本，不要再依赖 `npm run mqtt:presence` 作为主演示。
 
 ### 6.2 计划中的领域 API（下一合同版本）
 
@@ -121,8 +121,24 @@ MQTT（开发 POC）：
 
 | 方法 | 路径（草案） | 权限 |
 |------|----------------|------|
-| GET/POST | `/api/v1/sites` | `iot.site:view` / `iot.site:manage` |
-| GET/POST | `/api/v1/assets` | `iot.asset:view` / `iot.asset:manage` |
+| GET/POST | `/api/v1/projects` | `iot.tenant:manage` |
+| POST | `/api/v1/projects/:id/provision-tb` | `iot.tenant:manage` |
+| POST | `/api/v1/projects/:id/link-tb` | `iot.tenant:manage` |
+| GET/POST | `/api/v1/projects/:id/sites` | `iot.site:view` / `iot.site:manage` |
+| GET | `/api/v1/sites/:id` | `iot.site:view` |
+| GET/POST | `/api/v1/sites/:id/assets` | `iot.asset:view` / `iot.asset:manage` |
+| GET | `/api/v1/assets` | `iot.asset:view` |
+| GET | `/api/v1/assets/:id` | `iot.asset:view` |
+| GET | `/api/v1/assets/:id/telemetry` | `iot.asset:view` |
+| GET | `/api/v1/packs` | `iot.pack:apply` |
+| GET | `/api/v1/projects/:id/packs` | `iot.pack:apply` |
+| POST | `/api/v1/projects/:id/packs/apply` | `iot.pack:apply` |
+| GET | `/api/v1/alarms` | `iot.incident:view` |
+| GET | `/api/v1/projects/:id/alarms` | `iot.incident:view` |
+| POST | `/api/v1/assets/:id/alarms` | `iot.incident:ack` |
+| POST | `/api/v1/alarms/:id/ack` | `iot.incident:ack` |
+| POST | `/api/v1/alarms/:id/clear` | `iot.incident:ack` |
+| POST | `/api/v1/demos/cold-lab` | `iot.pack:apply` |
 | GET | `/api/v1/incidents` | `iot.incident:view` |
 | POST | `/api/v1/incidents/:id/ack` | `iot.incident:ack` |
 | POST | `/api/v1/incidents/:id/escalate` | `iot.incident:escalate` |

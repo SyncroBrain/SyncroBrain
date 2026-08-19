@@ -1,117 +1,73 @@
-# SyncroBrain ColdGuard
+# SyncroBrain ColdGuard（Reference Pack）
 
-> **状态**：Validation 规格（待 30 次访谈与付费试点验证）  
-> **定位**：SyncroBrain 的**唯一首发楔子产品**，不是通用 IoT 平台能力清单。  
-> **长期形态**：验证后扩展为冷藏资产运营系统，再长成 SyncroBrain 平台。见 [platform-vision.md](./platform-vision.md)。
+> **状态**：Build 参考实现（`cold-lab/0.1-draft`），**不是**当前唯一可售产品。  
+> **角色**：证明 Industry Pack（Profile、Rule、Alarm、Dashboard、SOP）如何把 TB 运行时变成行业方案。  
+> **可售主产品**：Cloud Lite 交付平台，见 [platform-vision.md](./platform-vision.md)。垂直商业化在 **Vertical Fit** 阶段由真实项目决定。
 
-## 1. 客户购买的结果
+## 1. 演示承诺（非销售承诺）
 
-**一句话承诺**：30 天内，把多品牌冷藏设备变成可审计、可告警、可追责的一套系统。
+参考场景：30 分钟内演示「多品牌冷藏点位 → 超温告警 → 确认 → 导出」。
 
-价值主张不是「替代涂鸦」，而是：在**不更换现有冰箱**的前提下，降低样本 / 试剂损失风险，把审计取证从数天压缩到数小时，并确保每次异常都有确认、升级和处置记录。
+真正对实验室 QA 售「合规结果」前，须有付费项目或渠道；**不**再把 30 次访谈当作写代码的前置条件。
 
-客户付费理由是少损失、快审计、少人工、可追责；不是开源 MQTT、AI 或区块链。
-
-## 2. 理想客户画像（ICP）
+## 2. 参考 ICP（将来垂直验证用）
 
 | 维度 | 定义 |
 |------|------|
-| 场所 | 单一生物医药产业园内的民营 CRO、IVD、药企研发实验室 |
-| 资产规模 | 20–200 台冰箱、冷柜、冷库或培养设备；品牌混杂 |
-| 现状 | 仍依赖人工抄表、微信群告警或多个厂商 App |
-| 决策者 | QA / 质量负责人 |
-| 使用者 | 实验室运营、设施、值班人员 |
-| 付费人 | QA 或实验室运营预算；首年避开公立医院招标 |
+| 场所 | 实验室 / 园区冷藏资产（CRO、IVD、药企研发等） |
+| 资产 | 冰箱、冷柜、冷库、网关 |
+| 决策者 | 将来：QA；当前演示对象：集成商与企业 IT |
+| 避开 | 医院招标、运输车队、消费级设备（仍成立） |
 
-**首年明确避开**：公立医院招投标、跨省运输车队、疫苗监管核心链路、消费级设备。
+默认阈值与升级矩阵：[industry-pack.md](./industry-pack.md)。可靠性口径：[reliability.md](./reliability.md)（Build 先用 TB Alarm + 一种通知，不强制 72h 网关缓存硬件）。
 
-## 3. 可售 MVP 与明确不做
+## 3. Pack 必须能演示
 
-| MVP 必须交付 | 客户价值 | 首年不做 |
-|--------------|----------|----------|
-| 合作伙伴校准传感器 + 边缘网关 | 不替换存量设备；断网持续采集 | 自研传感器与芯片 |
-| 温度 / 门磁 / 断电 / 网关离线 | 覆盖最常见损失原因 | 视频 AI 与通用摄像头 |
-| 微信 / 企微 / 钉钉 / SMS 告警、确认与升级 | 告警不止通知，而是闭环 | 通用低代码规则市场 |
-| 不可抵赖审计日志、校准与巡检记录 | 审计时可快速举证 | 区块链存证与代币 |
-| 站点总览、事件时间线、月度合规报告 | 管理层直接看到风险与证据 | 完整 BI 平台暴露给客户 |
-| 租户 / 站点 / 角色、CSV / API 导出 | 可扩站点且不锁数据 | 多区域全球云与 20 种语言 |
+| 能力 | Build 做法 | 垂直产品以后才强制 |
+|------|------------|-------------------|
+| 温度超阈告警与确认 | TB Rule + Alarm | Incident 状态机、值班升级 |
+| 门磁 / 断电 / 离线 | 模拟器或第二通道 | 认证传感器 BOM |
+| 仪表盘 | TB Dashboard JSON | QA 合规月报 PDF |
+| 导出 | CSV | 不可抵赖审计包 |
+| 校准过期 | Pack 字段/属性 | 证书工作流 |
 
-默认交付档位是 **Cloud Lite** 最小栈（EMQX + 模块化 NestJS + PostgreSQL/Timescale + Web）。不默认同时部署 ThingsBoard + DataTalk。详见 [architecture.md](./architecture.md)。
+## 4. 商业 SKU（主产品，非 ColdGuard 专属）
 
-## 4. 核心工作流
+Build / First Revenue 卖的是底座，不是冷链订阅：
 
-ColdGuard 售出的是工作流结果，不是设备列表。
+| 包 | 目的 |
+|----|------|
+| 非商业评估（Polyform-NC） | 自托管试用 |
+| 私有化快速部署 + 培训 | 7 天项目底座 |
+| 商业许可 + 年支持 | 升级与二线 |
+| Pack 定制 | 仅可复用需求进核心 |
+| 白牌 Console | 独立收费 |
 
-```text
-传感点上报 → 本地阈值 / 云端策略判定 → Incident
-     → 通知值班人 → Acknowledgement（确认）
-     → 超时 Escalation → WorkOrder / 处置证据
-     → AuditEvent 不可变记录 → 合规报告
-```
+实验室「差距诊断 / 30 天试点」价目仍见下表，**仅当**出现该垂直付费意向时启用。
 
-| 工作流 | 验收 |
-|--------|------|
-| 告警闭环 | 温度超阈、门开超时、断电、网关离线均可到达指定通道；确认人、时间、升级路径可查 |
-| 断网保护 | 网关离线期间本地环形缓存与本地阈值仍工作；恢复后补传并标记质量 |
-| 审计取证 | QA 可在数小时内导出某站点某时段事件、确认、校准与巡检记录 |
-| 校准有效期 | 过期传感点在总览中可见；报告与审计引用证书版本 |
-| 站点扩容 | 同一租户可增加区域 / 资产点，无需改代码 |
+| 商业包 | 建议报价 | 边界 |
+|--------|----------|------|
+| 合规差距诊断 | ¥3,000–5,000 / 站点 | 签试点可抵扣 |
+| 30 天付费验证 | ¥9,800–19,800 / 10 点 | 拒绝免费无限 POC |
+| 标准云 / 私有化年费 | 见历史假设 | 按资产点 + 工作流 + SLA |
 
-## 5. 领域对象（ColdGuard 边界）
+Entitlement：`syncrobrain` productCode 为收费门槛。见 [ecosystem.md](./ecosystem.md)、[licensing.md](./licensing.md)。
 
-权威字段与 API 演进见 [device-domain.md](./device-domain.md)。本产品至少覆盖：
+## 5. 领域对象
 
-Tenant → Organization → Site → Zone → Asset → SensorChannel  
-Policy · Incident · Acknowledgement · Escalation · WorkOrder · Calibration · AuditEvent · Report · IndustryPack
+演示映射：
 
-Industry Pack v1（冷藏实验室）版本化打包：Schema、Decoder、默认阈值、SOP、报告模板、Dashboard、认证 BOM。
+- TB Device / Asset ↔ SyncroBrain Site / Asset  
+- TB Alarm ↔ 演示用告警（Build 不必自研完整 Incident 表）  
+- Pack 版本与项目绑定在 Gateway  
 
-## 6. 价格发现（待验证假设）
+完整行业模型（DutyRoster、Calibration、AuditEvent 等）仍以 [device-domain.md](./device-domain.md) 为 **Vertical Fit 目标**，不阻塞 8 周 Build。
 
-**原则**：不按消息量卖低价云资源；按「受保护资产点 + 合规工作流 + SLA」定价。硬件只做认证选型与渠道整合；软件订阅和服务才是长期价值。
-
-| 商业包 | 建议报价 | 目的与边界 |
-|--------|----------|------------|
-| 合规差距诊断 | ¥3,000–5,000 / 站点 | 2 天完成；签试点可抵扣，过滤无预算客户 |
-| 30 天付费验证 | ¥9,800–19,800 / 10 点 | 含安装、基线报告、告警演练；**拒绝免费 POC** |
-| 标准云版 | ¥36,000–96,000 / 年 / 站点 | 按资产点与工作流分层；硬件、校准单列 |
-| 私有化版 | ¥150,000+ 部署 + ¥80,000+ 年 SLA | 数据留本地；按版本与支持收费，不卖断永久服务 |
-| 托管值守 | ¥3,000–10,000 / 月 | 7×24 告警代运营；初期可提高现金流与学习速度 |
-
-付费 SKU 上线前须确认 Entitlement 已登记 `syncrobrain` productCode（或等价计费开关）。ColdGuard 以 Cloud Lite 独立可售；**不要**把整套 LuminaryWorks 兄弟产品当作上线前置依赖。见 [ecosystem.md](./ecosystem.md)、[licensing.md](./licensing.md)。
-
-## 7. 交付与渠道
-
-| 角色 | 负责 | 不负责 |
-|------|------|--------|
-| 渠道 | 认证硬件、现场安装、一线支持；保留 20%–30% 项目毛利 | 核心软件分支、行业包版本 |
-| SyncroBrain | 软件合同、Industry Pack、升级、二线支持 | 自研传感器 |
-| 专业服务 | 不能被 3 个客户复用的定制，按高价交付 | 进入核心代码 / 核心包 |
-
-交付目标：Wedge 阶段标准站点上线 ≤10 个工作日；Repeatability 阶段标准站点部署 <1 天，远程完成 >70%。
-
-## 8. 北极星与阶段门槛
-
-**北极星**：付费受保护资产月（Paid Protected Asset-Months），并附带「告警闭环 SLA 达标率」。
-
-| 窗口 | 必须证明 |
-|------|----------|
-| Validation（0–3 月） | ≥30 次访谈；≥5 个设计伙伴；≥3 家愿付试点费 |
-| Wedge（3–6 月） | 3 个付费试点；试点转化 ≥60%；告警到达可验证；至少 1 个可公开案例 |
-| 停止条件 | 30 次访谈后仍无 3 家愿付费，或 3 个试点要求完全不同的工作流 → **停止开发并更换垂直** |
-
-阶段门见 [plan/README.md](../plan/README.md)；**本周动作**见 [plan/validation.md](../plan/validation.md)。文档声称的进度不得作为融资或客户尽调证据。
-
-## 9. 关联规格
+## 6. 关联
 
 | 文档 | 说明 |
 |------|------|
-| [platform-vision.md](./platform-vision.md) | 楔子与长期平台关系 |
-| [architecture.md](./architecture.md) | Cloud Lite 与领域内核 |
-| [device-domain.md](./device-domain.md) | 领域模型与权限 |
-| [industry-pack.md](./industry-pack.md) | cold-lab 默认阈值与 BOM 原则 |
-| [reliability.md](./reliability.md) | 告警到达、断网、责任边界 |
-| [ecosystem.md](./ecosystem.md) | 独立可售与可选集成 |
-| [licensing.md](./licensing.md) | 开源边界与商业许可 |
-| [design/v0-prompts.md](./design/v0-prompts.md) | QA 工作台原型提示词 |
-| [plan/validation.md](../plan/validation.md) | 当前 90 天动作 |
+| [plan/build.md](../plan/build.md) | 当前工程 |
+| [architecture.md](./architecture.md) | TB 运行时 |
+| [industry-pack.md](./industry-pack.md) | `cold-lab` 默认值 |
+| [playbooks/gap-diagnosis.md](../playbooks/gap-diagnosis.md) | 垂直销售模板（非 Build 必做） |

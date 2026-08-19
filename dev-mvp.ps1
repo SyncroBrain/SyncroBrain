@@ -19,12 +19,12 @@ foreach ($pair in @(
 }
 
 Write-Host "== SyncroBrain MVP ==" -ForegroundColor Cyan
-Write-Host "Gateway :13100  |  Console :5180`n"
+Write-Host "Gateway :13200  |  Console :5180`n"
 
 $gwCmd = @"
 Set-Location '$gateway'
 `$env:NODE_ENV='development'
-Write-Host 'iot-gateway -> http://localhost:13100' -ForegroundColor Green
+Write-Host 'iot-gateway -> http://localhost:13200' -ForegroundColor Green
 pnpm dev
 "@
 
@@ -35,12 +35,12 @@ Start-Process powershell -ArgumentList @(
   "-Command", $gwCmd
 )
 
-Write-Host "      等待 http://localhost:13100/health ..." -ForegroundColor DarkGray
+Write-Host "      等待 http://localhost:13200/api/v1/health ..." -ForegroundColor DarkGray
 $ready = $false
 for ($i = 0; $i -lt 60; $i++) {
   Start-Sleep -Seconds 1
   try {
-    $h = Invoke-RestMethod -Uri "http://127.0.0.1:13100/health" -TimeoutSec 2
+    $h = Invoke-RestMethod -Uri "http://127.0.0.1:13200/api/v1/health" -TimeoutSec 2
     if ($h.status -eq "ok") { $ready = $true; break }
   } catch { }
 }
@@ -68,7 +68,7 @@ Start-Process powershell -ArgumentList @(
 Write-Host @"
 
 ════════════════════════════════════════════════════════════
-  Gateway   http://localhost:13100/health
+  Gateway   http://localhost:13200/api/v1/health
   Console   http://localhost:5180
 
   Logto Redirect: http://localhost:5180/auth/callback

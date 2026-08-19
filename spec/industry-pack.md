@@ -1,23 +1,21 @@
 # Industry Pack：cold-lab-v1
 
-> **状态**：Validation 默认值，须经设计伙伴改写后冻结为 Wedge v1。  
+> **状态**：Build 参考 Pack；演示用，未经客户冻结。  
 > **slug**：`cold-lab` · **版本**：`0.1-draft`  
-> **产品**：[coldguard.md](./coldguard.md) · **模型**：[device-domain.md](./device-domain.md)
+> **制品目标**：TB Device Profile、Rule Chain、Alarm、Dashboard JSON + 本文默认阈值。  
+> **产品**：[coldguard.md](./coldguard.md) · **运行时**：[architecture.md](./architecture.md)
 
 Pack 是版本化制品：改阈值、SOP、报告或 BOM 必须升版本。不能被 3 个客户复用的改动走专业服务，不打进本 Pack。
 
 ## 1. 制品清单
 
-| 制品 | Wedge 必须 | Validation |
-|------|------------|------------|
-| 通道 Schema | 是 | 本文件 §2 |
-| Decoder（若需寄存器映射） | 认证探头可免；Modbus 再补 | 台架用厂家 JSON/MQTT |
-| 默认 Policy | 是 | 本文件 §3 |
-| 升级矩阵 / 值班角色 | 是 | §4 |
-| 演练脚本 | 是 | [reliability.md](./reliability.md) |
-| 月报 / 演练报告模板 | 是 | QA 导出列见 §5 |
-| QA 总览布局 | 是 | [design/v0-prompts.md](./design/v0-prompts.md) |
-| 认证 BOM | 是（双源） | §6 选型原则，具体 SKU 待伙伴 |
+| 制品 | Build 演示 | 垂直产品以后 |
+|------|------------|----------------|
+| TB Device Profile / Rule / Alarm / Dashboard | 是 | 版本冻结 |
+| 通道 Schema 与本文阈值 | 是 | 客户覆盖须审计 |
+| Decoder / 认证 BOM / 双供应商 | 否 | 有硬件合同时，§6 |
+| 值班升级矩阵 | 可选演示 | §4 进合同 |
+| 月报 PDF / 完整 SOP | 可选 | Vertical Fit |
 
 ## 2. 资产与通道
 

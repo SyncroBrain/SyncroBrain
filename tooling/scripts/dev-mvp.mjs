@@ -59,8 +59,8 @@ process.on("SIGINT", () => {
 });
 
 start("iot-gateway", gatewayDir, ["pnpm", "dev"]);
-console.log("⏳ Waiting for http://localhost:13100/health ...");
-if (!(await waitForHttpOk("http://127.0.0.1:13100/health"))) {
+console.log("⏳ Waiting for http://localhost:13200/api/v1/health ...");
+if (!(await waitForHttpOk("http://127.0.0.1:13200/api/v1/health"))) {
   console.error("❌ Gateway not ready in 60s");
   stopAll();
   process.exit(1);
@@ -70,7 +70,7 @@ console.log("✅ Gateway ready");
 start("iot-console-web", consoleDir, ["pnpm", "dev"]);
 
 console.log(`
-  Gateway  http://localhost:13100/health
+  Gateway  http://localhost:13200/api/v1/health
   Console  http://localhost:5180
   Ctrl+C to stop
 `);

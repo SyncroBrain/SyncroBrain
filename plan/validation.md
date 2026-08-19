@@ -1,10 +1,10 @@
-# Validation 执行手册（0–90 天）
+# 渠道与产品验证附录
 
-> **当前阶段门**：Validation。未满足本文门槛，不得宣称进入 Wedge。  
-> 产品边界：[spec/coldguard.md](../spec/coldguard.md)  
-> 总览：[plan/README.md](./README.md)
+> **不是当前阶段门。** 当前是 **Build**，见 [build.md](./build.md)。  
+> 本文用于 Showcase / First Revenue：零预算触达技术买方与付费信号。  
+> **不阻塞** 8 周 Cloud Lite 建设。实验室 30 人访谈不再作为写代码前提。
 
-原则：**先证明有人付钱，再扩平台。** 本阶段交付物是访谈纪要、差距诊断、台架/原型与付费意向，不是 EMQX + ThingsBoard 全家桶。
+原则：有机会就收集反馈；没有访谈也不停工。主产品是 TB Cloud Lite 交付，不是先卖 ColdGuard 合规 SaaS。
 
 ## 1. 目标与停止条件
 

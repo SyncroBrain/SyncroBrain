@@ -1,85 +1,62 @@
 # SyncroBrain 开源边界与商业许可
 
-> **状态**：Validation 规格；**首个外部商业合同前必须定稿并走法律审阅**。  
-> **权威许可文本**：仓库根目录 [LICENSE](../LICENSE) — Polyform Noncommercial License 1.0.0（Polyform-NC）。  
-> **决策原则**：对外叙事必须与 MetaRepo 实际许可一致；禁止把自研编排层写成 Apache / MIT。
+> **状态**：Build 规格；**首个外部商业合同前必须法律审阅**。  
+> **权威许可文本**：根目录 [LICENSE](../LICENSE) — Polyform Noncommercial License 1.0.0。  
+> 禁止把自研编排层写成 Apache/MIT。ThingsBoard CE **是** Apache-2.0 上游，必须保留 NOTICE，且**不混授**成 SyncroBrain 许可。
 
 ## 1. 当前事实
 
 | 对象 | 许可 | 含义 |
 |------|------|------|
-| SyncroBrain MetaRepo、iot-gateway、iot-console-web、website、deploy | **Polyform-NC 1.0.0** | 允许非商业使用；商业使用需另行取得 SyncroBrain 许可 |
-| 对外 docs（公开仓） | 文档内容可公开阅读 | 不改变软件代码的 Polyform-NC 约束 |
-| OpenAPI contracts | 随 MetaRepo 发布 | 便于对接；不构成商业使用权 |
-| EMQX OSS / ThingsBoard CE 等上游 | 遵循**各自上游协议**（常见为 Apache-2.0） | **不混授**；不把上游协议写成本产品许可 |
-
-愿景中的「标准 MQTT + REST、可迁出、可私有化」描述的是**产品承诺与集成边界**，不是把自研代码改成 Apache/MIT。
+| MetaRepo、iot-gateway、iot-console-web、website、deploy、Pack 制品 | **Polyform-NC 1.0.0** | 非商业可用；商业使用需 SyncroBrain 许可 |
+| 对外 docs | 可公开阅读 | 不改变代码 NC 约束 |
+| OpenAPI contracts | 随 MetaRepo | 不构成商业使用权 |
+| **ThingsBoard CE** | **Apache-2.0**（核对发布版本） | 可商用、可分发；保留版权/NOTICE；注意 ThingsBoard **商标**（不可把改 Logo 的 TB 冒充无关产品而不披露来源） |
+| PostgreSQL | PostgreSQL License | |
+| EMQX OSS | 仅在启用时列入 | **Build 默认不交付** |
 
 ## 2. 开源与收费分层
 
 | 层 | 策略 | 不做什么 |
 |----|------|----------|
-| 协议与迁出 | 标准 MQTT / REST；客户可导出 CSV/API | 用私有协议锁数据 |
-| 上游开源组件 | 作为可替换基础设施，保持原许可 | 修改上游源码后对外宣称「我们是 Apache 平台」 |
-| 领域内核 / Industry Pack / 控制面 | 商业订阅 + 私有化许可 | 低价卖断源码、无限定制 |
-| 托管云 / SLA / 托管值守 | 按资产点、工作流与支持收费 | 按消息量打低价云资源战 |
+| TB 运行时 | 随私有化交付 CE 二进制/镜像 + NOTICE | 删除版权、把 TB 改名当自有开源内核 |
+| 协议与迁出 | 标准 MQTT / REST；可导出 | 私有协议锁数据 |
+| Gateway / Console / Pack | 商业许可 + 年支持 | 低价卖断源码、无限定制 |
+| 部署与 SLA | 按项目/年收费 | 按 MQTT 消息量倾销 |
 
-ColdGuard 收费 SKU 上线前须确认 Entitlement 已登记 `syncrobrain` productCode（或等价计费开关）。见 [coldguard.md](./coldguard.md)、[ecosystem.md](./ecosystem.md)。
+收费 SKU 前须登记 Entitlement `syncrobrain`。见 [ecosystem.md](./ecosystem.md)。
 
 ## 3. 源码公开节奏
 
-对齐 [playbooks/repository-visibility-policy.md](../playbooks/repository-visibility-policy.md)：
+1. **现在**：公开 docs；代码私有（NC）。
+2. **Showcase 后**：可公开安装说明与 compose 示例（不含商业 Pack 密钥）。
+3. Gateway 是否改 Apache-2.0：仅董事会评估后；默认不开核心编排。
+4. Industry Pack 默认不开源。
 
-1. **现在**：公开 `syncrobrain/docs`；contracts 随 MetaRepo 维护。核心代码保持私有。
-2. **Wedge 稳定后评估**：是否公开只读架构说明与认证 BOM（不含领域内核实现）。
-3. **iot-gateway 是否改为 Apache-2.0**：仅在董事会明确开放边界、第三方许可证清单和商业许可合同齐备后评估；默认**不**在首年开放核心编排。
-4. Industry Pack、告警策略、报告模板、校准工作流默认**不**开源。
+## 4. 合同前第三方清单（Cloud Lite）
 
-文档或融资材料不得把「计划开源」写成「已经 Apache/MIT」。
-
-## 4. 第三方许可证清单（合同前必做）
-
-首个外部商业合同前须完成并归档（Cloud Lite 最小清单；启用 TB 后再补一行）：
-
-| 组件 | 预期 SPDX（须核对当时版本） | 备注 |
-|------|------------------------------|------|
-| EMQX OSS | Apache-2.0（核对发行版） | 上游，不混授 |
+| 组件 | 预期 SPDX（须核对版本） | 备注 |
+|------|-------------------------|------|
+| ThingsBoard CE | Apache-2.0 | 必交付；NOTICE + 商标 |
 | PostgreSQL | PostgreSQL License | |
-| TimescaleDB | 核对社区版 vs 授权版 | 禁止把授权条款写成「我们的 Apache」 |
-| NestJS / Fastify / React | MIT 为主；须跑 license checker | copyleft 命中则替换或隔离 |
-| Logto 客户端 | 上游许可证 | 私有化可换客户 IdP |
-| ThingsBoard CE | 仅在适配器启用时列入 | 默认 Cloud Lite **不**交付 |
+| NestJS / Fastify / React | MIT 为主；跑 license checker | copyleft 则替换 |
+| Logto 客户端 | 上游 | 可换客户 IdP |
+| EMQX / Timescale / TB PE 功能 | 仅启用时列入 | CE 没有的 Integration 勿写进合同能力 |
 
-另须：私有化 SBOM、NOTICE 保留、「改过哪些上游」记录。
+另须：SBOM、「是否改过 TB 源码」记录（Build 目标：**不 fork 进产品**，REST 集成）。
 
-未完成清单前，不得对外签署含开源合规陈述的合同，也不得把冲突文档放入融资数据室。
+## 5. 可以卖 / 不可以暗示
 
-## 5. 商业许可边界（产品侧）
+| 可以卖 | 不可以暗示 |
+|--------|------------|
+| 商业许可、部署、年支持、Pack、白牌 Console | 「整个栈都是我们的 Apache 开源」 |
+| 使用 TB CE 的私有化 | 「这是我们自研的设备引擎」且不披露 TB |
+| 数据导出与标准 MQTT | 永久无偿服务、无限再分发自研代码 |
 
-| 可以卖 | 不可以在合同里暗示 |
-|--------|--------------------|
-| 云订阅、私有化部署许可、年 SLA、托管值守 | 永久无偿服务、无版本上限的源码移交 |
-| 认证硬件渠道整合（硬件合同可转经销商） | SyncroBrain 对传感器精度承担制造商责任（须写清责任边界） |
-| 行业包版本升级与远程运维 | 客户把源码交给任意集成商无限再分发 |
-| 数据导出与标准协议迁出 | 「开源所以可以商用且无需付费」 |
+## 6. 尽调材料
 
-私有化默认只回传健康与版本元数据，且客户可关闭。见 [architecture.md](./architecture.md)。
+LICENSE + 本文件 + SBOM + 演示脚本/版本/部署记录。缺证据不得进融资数据室。
 
-## 6. 尽调与对外材料
+## 7. 关联
 
-对外主张「可私有化 / 开源友好」时，必须同时给出：
-
-- 本文件与根目录 `LICENSE`
-- 第三方许可证清单与 SBOM（合同前）
-- 可复现演示、版本清单、部署记录 — 见 [plan/README.md](../plan/README.md)
-
-缺上述证据时，进度说明只是内部文档，不能进入客户尽调或融资数据室。
-
-## 7. 关联规格
-
-| 文档 | 说明 |
-|------|------|
-| [LICENSE](../LICENSE) | Polyform-NC 1.0.0 全文 |
-| [coldguard.md](./coldguard.md) | 首款可售产品与 SKU |
-| [ecosystem.md](./ecosystem.md) | 独立可售；Entitlement 仅收费门槛 |
-| [playbooks/repository-visibility-policy.md](../playbooks/repository-visibility-policy.md) | 仓库可见性与公开节奏 |
+[LICENSE](../LICENSE) · [architecture.md](./architecture.md) · [playbooks/repository-visibility-policy.md](../playbooks/repository-visibility-policy.md)

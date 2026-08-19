@@ -49,18 +49,25 @@ if (!skipDocker) {
   if (!existsSync(compose)) {
     console.warn("⚠️  deploy/ not cloned — skip docker (run ./init.sh)");
   } else {
-    console.log("\n🐳 docker compose up -d (postgres :5434, redis :6381, mqtt :1883)...");
+    console.log("\n🐳 docker compose up -d (postgres :5438, ThingsBoard CE :8080 / MQTT :1883)...");
     execSync(`docker compose -f "${compose}" up -d`, {
       cwd: join(metaRoot, "deploy"),
       stdio: "inherit",
       shell: true,
     });
     try {
-      console.log("⏳ Waiting for PostgreSQL :5434...");
-      await waitForPort(5434);
+      console.log("⏳ Waiting for PostgreSQL :5438...");
+      await waitForPort(5438);
       console.log("✅ PostgreSQL ready");
     } catch {
       console.warn("⚠️  PostgreSQL not ready — migrations may fail");
+    }
+    try {
+      console.log("⏳ Waiting for ThingsBoard :8080 (first boot 1–2 min)...");
+      await waitForPort(8080, "127.0.0.1", 180_000);
+      console.log("✅ ThingsBoard port open");
+    } catch {
+      console.warn("⚠️  ThingsBoard not ready — open http://127.0.0.1:8080 later");
     }
   }
 }
@@ -137,7 +144,7 @@ function printNextSteps(root, skipDocker) {
   .\\dev-mvp.ps1
 
 或分别开终端:
-  cd iot-gateway && pnpm dev     → http://localhost:13100
+  cd iot-gateway && pnpm dev     → http://localhost:13200
   cd iot-console-web && pnpm dev → http://localhost:5180
   cd website && pnpm dev                  → http://localhost:13013
   cd docs && pnpm dev                     → http://localhost:13014
@@ -146,7 +153,7 @@ function printNextSteps(root, skipDocker) {
   cd ../LuminaryWorks/identity && ./bootstrap.ps1
 
 IDE: open syncrobrain.code-workspace
-${skipDocker ? "" : "Docker: postgres :5434 · redis :6381 · mqtt :1883"}
+${skipDocker ? "" : "Docker: postgres :5438 · ThingsBoard CE :8080 · MQTT :1883"}
 ════════════════════════════════════════════════════════════
 `);
 }

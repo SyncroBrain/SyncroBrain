@@ -1,5 +1,7 @@
 # 冷藏合规差距诊断（交付模板）
 
+> **附录**：仅当客户明确是实验室冷藏需求时使用。当前主线是 Cloud Lite 交付，见 [plan/build.md](../plan/build.md)。
+
 > **商业包**：¥3,000–5,000 / 站点 · 2 天。签 30 天付费试点可抵扣。  
 > **不是**免费无限 POC。  
 > 口径：[spec/coldguard.md](../spec/coldguard.md) · Pack：[spec/industry-pack.md](../spec/industry-pack.md)
