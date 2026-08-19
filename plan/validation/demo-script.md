@@ -10,8 +10,7 @@
 | 项 | 命令 / 值 |
 |----|-----------|
 | Compose | `cd deploy && docker compose -f docker-compose.dev.yml up -d --build`（PG + TB + Gateway + Console） |
-| Gateway | `cd iot-gateway && pnpm dev` → `:13200` |
-| Console | `cd iot-console-web && pnpm dev` → `:5180` |
+| Gateway / Console | Compose 已映射 `:13200` / `:5180`。改代码时再宿主机 `pnpm dev`（先 `docker compose stop iot-gateway iot-console`） |
 | TB UI | `http://127.0.0.1:8080` · 默认 `sysadmin@thingsboard.org` / `sysadmin`（演示机已改密则用演示账号） |
 | 健康 | `curl -s http://127.0.0.1:13200/api/v1/health` 含 `thingsboard: ok` |
 
