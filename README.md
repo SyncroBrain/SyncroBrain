@@ -7,7 +7,7 @@
 基于 **ThingsBoard CE** 的可交付 IoT 解决方案平台：30 分钟起演示，7 天内完成私有化项目底座。
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
-> **当前阶段**：**Build** — [plan/build.md](./plan/build.md)  
+> **当前阶段**：**Product Iterate** — [plan/product-iterate.md](./plan/product-iterate.md)（先打磨产品；**不挂**公开 docs 站）  
 > **ColdGuard** 是参考 Industry Pack，不是唯一可售产品。
 
 ## 解决什么问题
@@ -29,7 +29,7 @@
 | 编排 | iot-gateway（NestJS Fastify） | Pack、许可、TB REST、身份 |
 | 运行时 | **ThingsBoard CE** | MQTT、设备、遥测、规则、告警、看板 |
 | 数据 | PostgreSQL | TB 默认存储 |
-| 可选（非 Build） | EMQX / DataTalk | 合同或 SLO 触发 |
+| 可选（非 Cloud Lite） | EMQX / DataTalk | 合同或 SLO 触发 |
 
 权威：[`spec/architecture.md`](./spec/architecture.md)。
 
@@ -56,8 +56,8 @@ cd syncrobrain
 
 | 可见性 | 仓库 |
 |--------|------|
-| **Public** | `syncrobrain/docs` |
-| **Private** | platform、iot-gateway、iot-console-web、website、deploy |
+| **Private（默认）** | platform、iot-gateway、iot-console-web、website、deploy |
+| **docs** | 可本地草稿；**暂不挂公开站点**，不作为产品发布面 |
 
 不用 git submodule / subtree。[ONBOARDING.md](./ONBOARDING.md) · [plan/repository-split.md](./plan/repository-split.md)。
 
@@ -83,7 +83,7 @@ Cloud Lite **独立可售**。下表可选。
 | [LuminaryWorks](https://luminaryworks.dev) | 可选共享身份 |
 | [DataLuminary](https://dataluminary.dev) | 可选大屏；默认 TB Dashboard |
 | [BlockyEdu](https://blockyedu.com) | 可选培训 |
-| [DoerFlow](https://doerflow.dev) | 不进入 Build |
+| [DoerFlow](https://doerflow.dev) | 不进入当前阶段 |
 | [VistaRemote](https://remote.vistacast.dev) | 可选 |
 | [VistaCast](https://vistacast.dev) | 首年不做 |
 
@@ -94,10 +94,12 @@ Cloud Lite **独立可售**。下表可选。
 | [spec/index.md](./spec/index.md) | 索引 |
 | [spec/platform-vision.md](./spec/platform-vision.md) | 愿景 |
 | [spec/architecture.md](./spec/architecture.md) | TB Cloud Lite |
-| [plan/build.md](./plan/build.md) | **当前** 8 周 |
+| [plan/product-iterate.md](./plan/product-iterate.md) | **当前**：产品打磨 |
+| [plan/showcase.md](./plan/showcase.md) | Showcase（已关闭，内部演示） |
+| [plan/build.md](./plan/build.md) | Build 8 周（已冻结） |
 | [spec/coldguard.md](./spec/coldguard.md) | 参考 Pack |
 | [spec/licensing.md](./spec/licensing.md) | NC + TB Apache-2.0 |
-| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站 |
+| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 文档草稿仓（**暂不挂站**） |
 
 ## License
 

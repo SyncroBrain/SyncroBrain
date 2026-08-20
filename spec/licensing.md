@@ -9,7 +9,7 @@
 | 对象 | 许可 | 含义 |
 |------|------|------|
 | MetaRepo、iot-gateway、iot-console-web、website、deploy、Pack 制品 | **Polyform-NC 1.0.0** | 非商业可用；商业使用需 SyncroBrain 许可 |
-| 对外 docs | 可公开阅读 | 不改变代码 NC 约束 |
+| 对外 docs | 可本地草稿；**暂不挂站** | 不改变代码 NC 约束 |
 | OpenAPI contracts | 随 MetaRepo | 不构成商业使用权 |
 | **ThingsBoard CE** | **Apache-2.0**（核对发布版本） | 可商用、可分发；保留版权/NOTICE；注意 ThingsBoard **商标**（不可把改 Logo 的 TB 冒充无关产品而不披露来源） |
 | PostgreSQL | PostgreSQL License | |
@@ -28,8 +28,8 @@
 
 ## 3. 源码公开节奏
 
-1. **现在**：公开 docs；代码私有（NC）。
-2. **Showcase 后**：可公开安装说明与 compose 示例（不含商业 Pack 密钥）。
+1. **现在**：代码私有（NC）；安装权威在 `deploy/INSTALL.md`。docs 可本地草稿，**不挂公开站点**。
+2. **Product Iterate 满意后 / First Revenue**：再评估是否公开安装说明与 compose 示例（不含商业 Pack 密钥）。
 3. Gateway 是否改 Apache-2.0：仅董事会评估后；默认不开核心编排。
 4. Industry Pack 默认不开源。
 

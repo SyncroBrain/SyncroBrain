@@ -49,7 +49,7 @@ if (!skipDocker) {
   if (!existsSync(compose)) {
     console.warn("⚠️  deploy/ not cloned — skip docker (run ./init.sh)");
   } else {
-    console.log("\n🐳 docker compose up -d --build (PG :5438, TB :8080, gateway :13200, console :5180)...");
+    console.log("\n🐳 docker compose up -d --build (PG :5438, TB :9080, gateway :13200, console :5180)...");
     execSync(`docker compose -f "${compose}" up -d --build`, {
       cwd: join(metaRoot, "deploy"),
       stdio: "inherit",
@@ -63,11 +63,11 @@ if (!skipDocker) {
       console.warn("⚠️  PostgreSQL not ready — migrations may fail");
     }
     try {
-      console.log("⏳ Waiting for ThingsBoard :8080 (first boot 1–2 min)...");
-      await waitForPort(8080, "127.0.0.1", 180_000);
+      console.log("⏳ Waiting for ThingsBoard :9080 (first boot 1–2 min)...");
+      await waitForPort(9080, "127.0.0.1", 180_000);
       console.log("✅ ThingsBoard port open");
     } catch {
-      console.warn("⚠️  ThingsBoard not ready — open http://127.0.0.1:8080 later");
+      console.warn("⚠️  ThingsBoard not ready — open http://127.0.0.1:9080 later");
     }
   }
 }
@@ -153,7 +153,7 @@ function printNextSteps(root, skipDocker) {
   cd ../LuminaryWorks/identity && ./bootstrap.ps1
 
 IDE: open syncrobrain.code-workspace
-${skipDocker ? "" : "Docker: postgres :5438 · ThingsBoard CE :8080 · MQTT :1883"}
+${skipDocker ? "" : "Docker: postgres :5438 · ThingsBoard CE :9080 · MQTT :1883"}
 ════════════════════════════════════════════════════════════
 `);
 }

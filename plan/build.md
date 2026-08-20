@@ -1,10 +1,10 @@
 # Build 执行手册（0–8 周）
 
-> **当前阶段门**：Build。  
+> **阶段门状态**：Build **已关闭**（见 [build-freeze.md](./build-freeze.md)）。Showcase 已关闭；当前是 [product-iterate.md](./product-iterate.md)。  
 > 架构：[spec/architecture.md](../spec/architecture.md)  
 > 愿景：[spec/platform-vision.md](../spec/platform-vision.md)
 
-原则：**先做出可部署的 ThingsBoard CE Cloud Lite，再做传播与首单。** 本阶段交付物是 compose、Pack、模拟器、文档与演示，不是 30 次客户访谈，也不是 EMQX 全家桶。
+原则（历史）：**先做出可部署的 ThingsBoard CE Cloud Lite，再做传播与首单。** 本阶段交付物是 compose、Pack、模拟器、文档与演示，不是 30 次客户访谈，也不是 EMQX 全家桶。
 
 ## 1. 完成定义（Definition of Done）
 
@@ -21,13 +21,13 @@
 | 文档 | 安装、演示脚本、版本清单 |
 | 许可叙事 | README / docs 写明 TB Apache-2.0 与自研 Polyform-NC |
 
-未完成前，不开始 Showcase 传播，也不宣称「平台已发布」。
+未完成前，不得宣称「Cloud Lite 已发布」。Build 退出后进入 Showcase（传播与可复现安装），不再往 Build 加运行时组件。
 
 ## 2. 八周排期
 
 | 周 | 范围 | 不做 |
 |----|------|------|
-| 1 | Compose：`thingsboard/tb-postgres` + Gateway PG；Gateway Fastify；`GET /health` 探 TB；演示登录（`CASBIN_DEV_OPEN`）。**本机已通**：TB `:8080` / MQTT `:1883`，PG `:5438`，Gateway `:13200` | EMQX、K8s、把 Gateway 塞进 compose |
+| 1 | Compose：`thingsboard/tb-postgres` + Gateway PG；Gateway Fastify；`GET /health` 探 TB；演示登录（`CASBIN_DEV_OPEN`）。**本机已通**：TB `:9080` / MQTT `:1883`，PG `:5438`，Gateway `:13200` | EMQX、K8s、把 Gateway 塞进 compose |
 | 2 | TB 租户/设备 REST；Project/Site/AssetMap ↔ `tbTenantId`/`tbDeviceId`（Gateway 草案 API）。**本机已通**：`POST /projects` 建 TB Tenant，Site → Customer，Asset → Device + MQTT token | 自研设备表替代 TB |
 | 3 | MQTT 模拟器走 `v1/devices/me/telemetry`；`GET /assets` + `/telemetry`；Console 映射设备列表。**本机已通**：sim `--once` 后读回 temperature=4.2 | 第二套 topic 协议 |
 | 4 | Pack 导入：`cold-lab/0.1-draft` → TB Device Profile + Rule Chain（`POST /projects/:id/packs/apply`）。**本机已通**：Profile `cold-lab-fridge-0.1-draft`，新 Asset 已挂接 | 自研规则引擎 |

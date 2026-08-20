@@ -78,7 +78,7 @@ pnpm install && pnpm build
 ```bash
 cd deploy
 docker compose -f docker-compose.dev.yml up -d --build
-# PostgreSQL :5438 · ThingsBoard CE :8080 / MQTT :1883
+# PostgreSQL :5438 · ThingsBoard CE :9080 / MQTT :1883
 # Gateway :13200 · Console :5180
 # 首次启动 TB 需 1–2 分钟。默认 sysadmin@thingsboard.org / sysadmin（立刻改密）
 # 运维：deploy/OPS.md · 安全：deploy/SECURITY.md
@@ -104,22 +104,22 @@ pnpm install && pnpm dev
 # http://localhost:5180
 ```
 
-Logto Redirect：`http://localhost:5180/auth/callback`
+统一登录：Console `pnpm dev` 打开 `http://localhost:5180/login`，使用 Headless 面板（需 Logto `:3001`）。Redirect：`http://localhost:5180/auth/callback`。Gateway 须设 `IDP_ISSUER=http://localhost:3001/oidc`。
 
 ## 按角色单独开发
 
 | 场景 | 做法 |
 |------|------|
-| 改规格 / 阶段门 | 在 MetaRepo 提交 `spec/` `plan/`；当前阶段 **Build**，见 [plan/build.md](./plan/build.md) |
+| 改规格 / 阶段门 | 在 MetaRepo 提交 `spec/` `plan/`；当前阶段 **Product Iterate**，见 [plan/product-iterate.md](./plan/product-iterate.md) |
 | 只改后端 | `cd iot-gateway` → commit → push 到 `syncrobrain/iot-gateway` |
 | 只改控制台 | `cd iot-console-web` → push 到 `iot-console-web` |
 | 只改官网 | `cd website` → push 到 `website` |
-| 写对外文档 | `cd docs` → push 到 `docs`（公开） |
+| 写文档草稿 | `cd docs` 可本地改；**暂不 push 当公开发布**，权威安装见 `deploy/INSTALL.md` |
 
 **提交原则**：业务代码在子目录内 commit / push，MetaRepo 只提交 spec、plan、contracts、tooling。
 
 ## 数据存储与登录
 
 - OLTP：PostgreSQL `:5438`（Gateway `iot_core`）；ThingsBoard 用镜像内嵌 PG（volume `syncrobrain_tb_data`）
-- 统一登录：未设 `IDP_ISSUER` 时演示 JWT；`CASBIN_DEV_OPEN=true` 为本地开放策略
-- 运行时：ThingsBoard CE `http://127.0.0.1:8080`
+- 统一登录：Logto Headless（`@luminaryworks/auth-react`）。未设 Gateway `IDP_ISSUER` 时可用演示 JWT；`CASBIN_DEV_OPEN=true` 为本地开放策略
+- 运行时：ThingsBoard CE `http://127.0.0.1:9080`

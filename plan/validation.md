@@ -1,8 +1,8 @@
 # 渠道与产品验证附录
 
-> **不是当前阶段门。** 当前是 **Build**，见 [build.md](./build.md)。  
-> 本文用于 Showcase / First Revenue：零预算触达技术买方与付费信号。  
-> **不阻塞** 8 周 Cloud Lite 建设。实验室 30 人访谈不再作为写代码前提。
+> **不是当前阶段门。** 当前是 **Product Iterate**，见 [product-iterate.md](./product-iterate.md)。  
+> 本文用于闭门触达 / First Revenue：零预算触达技术买方与付费信号。  
+> **不阻塞**产品打磨。实验室 30 人访谈不再作为写代码前提。
 
 原则：有机会就收集反馈；没有访谈也不停工。主产品是 TB Cloud Lite 交付，不是先卖 ColdGuard 合规 SaaS。
 

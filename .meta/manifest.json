@@ -40,14 +40,14 @@
       "remote": "git@github.com:syncrobrain/docs.git",
       "remoteHttps": "https://github.com/syncrobrain/docs.git",
       "required": false,
-      "description": "对外文档（RsPress，公开仓）"
+      "description": "对外文档（RsPress；当前不挂公开站点，仅本地草稿）"
     },
     "deploy": {
       "path": "deploy",
       "remote": "git@github.com:syncrobrain/deploy.git",
       "remoteHttps": "https://github.com/syncrobrain/deploy.git",
-      "required": false,
-      "description": "Docker Compose（Cloud Lite：ThingsBoard CE、PostgreSQL）"
+      "required": true,
+      "description": "Docker Compose（Cloud Lite：ThingsBoard CE、PostgreSQL、Gateway、Console）"
     }
   }
 }

@@ -118,11 +118,11 @@ Build 以 **ThingsBoard MQTT API** 为准，不发明第二套生产 topic。
 
 ```text
 docker compose (deploy/)
-├── thingsboard-ce    # image: thingsboard/tb-postgres；host HTTP :8080 → 容器 9090；MQTT :1883
+├── thingsboard-ce    # image: thingsboard/tb-postgres；host HTTP :9080 → 容器 9090；MQTT :1883
 │                     # Week 1：镜像内嵌 TB 用 PostgreSQL（volume syncrobrain_tb_data）
 ├── postgres          # Gateway iot_core（:5438）；日后可与 TB 同实例分库
-├── iot-gateway       # :13200 Fastify；调 TB REST（进程在宿主机 pnpm dev）
-└── iot-console-web   # :5180 产品入口（Week 1 尚未进 compose）
+├── iot-gateway       # :13200 Fastify；调 TB REST（Compose 默认；改代码时可宿主机 pnpm dev）
+└── iot-console-web   # :5180 产品入口（Compose 默认）
 
 可选（非 Build）：
 ├── emqx              # 仅合同触发
@@ -139,8 +139,9 @@ docker compose (deploy/)
 
 | 阶段 | 架构范围 |
 |------|----------|
-| **Build**（当前） | Cloud Lite：TB CE + Gateway + Console + `cold-lab` Pack |
-| Showcase | 文档、演示视频、第二轻量 Pack（环境监测） |
+| **Build**（已关闭） | Cloud Lite：TB CE + Gateway + Console + `cold-lab` Pack |
+| **Showcase**（已关闭） | 内部可演示、`env-lab`；私有安装说明；**不挂**公开 docs 站 |
+| **Product Iterate**（当前） | Console / 告警 / Pack / 运维打磨；闭门试点准备 |
 | First Revenue | 离线许可、备份、白牌主题、标准安装包 |
 | Vertical Fit | 从付费项目冻结垂直 Pack；必要时升格 Incident |
 | Repeatability+ | EMQX/HA/DataTalk 按证据启用 |

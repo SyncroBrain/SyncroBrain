@@ -8,8 +8,10 @@
 |------|------|
 | [platform-vision.md](./platform-vision.md) | 交付平台愿景与红线 |
 | [architecture.md](./architecture.md) | TB CE + Gateway + Console |
-| [plan/README.md](../plan/README.md) | Build → Showcase → First Revenue → Vertical Fit |
-| [plan/build.md](../plan/build.md) | **当前**：8 周工程手册 |
+| [plan/README.md](../plan/README.md) | Build → Showcase → Product Iterate → First Revenue |
+| [plan/build.md](../plan/build.md) | Build（已冻结） |
+| [plan/product-iterate.md](../plan/product-iterate.md) | **当前**：产品打磨；不挂公开 docs |
+| [plan/showcase.md](../plan/showcase.md) | Showcase（已关闭） |
 | [coldguard.md](./coldguard.md) | 参考 Pack：实验室冷藏 |
 | [industry-pack.md](./industry-pack.md) | Pack 制品与 `cold-lab` 默认值 |
 | [reliability.md](./reliability.md) | 垂直场景 SLO（Build 先用 TB Alarm） |
@@ -19,7 +21,7 @@
 | [design/v0-prompts.md](./design/v0-prompts.md) | Console / 官网原型 |
 | [plan/validation.md](../plan/validation.md) | 附录：渠道触达（不阻塞 Build） |
 | [contracts/README.md](../contracts/README.md) | 已发布 v1 vs 草案 |
-| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 对外文档站 |
+| [syncrobrain/docs](https://github.com/syncrobrain/docs) | 文档仓（可本地草稿；**暂不挂公开站点**） |
 | [LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md) | 生态摘要（冲突时以本仓为准） |
 
 禁止对外引用裸 M1–M5、VibeEdu/VibeAgent、或「自研核心已 Apache/MIT」。
@@ -55,6 +57,7 @@
 | 阶段门 | 一句话 |
 |--------|--------|
 | Build | 可部署 TB Cloud Lite |
-| Showcase | 文档与演示可被陌生人复现 |
+| Showcase | 内部可演示；不要求公开 docs |
+| Product Iterate | 产品打磨；闭门试点准备 |
 | First Revenue | 第一笔许可或部署费 |
 | Vertical Fit | 3 个项目共用一个 Pack |

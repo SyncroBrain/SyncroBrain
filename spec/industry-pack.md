@@ -1,7 +1,7 @@
 # Industry Pack：cold-lab-v1
 
-> **状态**：Build 参考 Pack；演示用，未经客户冻结。  
-> **slug**：`cold-lab` · **版本**：`0.1-draft`  
+> **状态**：Cloud Lite 参考 Pack（`cold-lab`）；另有轻量 `env-lab` 证明 Pack 可替换。均未经客户冻结。  
+> **slug**：`cold-lab` · **版本**：`0.1-draft`（运行时制品在 `iot-gateway/packs/`）  
 > **制品目标**：TB Device Profile、Rule Chain、Alarm、Dashboard JSON + 本文默认阈值。  
 > **产品**：[coldguard.md](./coldguard.md) · **运行时**：[architecture.md](./architecture.md)
 

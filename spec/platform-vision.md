@@ -2,7 +2,7 @@
 
 > **品牌**：[SyncroBrain](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
 > **定位**：基于 ThingsBoard CE 的可交付 IoT 解决方案平台。让集成商与企业技术团队 **30 分钟起演示、7 天内完成私有化项目底座**。  
-> **当前阶段**：**Build** — 先做出 Cloud Lite，再找付费项目；垂直行业从真实项目中选出。见 [plan/README.md](../plan/README.md)。  
+> **当前阶段**：**Product Iterate** — Cloud Lite 已可闭门演示；**不挂公开 docs 站**，先打磨 Console / 告警 / Pack / 运维。见 [plan/product-iterate.md](../plan/product-iterate.md)。  
 > **许可**：自研代码为 [Polyform-NC](./licensing.md)；ThingsBoard CE 等上游遵循各自协议。不把编排层伪称为 Apache/MIT。
 
 ## 1. 我们要解决什么
@@ -28,12 +28,13 @@ Cloud Lite（TB CE 运行时 + 交付编排）
     → 垂直运营系统（校准、工单、多站点）仅在复用 ≥70% 后解锁
 ```
 
-| 现在做（Build / Showcase） | 以后才做 |
+| 现在做（Product Iterate） | 以后才做 |
 |---------------------------|----------|
-| TB CE + Gateway + Console 可部署演示 | EMQX 独立 Broker（客户已有或规模证明后） |
-| `cold-lab` 参考 Pack + 环境监测轻量 Pack | 医院招标、消费级百万设备、链上/AI 市场 |
-| 技术买方：集成商、硬件团队、企业 IT | 全国渠道与 20 种语言 |
-| 7 天项目底座、商业许可 + 年支持 | 自研设备引擎或替代 TB 内核 |
+| Console / 告警 / Pack / 运维打磨 | 公开 docs 站点、营销 SEO |
+| TB CE + Gateway + Console 闭门演示 | EMQX 独立 Broker（客户已有或规模证明后） |
+| `cold-lab` + `env-lab` Pack | 医院招标、消费级百万设备、链上/AI 市场 |
+| 熟人技术买方闭门试点 | 全国渠道与 20 种语言 |
+| 私有安装说明（`deploy/INSTALL.md`） | 自研设备引擎或替代 TB 内核 |
 
 ## 3. 与涂鸦、与裸 ThingsBoard 的差异
 
@@ -88,7 +89,7 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 
 ### 死穴三：无限扩平台、没有可演示的交付物
 
-**破局**：Build 固定 **8 周**。第 8 周后停止增加运行时功能，转向文档、演示与首次交付。连续 3 个付费项目没有共同工作流，不继续扩大核心。
+**破局**：Build 固定 **8 周**交付可演示底座。之后优先 **Product Iterate**（体验与交付打磨），不把公开文档站当完成证明。连续 3 个付费项目没有共同工作流，不继续扩大核心。
 
 ## 8. 长期可选项（不进入 Build）
 
@@ -108,5 +109,5 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 | [industry-pack.md](./industry-pack.md) | Pack 制品与 `cold-lab` 默认值 |
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
 | [licensing.md](./licensing.md) | Polyform-NC 与 TB 上游 |
-| [plan/README.md](../plan/README.md) | Build → Showcase → First Revenue → Vertical Fit |
-| [plan/build.md](../plan/build.md) | **当前** 8 周工程手册 |
+| [plan/README.md](../plan/README.md) | Build → Showcase → Product Iterate → First Revenue |
+| [plan/product-iterate.md](../plan/product-iterate.md) | **当前**：产品打磨；不挂公开 docs |

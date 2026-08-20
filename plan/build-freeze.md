@@ -1,13 +1,13 @@
 # Build 冻结功能列表（Week 8）
 
-> 本文件是 Build 退出的**功能边界**。未列项默认不做，直至 Showcase / First Revenue 另开阶段门。  
+> 本文件是 Build 退出的**功能边界**。未列项默认不做，直至 Product Iterate / First Revenue 另开阶段门。  
 > DoD 总表：[build.md](./build.md) §1 · 演示：[validation/demo-script.md](./validation/demo-script.md) · 安全：[../deploy/SECURITY.md](../deploy/SECURITY.md)
 
 ## 冻结纳入（In）
 
 | 能力 | 证据 |
 |------|------|
-| Compose：TB CE + PG + Gateway + Console | `deploy/docker-compose.dev.yml` · 8080 / 1883 / 5438 / 13200 / 5180 |
+| Compose：TB CE + PG + Gateway + Console | `deploy/docker-compose.dev.yml` · 9080 / 1883 / 5438 / 13200 / 5180 |
 | Gateway Fastify + health 探 TB | `iot-gateway` `:13200` |
 | Project / Site / AssetMap ↔ TB Tenant / Customer / Device | Gateway API |
 | `cold-lab/0.1-draft` Pack 应用 | Device Profile + Rule Chain |
@@ -39,4 +39,4 @@
 
 ## 退出判定
 
-§1 DoD 表全部勾选，且本文件 In/Out 无争议，即可关闭 **Build** 门，进入 **Showcase**（传播与首单触达），不再往 Build 加运行时组件。
+§1 DoD 表全部勾选，且本文件 In/Out 无争议，即可关闭 **Build** 门。Showcase 已关闭；当前进 **Product Iterate**（产品打磨，不挂公开 docs），不再往 Build 加运行时组件。
