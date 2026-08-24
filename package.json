@@ -7,6 +7,10 @@
     "init:repos": "node tooling/scripts/init-repos.mjs",
     "init:repos:required": "node tooling/scripts/init-repos.mjs --required-only",
     "dev:up": "node tooling/scripts/dev-up.mjs",
+    "dev:iot-gateway": "pnpm --dir iot-gateway dev",
+    "dev:iot-console-web": "pnpm --dir iot-console-web dev",
+    "dev:website": "pnpm --dir website dev",
+    "dev:docs": "pnpm --dir docs dev",
     "dev:mvp": "node tooling/scripts/dev-mvp.mjs",
     "check": "biome check ."
   },

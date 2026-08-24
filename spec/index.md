@@ -34,7 +34,7 @@
 | AuthZ | 产品内 Casbin `iot.*`（JWT 不带业务 ACL） |
 | TB | Gateway 使用 TB 服务账号调用 REST；终端用户尽量不直接持有 TB 系统管理员 |
 
-实现：`iot-gateway` `@luminaryworks/auth-core` + Casbin；控制台 PKCE（`:5180`）。不自研通用 IAM。
+实现：`iot-gateway` `@luminaryworks/auth-core` + Casbin；控制台 PKCE（`:15180`）。不自研通用 IAM。
 
 ## Build 权限（最小）
 

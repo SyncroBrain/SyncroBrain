@@ -26,6 +26,6 @@ ColdGuard 访谈表仅在对方是实验室冷藏需求时使用，见 [../valid
 | [plan/build.md](../build.md) | 内部工程 |
 | [v0 提示词](../../spec/design/v0-prompts.md) | 产品入口 UI |
 | [cold-lab 0.1-draft.json](../../spec/packs/cold-lab.0.1-draft.json) | 参考 Pack |
-| [demo-script.md](./demo-script.md) | 10 分钟演示（可改讲 TB 底座） |
+| [demo-script.md](./demo-script.md) | 10 分钟闭门演示（收紧版 · First Revenue 触达） |
 
 真客户名录放 [evidence/](./evidence/)，不提交。

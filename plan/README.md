@@ -14,12 +14,12 @@
 |------|------|----------|----------|
 | **Build**（已关闭） | 可部署 Cloud Lite | TB CE + Gateway + Console + `cold-lab` | 一键 compose；模拟器；演示脚本 |
 | **Showcase**（已关闭） | 内部可演示、双 Pack | `env-lab`；私有安装说明 | 闭门可复现；**不要求**公开 docs 站 |
-| **Product Iterate**（当前） | 产品够厚再谈传播 | Console/告警/Pack/运维打磨 | 见 [product-iterate.md](./product-iterate.md) |
-| **First Revenue** | 第一笔许可/部署/支持费 | 离线许可、备份、白牌、标准安装 | ≥1 份付费合同 |
+| **Product Iterate**（当前 · 表项已齐） | 产品够厚再谈传播 | Console/告警/Pack/运维打磨 | 见 [product-iterate.md](./product-iterate.md) |
+| **First Revenue**（触达准备） | 第一笔许可/部署/支持费 | 离线许可、备份、白牌、标准安装、交接包 | ≥1 份付费合同；见 [first-revenue.md](./first-revenue.md) |
 | **Vertical Fit** | 从项目中选垂直 | 冻结可复用 Pack | 3 个项目共用 ≥70% 工作流 |
 | Repeatability / Platform / Scale | 草案 | — | Vertical Fit 通过后解锁 |
 
-**当前内部状态：Product Iterate。** Showcase 以内部演示关闭；公开 docs 站点**延后**。先完善产品，再评估是否发布文档站。
+**当前内部状态：继续产品功能（First Revenue 触达延后）。** 公开 docs **延后**；熟人演示/报价暂不做。见 [first-revenue.md](./first-revenue.md)。
 
 [validation.md](./validation.md) 为渠道触达附录，不阻塞产品迭代。ColdGuard 实验室访谈清单不作为当前必做。
 
@@ -63,7 +63,8 @@
 
 | 文档 | 说明 |
 |------|------|
-| [product-iterate.md](./product-iterate.md) | **当前**：产品打磨，不挂公开 docs 站 |
+| [product-iterate.md](./product-iterate.md) | Product Iterate（P0–P2 已完成） |
+| [first-revenue.md](./first-revenue.md) | **触达准备**：演示教练、交接包、报价话术 |
 | [showcase-freeze.md](./showcase-freeze.md) | Showcase 已关闭（内部演示） |
 | [showcase.md](./showcase.md) | Showcase 回顾 |
 | [build.md](./build.md) | Build 8 周（已冻结） |

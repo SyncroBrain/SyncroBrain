@@ -49,7 +49,7 @@ if (!skipDocker) {
   if (!existsSync(compose)) {
     console.warn("⚠️  deploy/ not cloned — skip docker (run ./init.sh)");
   } else {
-    console.log("\n🐳 docker compose up -d --build (PG :5438, TB :9080, gateway :13200, console :5180)...");
+    console.log("\n🐳 docker compose up -d --build (PG :5438, TB :19080, gateway :13200, console :15180)...");
     execSync(`docker compose -f "${compose}" up -d --build`, {
       cwd: join(metaRoot, "deploy"),
       stdio: "inherit",
@@ -63,11 +63,11 @@ if (!skipDocker) {
       console.warn("⚠️  PostgreSQL not ready — migrations may fail");
     }
     try {
-      console.log("⏳ Waiting for ThingsBoard :9080 (first boot 1–2 min)...");
-      await waitForPort(9080, "127.0.0.1", 180_000);
+      console.log("⏳ Waiting for ThingsBoard :19080 (first boot 1–2 min)...");
+      await waitForPort(19080, "127.0.0.1", 180_000);
       console.log("✅ ThingsBoard port open");
     } catch {
-      console.warn("⚠️  ThingsBoard not ready — open http://127.0.0.1:9080 later");
+      console.warn("⚠️  ThingsBoard not ready — open http://127.0.0.1:19080 later");
     }
   }
 }
@@ -88,13 +88,13 @@ for (const key of installOrder) {
 
   const installFlags =
     key === "iot-gateway" ? "install --no-frozen-lockfile" : "install";
-  console.log(`\n📦 pnpm ${installFlags} → ${proj.path}`);
+  console.log(`\n📦 pnpm --dir ${proj.path} ${installFlags}`);
   try {
-    execSync(`pnpm ${installFlags}`, {
-      cwd: dir,
+    execSync(`pnpm --dir ${proj.path} ${installFlags}`, {
+      cwd: metaRoot,
       stdio: "inherit",
       shell: true,
-        env: {
+      env: {
         ...process.env,
       },
     });
@@ -109,10 +109,10 @@ for (const key of installOrder) {
 
 const gatewayDir = join(metaRoot, "iot-gateway");
 if (existsSync(join(gatewayDir, "package.json")) && !skipDocker) {
-  console.log("\n🗄️  pnpm migration:run → iot-gateway");
+  console.log("\n🗄️  pnpm --dir iot-gateway migration:run");
   try {
-    execSync("pnpm migration:run", {
-      cwd: gatewayDir,
+    execSync("pnpm --dir iot-gateway migration:run", {
+      cwd: metaRoot,
       stdio: "inherit",
       shell: true,
     });
@@ -143,17 +143,17 @@ function printNextSteps(root, skipDocker) {
 一键启动 gateway + console（Windows 推荐）:
   .\\dev-mvp.ps1
 
-或分别开终端:
-  cd iot-gateway && pnpm dev     → http://localhost:13200
-  cd iot-console-web && pnpm dev → http://localhost:5180
-  cd website && pnpm dev                  → http://localhost:13013
-  cd docs && pnpm dev                     → http://localhost:13014
+或分别开终端（MetaRepo 根目录）:
+  pnpm --dir iot-gateway dev      → http://localhost:13200
+  pnpm --dir iot-console-web dev  → http://localhost:15180
+  pnpm --dir website dev          → http://localhost:13013
+  pnpm --dir docs dev             → http://localhost:13014
 
 统一登录（Logto）需先启动 LuminaryWorks/identity:
   cd ../LuminaryWorks/identity && ./bootstrap.ps1
 
 IDE: open syncrobrain.code-workspace
-${skipDocker ? "" : "Docker: postgres :5438 · ThingsBoard CE :9080 · MQTT :1883"}
+${skipDocker ? "" : "Docker: postgres :5438 · ThingsBoard CE :19080 · MQTT :1883"}
 ════════════════════════════════════════════════════════════
 `);
 }

@@ -63,16 +63,39 @@ cd syncrobrain
 
 ## 快速开始
 
+首次（clone 子仓、env、Docker、install、migrate）：
+
 ```powershell
 git clone git@github.com:syncrobrain/platform.git syncrobrain
 cd syncrobrain
 .\dev.ps1
-.\dev-mvp.ps1
 ```
 
-Linux / macOS：`./dev.sh && ./dev-mvp.sh`
+Linux / macOS：`./dev.sh`。等价：`pnpm dev:up`。
 
-Logto 为可选统一登录（Audience `https://api.iotchain.local`）。Casbin `iot.*` 在 gateway。Build 可用演示登录。
+日常在 **MetaRepo 根目录** 用 `pnpm --dir <子目录>` 启服务（不必先 `cd`）：
+
+```bash
+pnpm --dir iot-gateway dev       # :13200
+pnpm --dir iot-console-web dev   # :15180
+pnpm --dir website dev           # :13013
+pnpm --dir docs dev              # :13014
+```
+
+| 命令 | 作用 |
+|------|------|
+| `pnpm dev:up` | 一键 bootstrap（同 `./dev.sh`） |
+| `pnpm --dir iot-gateway dev` | Gateway，`http://localhost:13200` |
+| `pnpm --dir iot-console-web dev` | Console，`http://localhost:15180` |
+| `pnpm --dir website dev` | 官网，`http://localhost:13013` |
+| `pnpm --dir docs dev` | 文档草稿，`http://localhost:13014` |
+| `pnpm dev:mvp` | 同时起 gateway + console |
+
+`package.json` 里 `dev:iot-gateway` 等与上表 `--dir` 命令等价。Windows 也可 `.\dev-mvp.ps1` 开两个独立窗口。
+
+改宿主机代码前，先停 compose 里的应用容器：`docker compose -f deploy/docker-compose.dev.yml stop iot-gateway iot-console`。
+
+Logto 为可选统一登录（Audience `https://api.iotchain.local`）。Casbin `iot.*` 在 gateway。Build 可用演示登录。详情：[ONBOARDING.md](./ONBOARDING.md)。
 
 ## LuminaryWorks 生态
 

@@ -118,11 +118,11 @@ Build 以 **ThingsBoard MQTT API** 为准，不发明第二套生产 topic。
 
 ```text
 docker compose (deploy/)
-├── thingsboard-ce    # image: thingsboard/tb-postgres；host HTTP :9080 → 容器 9090；MQTT :1883
+├── thingsboard-ce    # image: thingsboard/tb-postgres；host HTTP :19080 → 容器 9090；MQTT :1883
 │                     # Week 1：镜像内嵌 TB 用 PostgreSQL（volume syncrobrain_tb_data）
 ├── postgres          # Gateway iot_core（:5438）；日后可与 TB 同实例分库
 ├── iot-gateway       # :13200 Fastify；调 TB REST（Compose 默认；改代码时可宿主机 pnpm dev）
-└── iot-console-web   # :5180 产品入口（Compose 默认）
+└── iot-console-web   # :15180 产品入口（Compose 默认）
 
 可选（非 Build）：
 ├── emqx              # 仅合同触发

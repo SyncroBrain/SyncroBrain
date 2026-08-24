@@ -58,7 +58,7 @@ process.on("SIGINT", () => {
   process.exit(0);
 });
 
-start("iot-gateway", gatewayDir, ["pnpm", "dev"]);
+start("iot-gateway", ["pnpm", "--dir", "iot-gateway", "dev"]);
 console.log("⏳ Waiting for http://localhost:13200/api/v1/health ...");
 if (!(await waitForHttpOk("http://127.0.0.1:13200/api/v1/health"))) {
   console.error("❌ Gateway not ready in 60s");
@@ -67,20 +67,20 @@ if (!(await waitForHttpOk("http://127.0.0.1:13200/api/v1/health"))) {
 }
 console.log("✅ Gateway ready");
 
-start("iot-console-web", consoleDir, ["pnpm", "dev"]);
+start("iot-console-web", ["pnpm", "--dir", "iot-console-web", "dev"]);
 
 console.log(`
   Gateway  http://localhost:13200/api/v1/health
-  Console  http://localhost:5180
+  Console  http://localhost:15180
   Ctrl+C to stop
 `);
 
 await new Promise(() => {});
 
-function start(name, cwd, [cmd, ...args]) {
-  console.log(`▶ ${name}`);
+function start(name, [cmd, ...args]) {
+  console.log(`▶ pnpm --dir ${name} dev`);
   const child = spawn(cmd, args, {
-    cwd,
+    cwd: metaRoot,
     stdio: "inherit",
     shell: true,
     env: { ...process.env, FORCE_COLOR: "1" },

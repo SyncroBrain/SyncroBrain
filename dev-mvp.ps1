@@ -19,13 +19,13 @@ foreach ($pair in @(
 }
 
 Write-Host "== SyncroBrain MVP ==" -ForegroundColor Cyan
-Write-Host "Gateway :13200  |  Console :5180`n"
+Write-Host "Gateway :13200  |  Console :15180`n"
 
 $gwCmd = @"
-Set-Location '$gateway'
+Set-Location '$Root'
 `$env:NODE_ENV='development'
-Write-Host 'iot-gateway -> http://localhost:13200' -ForegroundColor Green
-pnpm dev
+Write-Host 'pnpm --dir iot-gateway dev -> http://localhost:13200' -ForegroundColor Green
+pnpm --dir iot-gateway dev
 "@
 
 Write-Host "[1] 启动 iot-gateway（新窗口）..." -ForegroundColor Yellow
@@ -52,10 +52,10 @@ if (-not $ready) {
 Write-Host "      Gateway OK" -ForegroundColor Green
 
 $webCmd = @"
-Set-Location '$console'
+Set-Location '$Root'
 `$env:NODE_ENV='development'
-Write-Host 'iot-console-web -> http://localhost:5180' -ForegroundColor Green
-pnpm dev
+Write-Host 'pnpm --dir iot-console-web dev -> http://localhost:15180' -ForegroundColor Green
+pnpm --dir iot-console-web dev
 "@
 
 Write-Host "[2] 启动 iot-console-web（新窗口）..." -ForegroundColor Yellow
@@ -69,9 +69,9 @@ Write-Host @"
 
 ════════════════════════════════════════════════════════════
   Gateway   http://localhost:13200/api/v1/health
-  Console   http://localhost:5180
+  Console   http://localhost:15180
 
-  Logto Redirect: http://localhost:5180/auth/callback
+  Logto Redirect: http://localhost:15180/auth/callback
   统一登录需 LuminaryWorks/identity 已启动（见 ONBOARDING.md）
 ════════════════════════════════════════════════════════════
 

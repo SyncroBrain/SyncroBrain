@@ -37,7 +37,7 @@ Linux / macOS：`chmod +x dev.sh && ./dev.sh`（现已 `compose up --build` 含 
 |------|------|
 | `init.sh` / `init.ps1` | 仅 clone 子仓 |
 | **`dev.sh` / `dev.ps1`** | clone + env + docker + install + migrate |
-| `dev-mvp.ps1` | 启动 gateway (:13200) + console (:5180) |
+| `dev-mvp.ps1` | 启动 gateway (:13200) + console (:15180) |
 
 可选参数：`.\dev.ps1 -SkipDocker` · `.\dev.ps1 -RequiredOnly`（只拉必选子仓）
 
@@ -73,18 +73,18 @@ pnpm install && pnpm build
 
 ### 2. 一键全栈（推荐演示 / 关门）
 
-须先停宿主机占用 `:13200` / `:5180` 的 `pnpm dev`。
+须先停宿主机占用 `:13200` / `:15180` 的 `pnpm dev`。
 
 ```bash
 cd deploy
 docker compose -f docker-compose.dev.yml up -d --build
-# PostgreSQL :5438 · ThingsBoard CE :9080 / MQTT :1883
-# Gateway :13200 · Console :5180
+# PostgreSQL :5438 · ThingsBoard CE :19080 / MQTT :1883
+# Gateway :13200 · Console :15180
 # 首次启动 TB 需 1–2 分钟。默认 sysadmin@thingsboard.org / sysadmin（立刻改密）
 # 运维：deploy/OPS.md · 安全：deploy/SECURITY.md
 ```
 
-打开 `http://localhost:5180`。Gateway 健康检查：`http://localhost:13200/api/v1/health`
+打开 `http://localhost:15180`。Gateway 健康检查：`http://localhost:13200/api/v1/health`
 
 ### 3. 改代码时用宿主机进程
 
@@ -101,10 +101,10 @@ pnpm install --no-frozen-lockfile && pnpm migration:run && pnpm dev
 cd iot-console-web
 cp .env.development.example .env.development
 pnpm install && pnpm dev
-# http://localhost:5180
+# http://localhost:15180
 ```
 
-统一登录：Console `pnpm dev` 打开 `http://localhost:5180/login`，使用 Headless 面板（需 Logto `:3001`）。Redirect：`http://localhost:5180/auth/callback`。Gateway 须设 `IDP_ISSUER=http://localhost:3001/oidc`。
+统一登录：Console `pnpm dev` 打开 `http://localhost:15180/login`，使用 Headless 面板（需 Logto `:3001`）。Redirect：`http://localhost:15180/auth/callback`。Gateway 须设 `IDP_ISSUER=http://localhost:3001/oidc`。
 
 ## 按角色单独开发
 
@@ -122,4 +122,4 @@ pnpm install && pnpm dev
 
 - OLTP：PostgreSQL `:5438`（Gateway `iot_core`）；ThingsBoard 用镜像内嵌 PG（volume `syncrobrain_tb_data`）
 - 统一登录：Logto Headless（`@luminaryworks/auth-react`）。未设 Gateway `IDP_ISSUER` 时可用演示 JWT；`CASBIN_DEV_OPEN=true` 为本地开放策略
-- 运行时：ThingsBoard CE `http://127.0.0.1:9080`
+- 运行时：ThingsBoard CE `http://127.0.0.1:19080`

@@ -18,7 +18,11 @@
 
 # 或
 pnpm dev:up
+pnpm --dir iot-gateway dev
+pnpm --dir iot-console-web dev
+# 同时起 gateway + console：
 pnpm dev:mvp
+# 等价：pnpm run dev:iot-gateway / dev:iot-console-web
 ```
 
 **不使用** git submodule / git subtree。子目录各自独立 `.git`，在对应目录内提交与 push。

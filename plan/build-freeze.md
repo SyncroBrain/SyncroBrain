@@ -7,12 +7,12 @@
 
 | 能力 | 证据 |
 |------|------|
-| Compose：TB CE + PG + Gateway + Console | `deploy/docker-compose.dev.yml` · 9080 / 1883 / 5438 / 13200 / 5180 |
+| Compose：TB CE + PG + Gateway + Console | `deploy/docker-compose.dev.yml` · 19080 / 1883 / 5438 / 13200 / 15180 |
 | Gateway Fastify + health 探 TB | `iot-gateway` `:13200` |
 | Project / Site / AssetMap ↔ TB Tenant / Customer / Device | Gateway API |
 | `cold-lab/0.1-draft` Pack 应用 | Device Profile + Rule Chain |
 | MQTT 模拟器 → TB telemetry | `pnpm mqtt:sim` |
-| Console：登录、资产、告警 Ack、一键演示、项目向导 | `:5180` |
+| Console：登录、资产、告警 Ack、一键演示、项目向导 | `:15180` |
 | Alarm 列表 / 创建 / Ack / Clear + webhook | TB Alarm |
 | CSV：告警 + 资产遥测 | `/alarms/export.csv` · `/assets/:id/telemetry/export.csv` |
 | 备份 / 恢复 / 离线镜像 / 环境变量目录 | `deploy/OPS.md` + `scripts/*` |

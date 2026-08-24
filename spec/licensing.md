@@ -53,6 +53,17 @@
 | 使用 TB CE 的私有化 | 「这是我们自研的设备引擎」且不披露 TB |
 | 数据导出与标准 MQTT | 永久无偿服务、无限再分发自研代码 |
 
+## 5.1 Product Iterate 占位（非合同效力）
+
+| 接口 / 配置 | 说明 |
+|-------------|------|
+| `GET /api/v1/branding` | 白牌标题 / Logo / 主题色（`BRAND_*` 环境变量） |
+| `GET /api/v1/license` | 离线许可状态；`enforcement: report_only`，**不阻断** |
+| `POST /api/v1/license/activate` | 写入 `LICENSE_FILE`（默认 `data/license.json`）；无验签 |
+| `samples/license.stub.json` | 示例许可 JSON；`productCode` 必须为 `syncrobrain` |
+
+后续 Entitlement 产品码仍为 `syncrobrain`；本占位不得对外表述为已计费。
+
 ## 6. 尽调材料
 
 LICENSE + 本文件 + SBOM + 演示脚本/版本/部署记录。缺证据不得进融资数据室。

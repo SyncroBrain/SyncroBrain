@@ -27,7 +27,7 @@
 
 | 周 | 范围 | 不做 |
 |----|------|------|
-| 1 | Compose：`thingsboard/tb-postgres` + Gateway PG；Gateway Fastify；`GET /health` 探 TB；演示登录（`CASBIN_DEV_OPEN`）。**本机已通**：TB `:9080` / MQTT `:1883`，PG `:5438`，Gateway `:13200` | EMQX、K8s、把 Gateway 塞进 compose |
+| 1 | Compose：`thingsboard/tb-postgres` + Gateway PG；Gateway Fastify；`GET /health` 探 TB；演示登录（`CASBIN_DEV_OPEN`）。**本机已通**：TB `:19080` / MQTT `:1883`，PG `:5438`，Gateway `:13200` | EMQX、K8s、把 Gateway 塞进 compose |
 | 2 | TB 租户/设备 REST；Project/Site/AssetMap ↔ `tbTenantId`/`tbDeviceId`（Gateway 草案 API）。**本机已通**：`POST /projects` 建 TB Tenant，Site → Customer，Asset → Device + MQTT token | 自研设备表替代 TB |
 | 3 | MQTT 模拟器走 `v1/devices/me/telemetry`；`GET /assets` + `/telemetry`；Console 映射设备列表。**本机已通**：sim `--once` 后读回 temperature=4.2 | 第二套 topic 协议 |
 | 4 | Pack 导入：`cold-lab/0.1-draft` → TB Device Profile + Rule Chain（`POST /projects/:id/packs/apply`）。**本机已通**：Profile `cold-lab-fridge-0.1-draft`，新 Asset 已挂接 | 自研规则引擎 |

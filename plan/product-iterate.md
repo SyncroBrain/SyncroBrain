@@ -23,14 +23,14 @@
 
 ## 3. 优先迭代（按序）
 
-| 优先级 | 范围 | 不做 |
-|--------|------|------|
-| P0 | Console 主路径打磨：状态、空态、失败提示、双 Pack 入口统一 | 新 Broker / K8s |
-| P0 | 告警列表与确认体验；Webhook 失败可见 | 自研完整 Incident 内核 |
-| P1 | Pack 可感知：阈值说明、遥测字段、简单看板或统计 | Decoder 市场、第二垂直销售 |
-| P1 | 部署摩擦：compose 健康检查、首次改密提示、版本清单一键导出 | 完整商业计费 |
-| P2 | 白牌壳（Logo/标题）草案；离线许可占位 API | Entitlement 生产接线（可占位） |
-| 明确延后 | 公开 `docs` push / 站点托管 / SEO | — |
+| 优先级 | 范围 | 不做 | 状态 |
+|--------|------|------|------|
+| P0 | Console 主路径打磨：状态、空态、失败提示、双 Pack 入口统一 | 新 Broker / K8s | **已完成** |
+| P0 | 告警列表与确认体验；Webhook 失败可见 | 自研完整 Incident 内核 | **已完成** |
+| P1 | Pack 可感知：阈值说明、遥测字段、简单看板或统计 | Decoder 市场、第二垂直销售 | **已完成**（manifest 暴露 channels/policy/summary；Console 总览/设备/设置可读） |
+| P1 | 部署摩擦：compose 健康检查、首次改密提示、版本清单一键导出 | 完整商业计费 | **已完成**（compose healthcheck · health/inventory · Console 安全横幅与导出 · scripts） |
+| P2 | 白牌壳（Logo/标题）草案；离线许可占位 API | Entitlement 生产接线（可占位） | **已完成**（BRAND_* · GET /branding · GET/POST /license · Console 壳与设置页） |
+| 明确延后 | 公开 `docs` push / 站点托管 / SEO | — | 延后 |
 
 ## 4. 文档策略
 
@@ -38,10 +38,11 @@
 |------|------|
 | `deploy/INSTALL.md` · `OPS.md` · `SECURITY.md` | **权威安装**（私有仓）；给熟人试点时发链接或附件 |
 | 本地 `docs/` 仓草稿 | 可继续改文案，**不 push 当产品发布**，不接公开 Pages |
-| `plan/validation/demo-script.md` | 内部 / 闭门演示脚本 |
+| `plan/validation/demo-script.md` | 内部 / 闭门演示脚本（**收紧版**；First Revenue 触达用） |
 | 公开 GitHub Pages / syncrobrain.com 文档站 | **产品明显厚实后再开**（建议 First Revenue 有真实合同或 Vertical Fit 前再评估） |
 
 ## 5. 与下一阶段的关系
 
-- 达标后进入 **First Revenue**：闭门报价、标准安装包、年支持话术；仍可保持 docs 非公开。  
-- 公开文档站是**传播动作**，不是产品完成的证明。
+- 表内 P0–P2 **已完成**；继续产品补强见 [first-revenue.md](./first-revenue.md)（**触达延后**，先做功能；P8 已完成）。  
+- 闭门演示脚本仍维护：[validation/demo-script.md](./validation/demo-script.md)。  
+- 公开文档站与熟人报价：**延后**。
