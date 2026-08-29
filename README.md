@@ -8,7 +8,8 @@
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
 > **当前阶段**：**Product Iterate** — [plan/product-iterate.md](./plan/product-iterate.md)（先打磨产品；**不挂**公开 docs 站）  
-> **ColdGuard** 是参考 Industry Pack，不是唯一可售产品。
+> **ColdGuard** 是参考 Industry Pack，不是唯一可售产品。  
+> **测试**：`pnpm test` / `pnpm verify`；活栈 `pnpm e2e`（无栈 skip）。AI 审阅输入：[plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md)（确定性测试 ≠ 已做模型判定）。
 
 ## 解决什么问题
 
@@ -90,6 +91,11 @@ pnpm --dir docs dev              # :13014
 | `pnpm --dir website dev` | 官网，`http://localhost:13013` |
 | `pnpm --dir docs dev` | 文档草稿，`http://localhost:13014` |
 | `pnpm dev:mvp` | 同时起 gateway + console |
+| `pnpm test` | gateway + console 单元测试（Vitest） |
+| `pnpm verify` | unit + lint + build（不含活栈 E2E） |
+| `pnpm e2e` | Playwright 活栈验收；栈未起 skip |
+| `E2E_REQUIRE_STACK=1 pnpm e2e` | 栈未起则失败 |
+| `pnpm acceptance:evidence` | 生成 AI 审阅证据包（不调用模型 API） |
 
 `package.json` 里 `dev:iot-gateway` 等与上表 `--dir` 命令等价。Windows 也可 `.\dev-mvp.ps1` 开两个独立窗口。
 
@@ -118,6 +124,8 @@ Cloud Lite **独立可售**。下表可选。
 | [spec/platform-vision.md](./spec/platform-vision.md) | 愿景 |
 | [spec/architecture.md](./spec/architecture.md) | TB Cloud Lite |
 | [plan/product-iterate.md](./plan/product-iterate.md) | **当前**：产品打磨 |
+| [plan/first-revenue.md](./plan/first-revenue.md) | First Revenue 产品补强（触达延后） |
+| [plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md) | 单元 / E2E / AI 验收证据包 |
 | [plan/showcase.md](./plan/showcase.md) | Showcase（已关闭，内部演示） |
 | [plan/build.md](./plan/build.md) | Build 8 周（已冻结） |
 | [spec/coldguard.md](./spec/coldguard.md) | 参考 Pack |

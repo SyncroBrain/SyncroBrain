@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SyncroBrainAcceptanceVerdict",
+  "description": "Grok 4.6 High 审阅 acceptance evidence 后必须输出的判定。跳过的活栈 E2E 不得记为 pass。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "model", "summary", "checks"],
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked"],
+      "description": "pass=确定性检查全绿且活栈 E2E 实际通过；fail=任一必做项失败或活栈 E2E 跑过但失败；blocked=单元/lint/build 通过但活栈 E2E 因环境 skip，不能当试点出门。"
+    },
+    "model": {
+      "type": "string",
+      "description": "审阅所用模型，本轮应为 Cursor Grok 4.6 High（或会话内最新 Grok High，非 Fast）。"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "fail", "skipped", "blocked"]
+          },
+          "evidence": { "type": "string" },
+          "blocker": { "type": "string" }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

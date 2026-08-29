@@ -1,0 +1,83 @@
+{
+  "id": "syncrobrain-cloud-lite-acceptance",
+  "version": "1.0",
+  "product": "SyncroBrain Cloud Lite",
+  "reviewerModel": "Cursor Grok 4.6 High",
+  "generatedEvidenceCommand": "pnpm acceptance:evidence",
+  "notes": [
+    "本包是 AI 验收的输入，不是 AI 本身。确定性单元测试 / Playwright 通过 ≠ 已做模型审阅。",
+    "没有 API key 不得阻止 unit / lint / build / 无栈 E2E skip。",
+    "活栈 E2E skipped 时 verdict 只能是 blocked，不能是 pass。"
+  ],
+  "requiredDeterministic": [
+    {
+      "id": "unit-gateway",
+      "title": "iot-gateway unit",
+      "command": "pnpm --dir iot-gateway test",
+      "passWhen": "vitest run exit 0"
+    },
+    {
+      "id": "unit-console",
+      "title": "iot-console-web unit",
+      "command": "pnpm --dir iot-console-web test",
+      "passWhen": "vitest run exit 0"
+    },
+    {
+      "id": "lint-gateway",
+      "title": "iot-gateway tsc",
+      "command": "pnpm --dir iot-gateway lint",
+      "passWhen": "tsc --noEmit exit 0"
+    },
+    {
+      "id": "lint-console",
+      "title": "iot-console-web tsc",
+      "command": "pnpm --dir iot-console-web lint",
+      "passWhen": "tsc --noEmit exit 0"
+    },
+    {
+      "id": "build-gateway",
+      "title": "iot-gateway build",
+      "command": "pnpm --dir iot-gateway build",
+      "passWhen": "nest build exit 0"
+    },
+    {
+      "id": "build-console",
+      "title": "iot-console-web build",
+      "command": "pnpm --dir iot-console-web build",
+      "passWhen": "rsbuild build exit 0"
+    },
+    {
+      "id": "e2e-skip-without-stack",
+      "title": "Playwright 无栈 skip",
+      "command": "pnpm --dir iot-console-web e2e",
+      "passWhen": "栈未起时全部 skip 且 exit 0；不得 failed"
+    }
+  ],
+  "liveStack": [
+    {
+      "id": "e2e-golden-path",
+      "title": "黄金路径活栈验收",
+      "command": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
+      "passWhen": "deeplink + golden-path + env-lab 全部 passed；真实 Gateway + ThingsBoard，禁止 mock 运行时"
+    }
+  ],
+  "negative": [
+    {
+      "id": "e2e-require-stack-fails-when-down",
+      "title": "E2E_REQUIRE_STACK=1 在无栈时必须失败",
+      "command": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
+      "passWhen": "栈未起时 Playwright exit ≠ 0"
+    }
+  ],
+  "outOfScope": [
+    "改密口头说明",
+    "报价邮件",
+    "backup.sh 演练",
+    "公开 docs / SEO"
+  ],
+  "verdictRules": {
+    "pass": "requiredDeterministic 全 pass，且 liveStack 实际跑过并 pass。",
+    "fail": "任一 requiredDeterministic 失败，或 liveStack 已执行但有 failed。",
+    "blocked": "requiredDeterministic 全 pass，但 liveStack 因栈未起而被 skip。不得把 skip 写成已完成试点验收。"
+  }
+}

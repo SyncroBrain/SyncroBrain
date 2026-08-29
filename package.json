@@ -12,7 +12,17 @@
     "dev:website": "pnpm --dir website dev",
     "dev:docs": "pnpm --dir docs dev",
     "dev:mvp": "node tooling/scripts/dev-mvp.mjs",
-    "check": "biome check ."
+    "check": "biome check .",
+    "test": "pnpm test:gateway && pnpm test:console",
+    "test:gateway": "pnpm --dir iot-gateway test",
+    "test:console": "pnpm --dir iot-console-web test",
+    "lint:apps": "pnpm --dir iot-gateway lint && pnpm --dir iot-console-web lint",
+    "build:apps": "pnpm --dir iot-gateway build && pnpm --dir iot-console-web build",
+    "verify": "pnpm test && pnpm lint:apps && pnpm build:apps",
+    "e2e": "pnpm --dir iot-console-web e2e",
+    "e2e:require-stack": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
+    "acceptance:evidence": "node tooling/scripts/acceptance-evidence.mjs",
+    "acceptance:prepare": "node tooling/scripts/acceptance-evidence.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16"

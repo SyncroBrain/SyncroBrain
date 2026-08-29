@@ -43,6 +43,6 @@
 
 ## 5. 与下一阶段的关系
 
-- 表内 P0–P2 **已完成**；继续产品补强见 [first-revenue.md](./first-revenue.md)（**触达延后**，先做功能；P8 已完成）。  
+- 表内 P0–P2 **已完成**；继续产品补强见 [first-revenue.md](./first-revenue.md)（**触达延后**，先做功能；P33–P34 为 Playwright 活栈验收，CI 无栈 skip；P35 为单元测试 + 证据包）。  
 - 闭门演示脚本仍维护：[validation/demo-script.md](./validation/demo-script.md)。  
 - 公开文档站与熟人报价：**延后**。
