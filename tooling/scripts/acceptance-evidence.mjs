@@ -20,22 +20,35 @@ const skipE2e = process.argv.includes("--skip-e2e");
 const skipBuild = process.argv.includes("--skip-build");
 const outDir = join(metaRoot, "plan/validation/acceptance/last-run");
 
-function pnpmDir(dir, args) {
-  return ["pnpm", "--dir", dir, ...args];
+/** Nested `pnpm run` sets workspace env that makes child `pnpm --dir` fail. */
+function nestedPnpmEnv(extra = {}) {
+  const env = { ...process.env, ...extra };
+  for (const key of Object.keys(env)) {
+    if (
+      key.startsWith("npm_config_") ||
+      key.startsWith("npm_package_") ||
+      key.startsWith("PNPM_") ||
+      key === "npm_lifecycle_event" ||
+      key === "npm_command"
+    ) {
+      delete env[key];
+    }
+  }
+  return env;
 }
 
-function run(id, title, command, cwd = metaRoot, env = {}) {
+function run(id, title, args, cwd, env = {}) {
   const started = Date.now();
-  const result = spawnSync(command[0], command.slice(1), {
+  const result = spawnSync("pnpm", ["--ignore-workspace", ...args], {
     cwd,
-    env: { ...process.env, ...env },
+    env: nestedPnpmEnv(env),
     encoding: "utf8",
     maxBuffer: 8 * 1024 * 1024,
   });
   return {
     id,
     title,
-    command: command.join(" "),
+    command: `pnpm --ignore-workspace ${args.join(" ")}`,
     cwd,
     exitCode: result.status ?? 1,
     durationMs: Date.now() - started,
@@ -71,23 +84,19 @@ mkdirSync(outDir, { recursive: true });
 
 const steps = [];
 
-steps.push(
-  classify(run("unit-gateway", "iot-gateway unit", pnpmDir(gatewayDir, ["test"]))),
-);
-steps.push(
-  classify(run("unit-console", "iot-console-web unit", pnpmDir(consoleDir, ["test"]))),
-);
-steps.push(classify(run("lint-gateway", "iot-gateway tsc", pnpmDir(gatewayDir, ["lint"]))));
-steps.push(classify(run("lint-console", "iot-console-web tsc", pnpmDir(consoleDir, ["lint"]))));
+steps.push(classify(run("unit-gateway", "iot-gateway unit", ["test"], gatewayDir)));
+steps.push(classify(run("unit-console", "iot-console-web unit", ["test"], consoleDir)));
+steps.push(classify(run("lint-gateway", "iot-gateway tsc", ["lint"], gatewayDir)));
+steps.push(classify(run("lint-console", "iot-console-web tsc", ["lint"], consoleDir)));
 
 if (!skipBuild) {
-  steps.push(classify(run("build-gateway", "iot-gateway build", pnpmDir(gatewayDir, ["build"]))));
-  steps.push(classify(run("build-console", "iot-console-web build", pnpmDir(consoleDir, ["build"]))));
+  steps.push(classify(run("build-gateway", "iot-gateway build", ["build"], gatewayDir)));
+  steps.push(classify(run("build-console", "iot-console-web build", ["build"], consoleDir)));
 }
 
 let e2eStats = null;
 if (!skipE2e) {
-  const e2e = run("e2e", "Playwright (skip if stack down)", pnpmDir(consoleDir, ["e2e"]));
+  const e2e = run("e2e", "Playwright (skip if stack down)", ["e2e"], consoleDir);
   e2eStats = playwrightSummary(join(consoleDir, "test-results/e2e-results.json"));
   const skippedOnly =
     e2e.exitCode === 0 && e2eStats && e2eStats.unexpected === 0 && e2eStats.expected === 0;

@@ -58,7 +58,7 @@
       "id": "e2e-golden-path",
       "title": "黄金路径活栈验收",
       "command": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
-      "passWhen": "deeplink + golden-path + env-lab 全部 passed；真实 Gateway + ThingsBoard，禁止 mock 运行时"
+      "passWhen": "deeplink + golden-path + env-lab + settings-and-url + ops + filters 全部 passed；真实 Gateway + ThingsBoard，禁止 mock 运行时"
     }
   ],
   "negative": [

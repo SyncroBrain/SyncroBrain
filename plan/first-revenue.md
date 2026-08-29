@@ -50,6 +50,7 @@
 | P33 | Playwright 黄金路径验收（登录→一键→遥测→超温确认→CSV→深链→交接包；需本地栈，不 mock 运行时） | 嵌 TB Dashboard / CI 无栈即跳过 | **已完成**（2026-08-29 活栈 `E2E_REQUIRE_STACK=1` 通过；CI 无栈仍 skip） |
 | P34 | 第二 Pack 与告警闭环自动化：env-lab 超湿、恢复正常窗、清除；复制链接；无栈时 e2e skip（`E2E_REQUIRE_STACK=1` 仍失败） | 嵌 TB Dashboard / 改密口头 / 报价 | **已完成**（同上） |
 | P35 | 单元测试 + 一键 verify + AI 验收证据包（rubric/schema + `pnpm acceptance:evidence`；Grok 4.6 High 另审，不把确定性测试冒充 AI） | 嵌 TB Dashboard / 无 key 不阻塞 unit | **已完成**（unit/lint/build/活栈 e2e 以最近一次 evidence 为准；模型审阅见 `plan/validation/acceptance/`） |
+| P36 | 演示脚本剩余可自动路径纳入 Playwright（持续上报、设定温度、hours/窗口 CSV、告警详情与类型筛、总览待确认、批量清除）并活栈 + AI 证据包 | 改密口头 / 报价 / backup.sh / EMQX / K8s | **已完成**（2026-08-29 活栈 Playwright 7 passed / 0 skip；`pnpm acceptance:evidence` + Grok 4.6 High verdict） |
 | 明确延后 | 熟人演示预约 / 报价触达 | — | **延后** |
 | 明确延后 | 公开 docs / SEO / 广告 | — | 延后 |
 
