@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  title: SyncroBrain Cloud Lite Gateway
+  version: 0.1.0
+  description: |
+    Product Iterate HTTP surface on iot-gateway (NestJS Fastify).
+    Server default is http://localhost:13200/api/v1.
+    Device CRUD in device.v1.yaml is a legacy subset and is not the Cloud Lite contract.
+servers:
+  - url: http://localhost:13200/api/v1
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        "200":
+          description: Gateway + ThingsBoard ping (TB_MODE=fake reports up)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /ops/inventory:
+    get:
+      operationId: opsInventory
+      responses:
+        "200":
+          description: Pilot inventory (no secrets)
+  /branding:
+    get:
+      operationId: branding
+      responses:
+        "200":
+          description: White-label stub
+  /license:
+    get:
+      operationId: licenseStatus
+      responses:
+        "200":
+          description: Offline license stub (report_only)
+  /auth/demo:
+    post:
+      operationId: demoLogin
+      responses:
+        "200":
+          description: Demo JWT when CASBIN_DEV_OPEN=true
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accessToken]
+                properties:
+                  accessToken: { type: string }
+        "403":
+          description: CASBIN_DEV_OPEN is not true
+  /packs:
+    get:
+      operationId: listPacks
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Industry Pack catalog
+  /demos/cold-lab:
+    post:
+      operationId: demoColdLab
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: Project + Pack + site + asset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /demos/env-lab:
+    post:
+      operationId: demoEnvLab
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: env-lab room demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /alarms:
+    get:
+      operationId: listAlarms
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Alarm rows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AlarmRow"
+  /alarms/export.csv:
+    get:
+      operationId: exportAlarmsCsv
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: CSV
+          content:
+            text/csv:
+              schema: { type: string }
+  /alarms/{id}/ack:
+    post:
+      operationId: ackAlarm
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "201":
+          description: Acknowledged row
+  /assets/{id}/simulate/overtemp:
+    post:
+      operationId: simulateOvertemp
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Telemetry + CRITICAL alarm
+  /projects/{id}:
+    delete:
+      operationId: deleteProject
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Removed mapped assets and TB tenant
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Health:
+      type: object
+      required: [status, thingsboard, security]
+      properties:
+        status: { type: string }
+        service: { type: string }
+        version: { type: string }
+        mqtt: { type: string }
+        thingsboard: { type: string, enum: [up, down, skipped] }
+        notifications:
+          type: object
+          properties:
+            alarmWebhookConfigured: { type: boolean }
+        security:
+          type: object
+          required: [codes]
+          properties:
+            warningCount: { type: integer }
+            codes:
+              type: array
+              items:
+                type: string
+                enum:
+                  - CASBIN_DEV_OPEN
+                  - JWT_SECRET_WEAK
+                  - TB_PASSWORD_DEFAULT
+                  - DB_PASSWORD_DEFAULT
+    DemoBootstrapRequest:
+      type: object
+      properties:
+        projectName: { type: string }
+        siteName: { type: string }
+        assetName: { type: string }
+    DemoBootstrap:
+      type: object
+      required: [project, pack, site, asset]
+      properties:
+        project:
+          type: object
+          required: [id]
+          properties:
+            id: { type: string }
+            name: { type: string }
+            tbTenantId: { type: string }
+        pack:
+          type: object
+          required: [slug]
+          properties:
+            slug: { type: string }
+            version: { type: string }
+        site:
+          type: object
+          properties:
+            id: { type: string }
+            tbCustomerId: { type: string }
+        asset:
+          type: object
+          required: [id]
+          properties:
+            id: { type: string }
+            tbDeviceId: { type: string }
+    AlarmRow:
+      type: object
+      required: [id, type, severity]
+      properties:
+        id: { type: string }
+        type: { type: string }
+        severity: { type: string }
+        acknowledged: { type: boolean }
+        cleared: { type: boolean }
+        projectId: { type: string }
+        assetId: { type: string }
+        assetName: { type: string }

@@ -1,56 +1,35 @@
 {
   "id": "syncrobrain-cloud-lite-acceptance",
-  "version": "1.0",
+  "version": "1.1",
   "product": "SyncroBrain Cloud Lite",
-  "reviewerModel": "Cursor Grok 4.6 High",
+  "reviewerModel": "optional — not a CI gate",
   "generatedEvidenceCommand": "pnpm acceptance:evidence",
   "notes": [
-    "本包是 AI 验收的输入，不是 AI 本身。确定性单元测试 / Playwright 通过 ≠ 已做模型审阅。",
-    "没有 API key 不得阻止 unit / lint / build / 无栈 E2E skip。",
-    "活栈 E2E skipped 时 verdict 只能是 blocked，不能是 pass。"
+    "AI 审阅是可选的。确定性 L1 / Fake TB / isolated e2e 才是门。",
+    "产品不调用 LLM。不要把模型判定做成功能或默认 CI。",
+    "没有 API key 不得阻止 L1。",
+    "活栈 E2E skipped 时不得记 pass。isolated e2e 禁止 skip。"
   ],
   "requiredDeterministic": [
     {
-      "id": "unit-gateway",
-      "title": "iot-gateway unit",
-      "command": "pnpm --dir iot-gateway test",
-      "passWhen": "vitest run exit 0"
+      "id": "l1",
+      "title": "Meta L1",
+      "command": "pnpm test:l1",
+      "passWhen": "gateway unit + Fake TB API + console unit + contracts exit 0"
     },
     {
-      "id": "unit-console",
-      "title": "iot-console-web unit",
-      "command": "pnpm --dir iot-console-web test",
-      "passWhen": "vitest run exit 0"
-    },
+      "id": "e2e-guard",
+      "title": "Playwright repo guard",
+      "command": "pnpm --dir iot-console-web e2e:guard",
+      "passWhen": "repo-guard.spec.ts passed；不 skip"
+    }
+  ],
+  "isolatedStack": [
     {
-      "id": "lint-gateway",
-      "title": "iot-gateway tsc",
-      "command": "pnpm --dir iot-gateway lint",
-      "passWhen": "tsc --noEmit exit 0"
-    },
-    {
-      "id": "lint-console",
-      "title": "iot-console-web tsc",
-      "command": "pnpm --dir iot-console-web lint",
-      "passWhen": "tsc --noEmit exit 0"
-    },
-    {
-      "id": "build-gateway",
-      "title": "iot-gateway build",
-      "command": "pnpm --dir iot-gateway build",
-      "passWhen": "nest build exit 0"
-    },
-    {
-      "id": "build-console",
-      "title": "iot-console-web build",
-      "command": "pnpm --dir iot-console-web build",
-      "passWhen": "rsbuild build exit 0"
-    },
-    {
-      "id": "e2e-skip-without-stack",
-      "title": "Playwright 无栈 skip",
-      "command": "pnpm --dir iot-console-web e2e",
-      "passWhen": "栈未起时全部 skip 且 exit 0；不得 failed"
+      "id": "e2e-isolated",
+      "title": "Fake TB Playwright",
+      "command": "pnpm e2e:isolated",
+      "passWhen": "Playwright expected>0 且 skipped 不得充当全绿；health.security.codes 含默认口令码"
     }
   ],
   "liveStack": [
@@ -58,7 +37,7 @@
       "id": "e2e-golden-path",
       "title": "黄金路径活栈验收",
       "command": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
-      "passWhen": "deeplink + golden-path + env-lab + settings-and-url + ops + filters 全部 passed；真实 Gateway + ThingsBoard，禁止 mock 运行时"
+      "passWhen": "真实 Gateway + ThingsBoard；结束后 DELETE 演示项目"
     }
   ],
   "negative": [
@@ -70,14 +49,15 @@
     }
   ],
   "outOfScope": [
-    "改密口头说明",
+    "改密口头说明（由 health.security.codes 覆盖机器部分）",
     "报价邮件",
     "backup.sh 演练",
-    "公开 docs / SEO"
+    "公开 docs / SEO",
+    "LLM 点 UI / 产品内 AI"
   ],
   "verdictRules": {
-    "pass": "requiredDeterministic 全 pass，且 liveStack 实际跑过并 pass。",
-    "fail": "任一 requiredDeterministic 失败，或 liveStack 已执行但有 failed。",
-    "blocked": "requiredDeterministic 全 pass，但 liveStack 因栈未起而被 skip。不得把 skip 写成已完成试点验收。"
+    "pass": "L1 全绿，且 isolated 或 live Playwright 实际跑过并 pass。",
+    "fail": "L1 失败，或 Playwright 已执行但有 failed / skip-当-pass。",
+    "blocked": "L1 全绿，但未跑 isolated/live Playwright。不得把 skip 写成出门。"
   }
 }

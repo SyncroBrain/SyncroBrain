@@ -12,6 +12,7 @@
 6. 活栈 E2E 已执行且有 failed → `verdict` = `fail`。
 7. 仅当 `requiredDeterministic` 全 pass **且** `liveStack` 实际 passed 时，`verdict` = `pass`。
 8. 不要因为缺少 Cursor/OpenAI API key 而改判 unit/e2e；那与确定性测试无关。
+9. 本审阅是可选的。不要要求把它做成产品功能或 CI 必过门。
 
 ## 对照
 

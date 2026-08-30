@@ -1,16 +1,21 @@
 openapi: 3.1.0
 info:
-  title: SyncroBrain Device API
+  title: SyncroBrain Device API (legacy)
   version: 1.0.0
+  description: |
+    Deprecated as the Cloud Lite contract. Keep Device CRUD compatible;
+    new orchestration lives in gateway.v1.yaml on port 13200.
+    Do not treat this file as the Pack / demo / alarm surface.
 servers:
-  - url: http://localhost:13100/api/v1
+  - url: http://localhost:13200/api/v1
 paths:
   /health:
     get:
       operationId: health
+      deprecated: true
       responses:
         "200":
-          description: OK
+          description: OK — prefer gateway.v1 Health schema
   /devices:
     get:
       operationId: listDevices

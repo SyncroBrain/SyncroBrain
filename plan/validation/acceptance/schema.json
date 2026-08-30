@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "SyncroBrainAcceptanceVerdict",
-  "description": "Grok 4.6 High 审阅 acceptance evidence 后必须输出的判定。跳过的活栈 E2E 不得记为 pass。",
+  "description": "可选审阅输出。确定性 L1 / isolated e2e 才是门。跳过的活栈 E2E 不得记为 pass。",
   "type": "object",
   "additionalProperties": false,
   "required": ["verdict", "model", "summary", "checks"],

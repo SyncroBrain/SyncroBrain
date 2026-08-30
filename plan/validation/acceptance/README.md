@@ -1,52 +1,57 @@
-# Cloud Lite AI 验收（证据包）
+# Cloud Lite 验收（确定性门 + 可选审阅）
 
-确定性测试（Vitest / Playwright）**不是**「AI 验收」。AI 验收 = 用 **Grok 4.6 High** 读取本目录的 rubric + 一次 `pnpm acceptance:evidence` 产出的 `last-run/` 证据，按 [schema.json](./schema.json) 输出 `verdict`。
+产品**没有** LLM 功能；规划也禁止把模型做成运行时。下面三层都是确定性的。所谓「AI 验收」只是可选地把证据交给人/agent 读，**默认关、不进 CI、不能当出门门**。
 
-## 生成证据（不需要模型 API key）
+## 层级
+
+| 层 | 命令 | 依赖 | CI |
+|----|------|------|-----|
+| **L1** | `pnpm test` / `pnpm test:l1` | 无 Docker、无 TB | 子仓 + Meta 本地 |
+| **L2** | 含在 L1 的 `pnpm --dir iot-gateway test:api` | Fake TB + sqlite | Gateway CI，**禁止 skip** |
+| **L3 isolated** | `pnpm e2e:isolated` | Fake TB + sqlite + Console | Meta 工作区；禁止 skip |
+| **L3 live** | `E2E_REQUIRE_STACK=1 pnpm e2e` | 真 TB CE | 可选；无栈不得记 pass |
+| 可选审阅 | `pnpm acceptance:evidence` 后人工/agent 读 `last-run/` | 无模型 API | **不是门** |
+
+## L1（Agent 从根目录只跑这一条）
 
 ```bash
-# 单元 + lint/build 记录 + 一次 Playwright（无栈则 skip）
-pnpm acceptance:evidence
-# 同义
-pnpm acceptance:prepare
+pnpm test:l1
 ```
 
-产物：
+跑：gateway unit、gateway Fake TB API、console unit、`contracts/*.yaml` 烟测。
 
-| 文件 | 说明 |
-|------|------|
-| [rubric.json](./rubric.json) | 机器可读评分项 |
-| [schema.json](./schema.json) | 审阅输出 JSON Schema |
-| [reviewer-prompt.md](./reviewer-prompt.md) | 给后续 Grok 4.6 High agent 的固定提示 |
-| `last-run/evidence.json` | 本次命令收集的结构化结果（gitignored） |
-| `last-run/evidence.md` | 给人读的摘要 |
+## 安全码（替代口头改密红线的应用层断言）
 
-`last-run/` 是生成物，不要提交。没有 API key **不得**当作 unit / 无栈 E2E 的失败理由。
+`GET /api/v1/health` 的 `security.codes`：
 
-## 一键命令（MetaRepo 根）
+- `CASBIN_DEV_OPEN`
+- `JWT_SECRET_WEAK`
+- `TB_PASSWORD_DEFAULT`
+- `DB_PASSWORD_DEFAULT`
 
-| 命令 | 作用 |
-|------|------|
-| `pnpm test` | gateway + console 单元测试 |
-| `pnpm verify` | unit + lint + build（不含活栈 E2E） |
-| `pnpm e2e` | Playwright；栈未起 skip |
-| `E2E_REQUIRE_STACK=1 pnpm e2e` | 栈未起则失败 |
-| `pnpm acceptance:evidence` | 跑可跑的检查并写 `last-run/` |
+L2 API 与 Playwright `e2e/security-codes.spec.ts` 断言这四项。改密 / backup 演练仍是运维，不自动化。
 
-子仓：`pnpm --dir iot-gateway test` · `pnpm --dir iot-console-web test` · `pnpm --dir iot-console-web e2e`
+## 活栈 Playwright
 
-## 活栈
-
-需要 Console `:15180`、Gateway `:13200`、ThingsBoard `health.thingsboard=up`。TB+PG 已在、应用未起时：
+需要 Console `:15180`、Gateway `:13200`、ThingsBoard `health.thingsboard=up`。无栈时 `pnpm e2e` **skip**；skip ≠ 通过。
 
 ```bash
-pnpm --dir iot-gateway dev
-pnpm --dir iot-console-web dev
 E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e
 ```
 
-或 `cd deploy && docker compose -f docker-compose.dev.yml up -d --build`。
+一键演示会 `DELETE /projects/:id` 清理（`helpers.trackProject`）。
 
-## 后续 Grok 审阅
+## 可选证据包（不需要模型 API key）
 
-另开 **Grok 4.6 High** agent，把 [reviewer-prompt.md](./reviewer-prompt.md) + `last-run/evidence.json` 交给它，要求只输出符合 schema 的 JSON（可附简短 Markdown）。本目录不调用外部模型 API。
+```bash
+pnpm acceptance:evidence
+```
+
+产物给后续审阅用。没有 API key **不得**当作 L1 失败。把 skip 的活栈 E2E 写成 pass 是错误。
+
+## 禁止
+
+- 产品 Gateway / Console 调用 LLM
+- 用模型点 Ant Design
+- 把 AI verdict 做成 GitHub 必过检查
+- 把无栈 Playwright skip 当成绿

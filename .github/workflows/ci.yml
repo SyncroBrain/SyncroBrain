@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # Child apps are gitignored here; L1/isolated e2e run locally after pnpm init:repos.
+      - name: OpenAPI contract smoke
+        run: node tooling/scripts/contract-test.mjs
