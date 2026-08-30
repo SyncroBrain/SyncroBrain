@@ -37,8 +37,8 @@
 | 档位 | 适用 | 最小栈 | 何时启用 |
 |------|------|--------|----------|
 | **Cloud Lite** | 演示、评估、首单私有化 | TB CE + PG + Gateway + Console | **立即（Build）** |
-| **Private Single-node** | 数据不出园 | 同上 Compose；离线许可、备份、可选客户 OIDC | 第一个付费私有化客户 |
-| **Enterprise HA** | 多节点 / 合同 SLA | TB 集群、对象存储；按需 EMQX / DataTalk | SLO 或合同触发，不提前上 |
+| **Private Single-node** | 数据不出园 | 同上 Compose + 离线许可执法 + 可选客户 OIDC | [deploy/INSTALL-PRIVATE.md](../deploy/INSTALL-PRIVATE.md) |
+| **Enterprise HA** | 多节点 / 合同 SLA | 应用副本 + Caddy；**TB CE 仍单节点** | [deploy/HA.md](../deploy/HA.md)；TB 集群仅合同附录 |
 
 本地开发可用 TB 官方 docker 单体。Mosquitto 仅作历史 POC，**不是**生产 MQTT 平面。
 

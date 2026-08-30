@@ -15,7 +15,7 @@
 | **Build**（已关闭） | 可部署 Cloud Lite | TB CE + Gateway + Console + `cold-lab` | 一键 compose；模拟器；演示脚本 |
 | **Showcase**（已关闭） | 内部可演示、双 Pack | `env-lab`；私有安装说明 | 闭门可复现；**不要求**公开 docs 站 |
 | **Product Iterate**（当前 · 表项已齐） | 产品够厚再谈传播 | Console/告警/Pack/运维打磨 | 见 [product-iterate.md](./product-iterate.md) |
-| **First Revenue**（触达准备） | 第一笔许可/部署/支持费 | 离线许可、备份、白牌、标准安装、交接包 | ≥1 份付费合同；见 [first-revenue.md](./first-revenue.md) |
+| **First Revenue**（触达准备） | 第一笔许可/部署/支持费 | 离线许可执法、Private/HA 档、合同草稿 | ≥1 份付费合同；见 [first-revenue.md](./first-revenue.md) |
 | **Vertical Fit** | 从项目中选垂直 | 冻结可复用 Pack | 3 个项目共用 ≥70% 工作流 |
 | Repeatability / Platform / Scale | 草案 | — | Vertical Fit 通过后解锁 |
 

@@ -101,6 +101,8 @@ pnpm --dir docs dev              # :13014
 | `pnpm test:contract` | OpenAPI 文件烟测 |
 | `pnpm acceptance:evidence` | 可选证据包（不调用模型 API，**不是门**） |
 
+付费档位：`deploy/INSTALL-PRIVATE.md` · `deploy/HA.md`。合同草稿：`legal/`（须律师审阅）。
+
 `package.json` 里 `dev:iot-gateway` 等与上表 `--dir` 命令等价。Windows 也可 `.\dev-mvp.ps1` 开两个独立窗口。
 
 改宿主机代码前，先停 compose 里的应用容器：`docker compose -f deploy/docker-compose.dev.yml stop iot-gateway iot-console`。

@@ -43,6 +43,6 @@
 
 ## 5. 与下一阶段的关系
 
-- 表内 P0–P2 **已完成**；继续产品补强见 [first-revenue.md](./first-revenue.md)（**触达延后**）。测试入口：`pnpm test:l1`；隔离 Playwright：`pnpm e2e:isolated`。AI 证据包可选、非门。改密口头由 `health.security.codes` 覆盖机器部分。  
+- 表内 P0–P2 **已完成**；商业化预规划：离线 SKU、`INSTALL-PRIVATE` / `HA`、`legal/` 草稿。触达与现场改密仍现场做。见 [first-revenue.md](./first-revenue.md)。  
 - 闭门演示脚本仍维护：[validation/demo-script.md](./validation/demo-script.md)。  
 - 公开文档站与熟人报价：**延后**。

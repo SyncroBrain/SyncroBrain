@@ -36,7 +36,13 @@ paths:
       operationId: licenseStatus
       responses:
         "200":
-          description: Offline license stub (report_only)
+          description: Offline license (report_only or block)
+  /entitlement/skus:
+    get:
+      operationId: listSkus
+      responses:
+        "200":
+          description: Configurable SKU catalog
   /auth/demo:
     post:
       operationId: demoLogin
@@ -184,6 +190,13 @@ components:
                   - JWT_SECRET_WEAK
                   - TB_PASSWORD_DEFAULT
                   - DB_PASSWORD_DEFAULT
+        license:
+          type: object
+          properties:
+            mode: { type: string }
+            enforcement: { type: string, enum: [report_only, block] }
+            sku: { type: string, nullable: true }
+            verified: { type: boolean }
     DemoBootstrapRequest:
       type: object
       properties:

@@ -44,14 +44,15 @@ mustContain(
     "/license",
     "security",
     "codes",
+    "/entitlement/skus",
   ],
   "gateway.v1",
 );
 
 mustContain(
-  "device.v1.yaml",
-  ["13200", "deprecated", "/devices"],
-  "device.v1",
+  "entitlement.v1.yaml",
+  ["syncrobrain", "entitlement/skus", "license"],
+  "entitlement.v1",
 );
 
 console.log("contracts ok");

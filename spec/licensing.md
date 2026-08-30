@@ -53,16 +53,18 @@
 | 使用 TB CE 的私有化 | 「这是我们自研的设备引擎」且不披露 TB |
 | 数据导出与标准 MQTT | 永久无偿服务、无限再分发自研代码 |
 
-## 5.1 Product Iterate 占位（非合同效力）
+## 5.1 离线 Entitlement（可配置，非在线扣费）
 
 | 接口 / 配置 | 说明 |
 |-------------|------|
-| `GET /api/v1/branding` | 白牌标题 / Logo / 主题色（`BRAND_*` 环境变量） |
-| `GET /api/v1/license` | 离线许可状态；`enforcement: report_only`，**不阻断** |
-| `POST /api/v1/license/activate` | 写入 `LICENSE_FILE`（默认 `data/license.json`）；无验签 |
-| `samples/license.stub.json` | 示例许可 JSON；`productCode` 必须为 `syncrobrain` |
+| `GET /api/v1/entitlement/skus` | SKU 目录：cloud-lite / private-single / enterprise-ha |
+| `GET /api/v1/license` | 状态；`enforcement` 为 `report_only` 或 `block` |
+| `POST /api/v1/license/activate` | 写入 `LICENSE_FILE`；block 档必须 Ed25519 验签 |
+| `LICENSE_PUBLIC_KEY` / `_FILE` | 签发方公钥 |
+| `DEPLOY_PROFILE=private\|ha` | 拒绝演示默认口令后才启动 |
+| `samples/license.private-single.json` | 实验室签名样例 |
 
-后续 Entitlement 产品码仍为 `syncrobrain`；本占位不得对外表述为已计费。
+产品码仍为 `syncrobrain`。这不是 Stripe / LuminaryWorks 在线计费。合同文本见 [legal/](../legal/README.md)（须律师审阅）。
 
 ## 6. 尽调材料
 

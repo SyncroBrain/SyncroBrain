@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: SyncroBrain Entitlement (offline config)
+  version: 0.1.0
+  description: |
+    Configurable SKU catalog. Not Stripe / LuminaryWorks online billing.
+    License files are Ed25519-signed JSON (productCode=syncrobrain).
+servers:
+  - url: http://localhost:13200/api/v1
+paths:
+  /entitlement/skus:
+    get:
+      operationId: listSkus
+      responses:
+        "200":
+          description: Catalog
+  /license:
+    get:
+      operationId: licenseStatus
+      responses:
+        "200":
+          description: mode + enforcement + sku
+  /license/activate:
+    post:
+      operationId: activateLicense
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Persisted
+        "400":
+          description: Invalid or unsigned under block
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
