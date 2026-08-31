@@ -46,6 +46,7 @@ function spawnInherit(command, args, cwd, extraEnv) {
     cwd,
     env: nestedPnpmEnv(extraEnv),
     stdio: "inherit",
+    detached: true,
   });
   children.push(child);
   return child;
@@ -53,12 +54,16 @@ function spawnInherit(command, args, cwd, extraEnv) {
 
 function shutdown() {
   for (const child of children) {
-    if (!child.killed) child.kill("SIGTERM");
+    if (!child.pid) continue;
+    try {
+      process.kill(child.pid, "SIGTERM");
+    } catch {
+      /* already exited */
+    }
   }
   rmSync(dirname(dbPath), { recursive: true, force: true });
 }
 
-process.on("exit", shutdown);
 process.on("SIGINT", () => {
   shutdown();
   process.exit(130);
@@ -114,18 +119,18 @@ const e2e = spawnSync("pnpm", ["--ignore-workspace", "e2e"], {
 });
 
 const reportPath = join(consoleDir, "test-results/e2e-results.json");
+let code = e2e.status ?? 1;
 if (existsSync(reportPath)) {
   const { readFileSync } = await import("node:fs");
   const report = JSON.parse(readFileSync(reportPath, "utf8"));
   const stats = report.stats ?? {};
   if ((stats.skipped ?? 0) > 0) {
     console.error("Isolated e2e reported skipped tests; refusing false green.");
-    process.exit(1);
-  }
-  if ((stats.expected ?? 0) === 0 && (stats.unexpected ?? 0) === 0) {
+    code = 1;
+  } else if ((stats.expected ?? 0) === 0 && (stats.unexpected ?? 0) === 0) {
     console.error("Isolated e2e ran zero tests; refusing false green.");
-    process.exit(1);
+    code = 1;
   }
 }
-
-process.exit(e2e.status ?? 1);
+shutdown();
+process.exit(code);

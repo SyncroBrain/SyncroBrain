@@ -1,8 +1,8 @@
 # SyncroBrain 平台愿景 (v3.0)
 
 > **品牌**：[SyncroBrain](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
-> **定位**：基于 ThingsBoard CE 的可交付 IoT 解决方案平台。让集成商与企业技术团队 **30 分钟起演示、7 天内完成私有化项目底座**。  
-> **当前阶段**：**Product Iterate** — Cloud Lite 已可闭门演示；**不挂公开 docs 站**，先打磨 Console / 告警 / Pack / 运维。见 [plan/product-iterate.md](../plan/product-iterate.md)。  
+> **定位**：连接每一台设备，赋予它一个大脑。基于 ThingsBoard CE 的可交付 IoT 平台 + Industry Pack + 受策略约束的 AI。  
+> **当前阶段**：**Multi-Vertical Production** — Cloud Lite 已可闭门演示；并行交付冷链 / 充储 / 工业 / OEM Pack。**不挂**公开 docs 站。见 [production-scope.md](./production-scope.md)。  
 > **许可**：自研代码为 [Polyform-NC](./licensing.md)；ThingsBoard CE 等上游遵循各自协议。不把编排层伪称为 Apache/MIT。
 
 ## 1. 我们要解决什么
@@ -17,24 +17,25 @@
 | 不想被平台锁死 | 标准 MQTT / REST；TB 与 Pack 可迁出 |
 | 数据必须留在园区 | 单机私有化；默认可关闭外部遥测 |
 
-**ColdGuard** 是首个 **Reference Industry Pack**（实验室冷藏告警闭环），用来证明 Pack 机制，不是要求先有医药销售渠道。见 [coldguard.md](./coldguard.md)。
+**ColdGuard** 是首个 **Reference Industry Pack**（实验室冷藏告警闭环），用来证明 Pack 机制。可售主产品是 SyncroBrain 平台本身。见 [coldguard.md](./coldguard.md)、[multi-vertical.md](./multi-vertical.md)。
 
 ## 2. 产品楔子与长期形态
 
 ```text
-Cloud Lite（TB CE 运行时 + 交付编排）
-    → 付费私有化 / 白牌项目
-    → 从 3–5 个真实项目中选出垂直 Pack
-    → 垂直运营系统（校准、工单、多站点）仅在复用 ≥70% 后解锁
+Cloud Lite（TB CE 运行时 + 交付编排 + Pack Factory）
+    → 多垂直 Pack（冷链 / 充储 / 工业传感）+ 白标 OEM
+    → EdgeAgent 标准协议（OCPP / Modbus / OPC UA / GPS）
+    → 受策略约束的 AI 自治（ai-client，非自研模型）
+    → 垂直运营系统（校准、工单、多站点）在复用 ≥70% 后加深
 ```
 
-| 现在做（Product Iterate） | 以后才做 |
-|---------------------------|----------|
-| Console / 告警 / Pack / 运维打磨 | 公开 docs 站点、营销 SEO |
-| TB CE + Gateway + Console 闭门演示 | EMQX 独立 Broker（客户已有或规模证明后） |
-| `cold-lab` + `env-lab` Pack | 医院招标、消费级百万设备、链上/AI 市场 |
-| 熟人技术买方闭门试点 | 全国渠道与 20 种语言 |
-| 私有安装说明（`deploy/INSTALL.md`） | 自研设备引擎或替代 TB 内核 |
+| 现在做（Multi-Vertical Production） | 以后才做 |
+|-------------------------------------|----------|
+| Pack Factory + 六类可演示/可交付 Pack | 公开 docs 站点、营销 SEO |
+| Console Pack 驱动 + 中英 OEM | 医院招标、消费级百万设备、链上市场 |
+| EdgeAgent 标准协议仿真验收 | 未列表厂商实机「已兼容」宣称 |
+| AI Copilot / Autopilot（包络内、fail closed） | LLM 任意控制、自研大模型 |
+| `cold-lab` 加深 + `env-lab` 保留为可替换证明 | 自研设备引擎或替代 TB 内核 |
 
 ## 3. 与涂鸦、与裸 ThingsBoard 的差异
 
@@ -89,9 +90,9 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 
 ### 死穴三：无限扩平台、没有可演示的交付物
 
-**破局**：Build 固定 **8 周**交付可演示底座。之后优先 **Product Iterate**（体验与交付打磨），不把公开文档站当完成证明。连续 3 个付费项目没有共同工作流，不继续扩大核心。
+**破局**：Cloud Lite 已冻结运行时。本阶段用 Pack 扩展垂直，而不是重写内核。连续 3 个付费项目没有共同工作流，不把定制打进 Pack 主版本。
 
-## 8. 长期可选项（不进入 Build）
+## 8. 长期可选项（不进入本阶段核心）
 
 - EMQX 作为独立 MQTT 平面
 - DoerFlow / 链上、VistaCast 视频 AI
@@ -99,15 +100,15 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 - 多区域主动主动、Kafka、Kubernetes
 - 通用低代码 Decoder 市场
 - 把 TB 原生 UI 当客户主工作台（白牌入口走 SyncroBrain Console）
+- 自研大模型；产品只连接外部模型
 
 ## 9. 关联规格
 
 | 文档 | 说明 |
 |------|------|
-| [architecture.md](./architecture.md) | TB CE 运行时 + Gateway 交付层 |
+| [architecture.md](./architecture.md) | TB CE 运行时 + Gateway + EdgeAgent |
+| [production-scope.md](./production-scope.md) | **当前**生产范围与非目标 |
+| [multi-vertical.md](./multi-vertical.md) | Pack 目录 |
+| [ai-autonomy.md](./ai-autonomy.md) | 产品 AI |
 | [coldguard.md](./coldguard.md) | 参考 Pack：实验室冷藏 |
-| [industry-pack.md](./industry-pack.md) | Pack 制品与 `cold-lab` 默认值 |
-| [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
-| [licensing.md](./licensing.md) | Polyform-NC 与 TB 上游 |
-| [plan/README.md](../plan/README.md) | Build → Showcase → Product Iterate → First Revenue |
-| [plan/product-iterate.md](../plan/product-iterate.md) | **当前**：产品打磨；不挂公开 docs |
+| [plan/README.md](../plan/README.md) | 阶段门 |

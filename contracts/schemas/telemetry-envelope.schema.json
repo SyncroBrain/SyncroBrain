@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/telemetry-envelope.schema.json",
+  "title": "SyncroBrain telemetry envelope",
+  "type": "object",
+  "required": ["schemaVersion", "eventTime", "channelId", "value"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "tenantId": { "type": "string" },
+    "siteId": { "type": "string" },
+    "assetId": { "type": "string" },
+    "channelId": { "type": "string" },
+    "eventTime": { "type": "string" },
+    "ingestedAt": { "type": "string" },
+    "value": {},
+    "unit": { "type": "string" },
+    "quality": {
+      "type": "string",
+      "enum": ["ok", "late", "out_of_order", "clock_skew", "backfill", "unmapped"]
+    },
+    "idempotencyKey": { "type": "string" }
+  }
+}

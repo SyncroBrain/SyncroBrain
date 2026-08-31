@@ -2,7 +2,7 @@
 
 > **品牌**：SyncroBrain · **中文名**：万物智脑  
 > **组织**：[github.com/syncrobrain](https://github.com/syncrobrain) · **域名**：[syncrobrain.com](https://syncrobrain.com)  
-> **可售产品**：Cloud Lite（私有化 IoT 底座 + Pack）。ColdGuard 是参考 Pack。兄弟产品全部可选。
+> **可售产品**：Cloud Lite（私有化 IoT 底座 + Pack + 可选 EdgeAgent + 可选 AI）。ColdGuard 是参考 Pack。兄弟产品全部可选。
 
 规划摘要：[LuminaryWorks/spec/products/syncrobrain.md](https://github.com/LuminaryWorks/LuminaryWorks/blob/main/spec/products/syncrobrain.md)。冲突时**以本仓为准**。
 
@@ -38,7 +38,12 @@
 
 ## AI 边界
 
-Build 不做 LLM、不做链上。计费未登记 `syncrobrain` 不得上线收费 SKU。
+产品 AI 使用 `@luminaryworks/ai-client` 连接**外部**模型（`AI_MODE=off|local|central`），与 DataLuminary / BlockyEdu 同一合同。详见 [ai-autonomy.md](./ai-autonomy.md)。
+
+- 不自研大模型；不计费登记 `syncrobrain` 不得上线收费 SKU
+- `AI_MODE=off` 时监控、Pack、告警、命令、私有化仍可用
+- LLM 不得删除资源、任意 RPC 或绕过 Safety Kernel
+- 可选审阅（`pnpm acceptance:evidence`）不是产品功能、不是默认 CI 门
 
 ## 原则
 

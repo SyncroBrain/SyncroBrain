@@ -19,7 +19,7 @@
       "remote": "git@github.com:syncrobrain/iot-gateway.git",
       "remoteHttps": "https://github.com/syncrobrain/iot-gateway.git",
       "required": true,
-      "description": "NestJS Fastify：Pack、许可、ThingsBoard REST 编排"
+      "description": "NestJS Fastify：Pack、许可、ThingsBoard REST 编排、领域内核、AI"
     },
     "iot-console-web": {
       "path": "iot-console-web",
@@ -48,6 +48,13 @@
       "remoteHttps": "https://github.com/syncrobrain/deploy.git",
       "required": true,
       "description": "Docker Compose（Cloud Lite：ThingsBoard CE、PostgreSQL、Gateway、Console）"
+    },
+    "iot-edge-agent": {
+      "path": "iot-edge-agent",
+      "remote": "",
+      "remoteHttps": "",
+      "required": false,
+      "description": "EdgeAgent：OCPP / Modbus / OPC UA / GPS（MetaRepo 内源码，后续可拆仓）"
     }
   }
 }

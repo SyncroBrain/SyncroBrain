@@ -1,9 +1,8 @@
 # Industry Pack：cold-lab-v1
 
-> **状态**：Cloud Lite 参考 Pack（`cold-lab`）；另有轻量 `env-lab` 证明 Pack 可替换。均未经客户冻结。  
-> **slug**：`cold-lab` · **版本**：`0.1-draft`（运行时制品在 `iot-gateway/packs/`）  
-> **制品目标**：TB Device Profile、Rule Chain、Alarm、Dashboard JSON + 本文默认阈值。  
-> **产品**：[coldguard.md](./coldguard.md) · **运行时**：[architecture.md](./architecture.md)
+> **状态**：Cloud Lite Pack Factory（多垂直）。`cold-lab` 仍为参考实现；另有 `env-lab` 证明可替换。  
+> **slug**：见 [multi-vertical.md](./multi-vertical.md)  
+> **机器可读合同**：[contracts/schemas/pack-manifest.schema.json](../contracts/schemas/pack-manifest.schema.json)
 
 Pack 是版本化制品：改阈值、SOP、报告或 BOM 必须升版本。不能被 3 个客户复用的改动走专业服务，不打进本 Pack。
 

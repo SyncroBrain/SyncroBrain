@@ -14,12 +14,13 @@
 |------|------|----------|----------|
 | **Build**（已关闭） | 可部署 Cloud Lite | TB CE + Gateway + Console + `cold-lab` | 一键 compose；模拟器；演示脚本 |
 | **Showcase**（已关闭） | 内部可演示、双 Pack | `env-lab`；私有安装说明 | 闭门可复现；**不要求**公开 docs 站 |
-| **Product Iterate**（当前 · 表项已齐） | 产品够厚再谈传播 | Console/告警/Pack/运维打磨 | 见 [product-iterate.md](./product-iterate.md) |
+| **Product Iterate**（表项已齐） | 产品够厚再谈传播 | Console/告警/Pack/运维打磨 | 见 [product-iterate.md](./product-iterate.md) |
+| **Multi-Vertical Production**（当前） | 运营可谈多方向 | Pack Factory、领域内核、EdgeAgent、AI、OEM | [spec/production-scope.md](../spec/production-scope.md) |
 | **First Revenue**（触达准备） | 第一笔许可/部署/支持费 | 离线许可执法、Private/HA 档、合同草稿 | ≥1 份付费合同；见 [first-revenue.md](./first-revenue.md) |
 | **Vertical Fit** | 从项目中选垂直 | 冻结可复用 Pack | 3 个项目共用 ≥70% 工作流 |
 | Repeatability / Platform / Scale | 草案 | — | Vertical Fit 通过后解锁 |
 
-**当前内部状态：继续产品功能（First Revenue 触达延后）。** 公开 docs **延后**；熟人演示/报价暂不做。见 [first-revenue.md](./first-revenue.md)。
+**当前内部状态：Multi-Vertical Production。** First Revenue 触达仍可延后。公开 docs **延后**。cold-lab/env-lab 的 P0–P36 是演示基线，**不等于**多垂直生产完成。
 
 [validation.md](./validation.md) 为渠道触达附录，不阻塞产品迭代。ColdGuard 实验室访谈清单不作为当前必做。
 
@@ -63,7 +64,7 @@
 
 | 文档 | 说明 |
 |------|------|
-| [product-iterate.md](./product-iterate.md) | Product Iterate（P0–P2 已完成） |
+| [multi-vertical-production.md](./multi-vertical-production.md) | **当前**阶段 |
 | [first-revenue.md](./first-revenue.md) | **触达准备**：演示教练、交接包、报价话术 |
 | [showcase-freeze.md](./showcase-freeze.md) | Showcase 已关闭（内部演示） |
 | [showcase.md](./showcase.md) | Showcase 回顾 |

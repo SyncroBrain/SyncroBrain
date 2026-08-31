@@ -1,36 +1,39 @@
 # SyncroBrain 架构 (v3.0)
 
-> **核心逻辑**：ThingsBoard CE 是可替换的 IoT 运行时；SyncroBrain 拥有 Pack、项目交付、许可与产品入口。  
-> **默认交付（Cloud Lite）**：ThingsBoard CE + PostgreSQL + iot-gateway（NestJS/Fastify）+ iot-console-web。  
-> **Build 阶段不含**：EMQX、Timescale 独立路径、DataTalk、Kafka、K8s。见 [platform-vision.md](./platform-vision.md)、[plan/build.md](../plan/build.md)。
+> **核心逻辑**：ThingsBoard CE 是可替换的 IoT 运行时；SyncroBrain 拥有 Pack、领域内核、命令、AI 策略、许可与产品入口。  
+> **默认交付（Cloud Lite）**：ThingsBoard CE + PostgreSQL + iot-gateway + iot-console-web；可选 iot-edge-agent。  
+> **本阶段不含**：EMQX、Timescale 独立路径、DataTalk、Kafka、K8s。见 [platform-vision.md](./platform-vision.md)、[production-scope.md](./production-scope.md)。
 
 ## 1. 分层总览
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │  产品体验层                                                          │
-│  SyncroBrain Console · 项目入口 · Pack 配置 · 白牌主题                │
+│  SyncroBrain Console · Pack 驱动工作台 · 白牌 · AI Workspace          │
 │  ColdGuard 为参考工作台；不把 TB 原生 UI 当对外主品牌                 │
 ├─────────────────────────────────────────────────────────────────────┤
-│  交付与编排层（SyncroBrain 自研，NestJS + Fastify）                    │
-│  Project/Site · Industry Pack · 许可/Entitlement · IdP 编排          │
-│  TB 模板生成（Device Profile / Rule Chain / Dashboard）               │
-│  安装 · 升级 · 备份 · 演示脚本                                        │
+│  交付与领域层（SyncroBrain 自研，NestJS + Fastify）                    │
+│  Project/Site/Asset/Channel · Incident · Command · Industry Pack     │
+│  ActionPolicy / Safety Kernel · AI orchestrator（ai-client）         │
+│  许可/Entitlement · IdP · 安装 · 升级 · 备份                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │  IoT 运行时（ThingsBoard CE，可替换）                                  │
 │  MQTT Transport · Device/Asset · Telemetry/Attributes · RPC          │
 │  Rule Engine · Alarm · Dashboard · 多租户                             │
 ├─────────────────────────────────────────────────────────────────────┤
+│  边缘（iot-edge-agent，可选同栈）                                      │
+│  OCPP · Modbus · OPC UA · GPS · 离线缓存 · 本地阈值 · 命令回执       │
+├─────────────────────────────────────────────────────────────────────┤
 │  数据层                                                               │
-│  PostgreSQL（TB 实体 + 时序，Build 默认）                              │
-│  Gateway 元数据可同库分 schema 或独立库                                │
+│  PostgreSQL（TB 实体 + 时序，默认）                                   │
+│  Gateway 领域表（Incident/Command/Audit/Outbox）                      │
 ├─────────────────────────────────────────────────────────────────────┤
 │  设备与模拟器                                                         │
-│  MQTT 设备 / 官方模拟器 / Pack 演示脚本                                │
+│  MQTT 设备 / Pack 演示脚本 / 协议仿真器                               │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**边界**：ThingsBoard 拥有设备运行时事实（连接、遥测、属性、RPC、TB Alarm）。SyncroBrain 拥有项目、Pack 版本、商业许可、交付记录。Build 阶段可直接使用 TB Alarm；出现不可复用的行业闭环后再升格为 Gateway 内 Incident。
+**边界**：ThingsBoard 拥有设备运行时事实（连接、遥测、属性、RPC、TB Alarm）。SyncroBrain 拥有项目、Pack、Incident 内核、命令、AI 策略、商业许可、交付记录。LLM 禁止直接调用 TB 任意 RPC。
 
 ## 2. 部署档位
 
@@ -48,8 +51,9 @@
 |------|------|--------|
 | **ThingsBoard CE** | MQTT 接入、设备/资产、遥测、属性、RPC、Rule Chain、Alarm、基础看板 | Pack 版本、商业许可、安装编排、SyncroBrain 品牌主 UI |
 | **PostgreSQL** | TB 实体与默认时序；Gateway 元数据 | 企业级独立 BI |
-| **iot-gateway** | Pack 应用、项目/站点映射、TB REST 客户端、Entitlement、OIDC/Casbin、交付 API | 替代 TB Transport / Rule Engine |
-| **iot-console-web** | 项目入口、Pack 向导、部署状态、参考 Pack 工作台 | 复制 TB 全部 Widget 编辑器 |
+| **iot-edge-agent** | 标准协议、离线缓存、命令执行 | 替代 TB；商业许可 |
+| **iot-gateway** | Pack、领域内核、TB REST、Entitlement、OIDC/Casbin、AI 编排 | 替代 TB Transport / Rule Engine |
+| **iot-console-web** | Pack 驱动入口、白标、AI Workspace | 复制 TB 全部 Widget 编辑器 |
 | **EMQX** | — | **Build 不部署**。仅当客户已有 Broker、或 TB Transport 不够时经适配加入 |
 | **DataTalk** | 可选大屏 | 默认依赖 |
 
@@ -76,8 +80,9 @@ Gateway 调 TB 使用官方 REST / WebSocket，不 fork TB 源码进产品。白
 - Timescale / ClickHouse 作为主时序（PG 优化后仍不达标）
 - DataTalk 大屏（客户愿为跨站点分析付费）
 - Kafka、微服务、Kubernetes、多区域主动主动
-- 自研规则引擎或替代 TB Alarm 的完整 Incident 内核
-- 原生 App、AI Agent 市场、链上结算
+- 自研规则引擎替代 TB 基础 Alarm（Incident 在 Gateway，TB Alarm 仍为输入）
+- 原生 App、链上结算、自研大模型
+- 未实机认证的厂商兼容宣称
 
 ## 6. 数据流（Cloud Lite）
 
@@ -141,10 +146,10 @@ docker compose (deploy/)
 |------|----------|
 | **Build**（已关闭） | Cloud Lite：TB CE + Gateway + Console + `cold-lab` Pack |
 | **Showcase**（已关闭） | 内部可演示、`env-lab`；私有安装说明；**不挂**公开 docs 站 |
-| **Product Iterate**（当前） | Console / 告警 / Pack / 运维打磨；闭门试点准备 |
-| First Revenue | 离线许可、备份、白牌主题、标准安装包 |
-| Vertical Fit | 从付费项目冻结垂直 Pack；必要时升格 Incident |
-| Repeatability+ | EMQX/HA/DataTalk 按证据启用 |
+| **Product Iterate**（表项已齐） | Console / 告警 / Pack / 运维打磨 |
+| **Multi-Vertical Production**（当前） | Pack Factory、领域内核、EdgeAgent、AI 自治、OEM 双语 |
+| First Revenue | 离线许可、备份、白牌主题、标准安装包；触达仍可延后 |
+| Repeatability+ | EMQX/HA/DataTalk 按证据启用；`hardware-verified` 型号 |
 
 历史 IoT-M1/M2（gateway CRUD、Mosquitto presence）只是代码起点，**不是** Cloud Lite 完成。
 

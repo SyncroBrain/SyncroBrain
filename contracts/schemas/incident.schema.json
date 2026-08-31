@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/incident.schema.json",
+  "title": "SyncroBrain incident",
+  "type": "object",
+  "required": ["id", "type", "severity", "state"],
+  "properties": {
+    "id": { "type": "string" },
+    "siteId": { "type": "string" },
+    "assetId": { "type": "string" },
+    "channelId": { "type": "string" },
+    "type": { "type": "string" },
+    "severity": { "type": "string", "enum": ["INFO", "WARNING", "CRITICAL"] },
+    "state": {
+      "type": "string",
+      "enum": ["open", "acked", "escalated", "in_progress", "resolved", "closed"]
+    },
+    "tbAlarmId": { "type": "string" },
+    "drill": { "type": "boolean" }
+  }
+}

@@ -53,6 +53,13 @@ run("iot-gateway unit", ["test:unit"], gatewayDir);
 run("iot-gateway api (Fake TB)", ["test:api"], gatewayDir);
 run("iot-console-web unit", ["test"], consoleDir);
 
+console.log("\n==> iot-edge-agent protocols");
+const edge = spawnSync(process.execPath, ["--test", join(metaRoot, "iot-edge-agent/test/protocols.test.mjs")], {
+  cwd: join(metaRoot, "iot-edge-agent"),
+  stdio: "inherit",
+});
+if ((edge.status ?? 1) !== 0) process.exit(edge.status ?? 1);
+
 console.log("\n==> contracts");
 const contracts = spawnSync(process.execPath, [join(here, "contract-test.mjs")], {
   cwd: metaRoot,

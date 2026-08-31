@@ -18,5 +18,13 @@ jobs:
         with:
           node-version: 24
       # Child apps are gitignored here; L1/isolated e2e run locally after pnpm init:repos.
-      - name: OpenAPI contract smoke
+      - name: OpenAPI + JSON Schema contract smoke
         run: node tooling/scripts/contract-test.mjs
+      - name: EdgeAgent protocol tests
+        run: node --test iot-edge-agent/test/protocols.test.mjs
+      - name: Protocol simulators
+        run: |
+          node iot-edge-agent/sim/ocpp-sim.mjs
+          node iot-edge-agent/sim/modbus-sim.mjs
+          node iot-edge-agent/sim/opcua-sim.mjs
+          node iot-edge-agent/sim/gps-sim.mjs

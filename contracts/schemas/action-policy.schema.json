@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/action-policy.schema.json",
+  "title": "SyncroBrain autonomous action policy",
+  "type": "object",
+  "required": ["id", "projectId", "allowlist"],
+  "properties": {
+    "id": { "type": "string" },
+    "projectId": { "type": "string" },
+    "packSlug": { "type": "string" },
+    "killSwitch": { "type": "boolean" },
+    "assetIds": { "type": "array", "items": { "type": "string" } },
+    "allowlist": { "type": "array", "items": { "type": "string" } },
+    "limits": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "min": { "type": "number" },
+          "max": { "type": "number" }
+        }
+      }
+    },
+    "maxPerHour": { "type": "integer" },
+    "budgetTokens": { "type": "integer" },
+    "windowCron": { "type": "string" },
+    "requireEvidence": { "type": "array", "items": { "type": "string" } },
+    "rollback": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}

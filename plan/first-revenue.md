@@ -1,6 +1,7 @@
 # First Revenue（产品续作 · 触达延后）
 
 > **前置**：Product Iterate 表内 P0–P2 已完成；公开 docs **仍延后**。  
+> **P0–P36 范围**：仅 `cold-lab` + `env-lab` 演示深度，**不是**多垂直生产完成。多垂直见 [spec/production-scope.md](../spec/production-scope.md)。  
 > **决策（2026-08）**：**熟人演示 / 报价触达暂时不做**；继续打磨产品功能。话术、交接包、checklist 材料保留备用。  
 > 演示：[validation/demo-script.md](./validation/demo-script.md) · 安装：[../deploy/INSTALL.md](../deploy/INSTALL.md)
 

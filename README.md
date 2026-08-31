@@ -4,14 +4,14 @@
 
 <h1 align="center">SyncroBrain · 万物智脑</h1>
 
-基于 **ThingsBoard CE** 的可交付 IoT 解决方案平台：30 分钟起演示，7 天内完成私有化项目底座。
+**连接每一台设备，赋予它一个大脑。** 基于 **ThingsBoard CE** 的可交付 IoT 平台：Industry Pack 覆盖冷链 / 充储 / 工业传感，白标 OEM 出海，AI 经 `@luminaryworks/ai-client` 接外部模型。卖点：**功能丰富 · 二开容易 · AI 融合**。
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
-> **当前阶段**：**Product Iterate** — [plan/product-iterate.md](./plan/product-iterate.md)（先打磨产品；**不挂**公开 docs 站）  
-> **ColdGuard** 是参考 Industry Pack，不是唯一可售产品。  
+> **当前阶段**：**Multi-Vertical Production** — [spec/production-scope.md](./spec/production-scope.md)（先交付可谈的垂直 Pack + 基座；**不挂**公开 docs 站）  
+> **ColdGuard**（`cold-lab`）是参考 Industry Pack，不是唯一可售产品。  
 > **测试（L1，Agent 入口）**：`pnpm test` / `pnpm test:l1`（单元 + Fake TB API + 契约，无 Java TB）。  
 > 隔离 UI：`pnpm e2e:isolated`（Fake TB + sqlite，禁止 skip）。活栈：`pnpm e2e`（无栈 skip，**不是**出门绿）。  
-> 「AI 验收」是可选审阅、**不是产品功能、不是默认 CI 门**：[plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md)。
+> 「AI 验收」是可选审阅、**不是**默认 CI 门；**产品内 AI** 见 [spec/ai-autonomy.md](./spec/ai-autonomy.md)，`AI_MODE=off` 时平台其余能力仍可运行。
 
 ## 解决什么问题
 
@@ -22,16 +22,17 @@
 | 不想被闭源云锁死 | 标准 MQTT / REST；TB 可迁出 |
 | 行业方案散落在客户分支 | 版本化 Industry Pack |
 
-不承诺：消费级百万设备、AI/链上市场、默认 EMQX 全家桶。详见 [`spec/platform-vision.md`](./spec/platform-vision.md)。
+不承诺：消费级百万设备、链上市场、默认 EMQX 全家桶、未实机认证的厂商兼容。详见 [`spec/platform-vision.md`](./spec/platform-vision.md)、[`spec/production-scope.md`](./spec/production-scope.md)。
 
 ## 架构（Cloud Lite）
 
 | 层 | 默认 | 说明 |
 |----|------|------|
-| 入口 | iot-console-web | 项目、Pack、部署状态 |
-| 编排 | iot-gateway（NestJS Fastify） | Pack、许可、TB REST、身份 |
+| 入口 | iot-console-web | Pack 驱动工作台、白标、AI Workspace |
+| 编排 | iot-gateway（NestJS Fastify） | Pack、领域内核、许可、TB REST、AI 编排 |
+| 边缘 | iot-edge-agent | OCPP / Modbus / OPC UA / GPS；离线缓存 |
 | 运行时 | **ThingsBoard CE** | MQTT、设备、遥测、规则、告警、看板 |
-| 数据 | PostgreSQL | TB 默认存储 |
+| 数据 | PostgreSQL | TB 默认存储 + Gateway 领域表 |
 | 可选（非 Cloud Lite） | EMQX / DataTalk | 合同或 SLO 触发 |
 
 权威：[`spec/architecture.md`](./spec/architecture.md)。
@@ -129,8 +130,11 @@ Cloud Lite **独立可售**。下表可选。
 | [spec/index.md](./spec/index.md) | 索引 |
 | [spec/platform-vision.md](./spec/platform-vision.md) | 愿景 |
 | [spec/architecture.md](./spec/architecture.md) | TB Cloud Lite |
-| [plan/product-iterate.md](./plan/product-iterate.md) | **当前**：产品打磨 |
-| [plan/first-revenue.md](./plan/first-revenue.md) | First Revenue 产品补强（触达延后） |
+| [plan/product-iterate.md](./plan/product-iterate.md) | Cloud Lite 打磨（表项已齐） |
+| [spec/production-scope.md](./spec/production-scope.md) | **当前**：多垂直生产范围 |
+| [spec/multi-vertical.md](./spec/multi-vertical.md) | Pack 目录 |
+| [spec/ai-autonomy.md](./spec/ai-autonomy.md) | 产品 AI 与自治包络 |
+| [plan/first-revenue.md](./plan/first-revenue.md) | cold-lab/env-lab 演示基线（触达延后） |
 | [plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md) | 单元 / Fake TB / Playwright；可选 AI 审阅（非门） |
 | [plan/showcase.md](./plan/showcase.md) | Showcase（已关闭，内部演示） |
 | [plan/build.md](./plan/build.md) | Build 8 周（已冻结） |

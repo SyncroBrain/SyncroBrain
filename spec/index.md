@@ -1,16 +1,23 @@
 # SyncroBrain 规格索引
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)  
-> **当前产品**：Cloud Lite — ThingsBoard CE 运行时 + 交付编排。  
-> **ColdGuard**：[coldguard.md](./coldguard.md) 是首个 **Reference Pack**，不是唯一可售 SKU。
+> **当前产品**：Cloud Lite — ThingsBoard CE + Pack Factory + 领域内核 + 可选 Edge/AI。  
+> **ColdGuard**：[coldguard.md](./coldguard.md) 是首个 **Reference Pack**，不是唯一可售 SKU。  
+> **当前阶段**：[production-scope.md](./production-scope.md) Multi-Vertical Production。
 
 | 文档 | 说明 |
 |------|------|
 | [platform-vision.md](./platform-vision.md) | 交付平台愿景与红线 |
 | [architecture.md](./architecture.md) | TB CE + Gateway + Console |
-| [plan/README.md](../plan/README.md) | Build → Showcase → Product Iterate → First Revenue |
-| [plan/build.md](../plan/build.md) | Build（已冻结） |
-| [plan/product-iterate.md](../plan/product-iterate.md) | **当前**：产品打磨；不挂公开 docs |
+| [production-scope.md](./production-scope.md) | **当前**：生产范围、非目标、责任 |
+| [slo.md](./slo.md) | SLO 与故障演练 |
+| [release-gates.md](./release-gates.md) | L1 / E2E / 协议 / AI 安全出门门 |
+| [multi-vertical.md](./multi-vertical.md) | Pack 目录与二开约定 |
+| [ai-autonomy.md](./ai-autonomy.md) | 产品 AI / 自治包络 |
+| [edge-agent.md](./edge-agent.md) | 标准协议边缘 |
+| [compatibility-matrix.md](./compatibility-matrix.md) | protocol vs hardware 验证 |
+| [plan/README.md](../plan/README.md) | 阶段门 |
+| [plan/product-iterate.md](../plan/product-iterate.md) | Cloud Lite 打磨（已齐） |
 | [plan/showcase.md](../plan/showcase.md) | Showcase（已关闭） |
 | [coldguard.md](./coldguard.md) | 参考 Pack：实验室冷藏 |
 | [industry-pack.md](./industry-pack.md) | Pack 制品与 `cold-lab` 默认值 |
@@ -48,9 +55,9 @@
 
 ## Vertical Fit 权限（不阻塞 Build）
 
-`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view` 等见历史 ColdGuard 表，随行业内核启用。
+`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view`、`iot.command:dispatch`、`iot.ai:run`、`iot.edge:manage` 随领域内核启用。
 
-长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.ai:subscribe`、`iot.chain:earn` 仍不进入 Build。
+长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.chain:earn` 仍不进入本阶段。
 
 ## 阶段门
 
@@ -58,6 +65,7 @@
 |--------|--------|
 | Build | 可部署 TB Cloud Lite |
 | Showcase | 内部可演示；不要求公开 docs |
-| Product Iterate | 产品打磨；闭门试点准备 |
-| First Revenue | 第一笔许可或部署费 |
-| Vertical Fit | 3 个项目共用一个 Pack |
+| Product Iterate | 产品打磨；闭门试点准备（表项已齐） |
+| Multi-Vertical Production | Pack + 领域内核 + Edge + AI + OEM（当前） |
+| First Revenue | 第一笔许可或部署费（触达可延后） |
+| Vertical Fit | 3 个项目共用一个 Pack 并冻结 1.0 |

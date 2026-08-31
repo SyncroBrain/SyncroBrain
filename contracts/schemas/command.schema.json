@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/command.schema.json",
+  "title": "SyncroBrain device command",
+  "type": "object",
+  "required": ["id", "assetId", "commandId", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "assetId": { "type": "string" },
+    "projectId": { "type": "string" },
+    "commandId": { "type": "string" },
+    "method": { "type": "string" },
+    "params": { "type": "object" },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "dispatched", "acked", "failed", "rolled_back", "denied"]
+    },
+    "idempotencyKey": { "type": "string" },
+    "ttlMs": { "type": "integer" },
+    "actor": { "type": "string" },
+    "source": { "type": "string", "enum": ["user", "ai", "policy", "edge"] },
+    "denialReason": { "type": "string" }
+  }
+}

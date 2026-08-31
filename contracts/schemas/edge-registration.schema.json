@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/edge-registration.schema.json",
+  "title": "SyncroBrain edge node registration",
+  "type": "object",
+  "required": ["nodeId", "siteId", "protocols"],
+  "properties": {
+    "nodeId": { "type": "string" },
+    "siteId": { "type": "string" },
+    "projectId": { "type": "string" },
+    "displayName": { "type": "string" },
+    "protocols": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["mqtt", "ocpp16", "ocpp201", "modbus-tcp", "modbus-rtu", "opcua", "gps"] }
+    },
+    "version": { "type": "string" },
+    "mtls": { "type": "boolean" }
+  }
+}

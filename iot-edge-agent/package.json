@@ -1,0 +1,18 @@
+{
+  "name": "@syncrobrain/edge-agent",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Polyform-Noncommercial-1.0.0",
+  "type": "module",
+  "description": "SyncroBrain EdgeAgent — OCPP / Modbus / OPC UA / GPS adapters",
+  "scripts": {
+    "dev": "node --watch src/index.mjs",
+    "start": "node src/index.mjs",
+    "test": "node --test test/*.test.mjs",
+    "lint": "node --check src/index.mjs && node --check src/agent.mjs && node --check src/sdk/connector.mjs",
+    "sim": "node sim/ocpp-sim.mjs && node sim/modbus-sim.mjs && node sim/opcua-sim.mjs && node sim/gps-sim.mjs"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}

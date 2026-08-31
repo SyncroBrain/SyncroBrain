@@ -144,7 +144,31 @@ paths:
       responses:
         "201":
           description: Telemetry + CRITICAL alarm
+  /projects:
+    get:
+      operationId: listProjects
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Project list
+    post:
+      operationId: createProject
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created
   /projects/{id}:
+    get:
+      operationId: getProject
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Project
     delete:
       operationId: deleteProject
       security: [{ bearerAuth: [] }]
@@ -156,6 +180,229 @@ paths:
       responses:
         "200":
           description: Removed mapped assets and TB tenant
+  /projects/{id}/sites:
+    get:
+      operationId: listSites
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Sites
+    post:
+      operationId: createSite
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Site
+  /projects/{id}/packs/apply:
+    post:
+      operationId: applyPack
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Pack application
+  /assets:
+    get:
+      operationId: listAssets
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Asset maps
+  /assets/{id}/telemetry:
+    get:
+      operationId: getAssetTelemetry
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Telemetry
+  /audit-events:
+    get:
+      operationId: listAuditEvents
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Append-only audit
+  /incidents:
+    get:
+      operationId: listIncidents
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Domain incidents
+  /incidents/{id}/ack:
+    post:
+      operationId: ackIncident
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Acknowledged
+  /incidents/{id}/escalate:
+    post:
+      operationId: escalateIncident
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Escalated using duty roster
+  /incidents/{id}/close:
+    post:
+      operationId: closeIncident
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Closed after ack
+  /sites/{id}/duty-roster:
+    get:
+      operationId: getDutyRoster
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Site duty roster
+    put:
+      operationId: putDutyRoster
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Replaced duty roster
+  /calibrations:
+    get:
+      operationId: listCalibrations
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Calibration certificates
+    post:
+      operationId: createCalibration
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created
+  /reports:
+    get:
+      operationId: listReports
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Compliance reports
+    post:
+      operationId: createReport
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created
+  /reports/{id}/export:
+    post:
+      operationId: exportReport
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: CSV body plus metadata
+  /assets/{id}/channels:
+    get:
+      operationId: listAssetChannels
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Sensor channels seeded from Pack
+  /work-orders:
+    get:
+      operationId: listWorkOrders
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Work orders from incident close
+  /commands:
+    post:
+      operationId: dispatchCommand
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Command accepted or denied
+    get:
+      operationId: listCommands
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Command history
+  /edge/commands:
+    get:
+      operationId: pullEdgeCommands
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Pending outbox command payloads for EdgeAgent
+  /edge/commands/receipt:
+    post:
+      operationId: edgeCommandReceipt
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Command receipt; marks outbox processed
+  /ai/chat:
+    post:
+      operationId: aiChat
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Copilot / autopilot turn
+  /ai/policy:
+    get:
+      operationId: getAiPolicy
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Autonomous action policy
+    put:
+      operationId: putAiPolicy
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Saved policy
+  /ai/tools:
+    get:
+      operationId: listAiTools
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Tool registry (read / pack write / forbidden)
+  /ai/usage:
+    get:
+      operationId: aiUsage
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Token usage summary
+  /ai/models:
+    post:
+      operationId: listAiModels
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Catalog or live model ids (BFF; browser never calls the vendor)
+  /ai/connection:
+    get:
+      operationId: getAiConnection
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Redacted deployment AI connection
+    put:
+      operationId: putAiConnection
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Saved vaulted connection
+  /edge/nodes:
+    get:
+      operationId: listEdgeNodes
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Registered edge nodes
+    post:
+      operationId: registerEdgeNode
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Registered
 components:
   securitySchemes:
     bearerAuth:

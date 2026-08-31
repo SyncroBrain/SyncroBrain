@@ -14,6 +14,7 @@
     "dev:mvp": "node tooling/scripts/dev-mvp.mjs",
     "check": "biome check .",
     "test": "pnpm test:l1",
+    "test:edge": "node --test iot-edge-agent/test/*.test.mjs",
     "test:l1": "node tooling/scripts/test-l1.mjs",
     "test:gateway": "pnpm --dir iot-gateway test",
     "test:console": "pnpm --dir iot-console-web test",

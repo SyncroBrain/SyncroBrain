@@ -1,0 +1,22 @@
+{
+  "date": "2026-08-31",
+  "gates": {
+    "l1": "passed",
+    "isolatedE2e": "14 passed, wrapper exit 0",
+    "faultDrill": "passed",
+    "protocolVerified": true,
+    "hardwareVerified": false
+  },
+  "counts": {
+    "gatewayUnit": 43,
+    "gatewayApi": 16,
+    "consoleUnit": 39,
+    "edgeProtocols": 7
+  },
+  "notes": [
+    "Incident opens from TB/Fake alarms; ack required before close",
+    "Postgres migration DomainOps covers duty/calibration/report/outbox attempts",
+    "Outbox pull GET /edge/commands; Fake TB inlines Edge receipt",
+    "Brand column remains — (protocol-verified only)"
+  ]
+}
