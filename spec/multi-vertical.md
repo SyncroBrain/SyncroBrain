@@ -28,9 +28,16 @@
 | `ev-charging` | 充电桩 | `charger` | connector_status, power_kw, session_kwh, fault | protocol-verified (OCPP) |
 | `energy-storage` | 储能 | `ess` | soc_pct, soh_pct, power_kw, cell_temp_c | protocol-verified |
 | `industrial-sensor` | 工业传感 | `sensor` | analog, digital, temperature, pressure, vibration | protocol-verified (Modbus/OPC UA/MQTT) |
+| `smart-window` | 楼宇/设施窗控 | `window` | position_pct, rain, temperature, limit_open, limit_close | protocol-verified (ESP32 MQTT) |
+| `agri-irrigation` | 智慧灌溉 | `irrigation_zone` | soil_pct, valve_n, pump, rain, flow_lpm | protocol-verified |
+| `agri-pond` | 鱼塘增氧喷水 | `pond` | do_mgl, water_temp_c, water_level_m, aerator, sprayer | protocol-verified |
+
+窗控 / 灌溉 / 鱼塘 **组合公版 Controller Kit**，不把 GPIO 写进领域模型。目录：[controller-kits.md](./controller-kits.md)。场景配方：[scenes.md](./scenes.md)。
 
 ## 3. 二开约定
 
 - 领域对象禁止按垂直分叉。新垂直只加 Pack + 适配配置。
+- 执行器与传感复用 **Controller Kit**；Pack 只引用 `kits[]` 与场景配方。
 - 厂商寄存器表、OCPP vendorId 放 Pack `adapters`，不进 Gateway 实体。
 - Console 指标/仿真按钮/命令表单只读 Pack，禁止 `fridge`/`room` 硬编码。
+- 客户可选用公版 ESP32 固件，或按 Kit 通道合同走 MQTT/Modbus 协议接入。

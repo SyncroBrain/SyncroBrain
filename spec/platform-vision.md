@@ -23,8 +23,8 @@
 
 ```text
 Cloud Lite（TB CE 运行时 + 交付编排 + Pack Factory）
-    → 多垂直 Pack（冷链 / 充储 / 工业传感）+ 白标 OEM
-    → EdgeAgent 标准协议（OCPP / Modbus / OPC UA / GPS）
+    → 多垂直 Pack（冷链 / 充储 / 工业 / 楼宇窗控 / 灌溉 / 鱼塘）+ 公版 Controller Kit
+    → EdgeAgent 标准协议（OCPP / Modbus / OPC UA / GPS / ESP32 Kit）+ Scene Kernel
     → 受策略约束的 AI 自治（ai-client，非自研模型）
     → 垂直运营系统（校准、工单、多站点）在复用 ≥70% 后加深
 ```
@@ -32,7 +32,7 @@ Cloud Lite（TB CE 运行时 + 交付编排 + Pack Factory）
 | 现在做（Multi-Vertical Production） | 以后才做 |
 |-------------------------------------|----------|
 | Pack Factory + 六类可演示/可交付 Pack | 公开 docs 站点、营销 SEO |
-| Console Pack 驱动 + 中英 OEM | 医院招标、消费级百万设备、链上市场 |
+| Console Pack 驱动 + 中英 OEM | 医院招标、消费级百万 C 端设备、链上市场 |
 | EdgeAgent 标准协议仿真验收 | 未列表厂商实机「已兼容」宣称 |
 | AI Copilot / Autopilot（包络内、fail closed） | LLM 任意控制、自研大模型 |
 | `cold-lab` 加深 + `env-lab` 保留为可替换证明 | 自研设备引擎或替代 TB 内核 |
@@ -82,7 +82,7 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 
 ### 死穴一：消费级百万并发与高额云账单
 
-**破局**：B 端项目规模（百～万级点位），不做智能家居百万在线。
+**破局**：B 端项目规模（百～万级点位）。楼宇窗控、灌溉、鱼塘走公版 Kit + Pack，不做消费级百万在线 App。
 
 ### 死穴二：重复造 IoT 运行时，或默认上全家桶
 

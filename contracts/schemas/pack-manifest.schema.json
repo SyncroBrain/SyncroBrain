@@ -20,6 +20,9 @@
         "ev-charging",
         "energy-storage",
         "industrial-sensor",
+        "smart-window",
+        "agri-irrigation",
+        "agri-pond",
         "demo"
       ]
     },
@@ -116,6 +119,8 @@
     "summary": { "type": "object" },
     "reportColumns": { "type": "array", "items": { "type": "string" } },
     "permissions": { "type": "array", "items": { "type": "string" } },
-    "adapters": { "type": "object" }
+    "adapters": { "type": "object" },
+    "kits": { "type": "array", "items": { "type": "string" } },
+    "scenes": { "type": "array" }
   }
 }

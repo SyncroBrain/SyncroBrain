@@ -1,0 +1,33 @@
+{
+  "slug": "kit-fan-pwm",
+  "version": "0.1-draft",
+  "title": "PWM fan / ventilation",
+  "titleKey": "kit.fanPwm.title",
+  "summary": "ESP32 + PWM/0–10V 风机：温室强排、冷库通风、充电棚排热。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-tcp"],
+  "io": {
+    "outputs": ["fan_pwm"],
+    "inputs": ["temperature", "humidity"]
+  },
+  "channels": [
+    { "key": "fan_pct", "kind": "numeric", "unit": "%", "required": true, "min": 0, "max": 100 },
+    { "key": "temperature", "kind": "numeric", "unit": "Cel", "required": false },
+    { "key": "humidity", "kind": "numeric", "unit": "%RH", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [
+    { "id": "setFan", "method": "setFan", "params": ["pct"], "min": 0, "max": 100, "rollbackId": "setFan" }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["setFan"],
+    "maxOnSec": 86400,
+    "requireEvidence": []
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class module",
+    "notes": "Must be able to command 0% (stop) without cloud. AI step <= 20 pct."
+  }
+}

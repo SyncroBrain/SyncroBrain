@@ -1,0 +1,27 @@
+{
+  "slug": "kit-gw-esp",
+  "version": "0.1-draft",
+  "title": "ESP32 field gateway",
+  "titleKey": "kit.gwEsp.title",
+  "summary": "低成本现场汇聚：GPIO/RS-485 子设备 → TB MQTT。多协议现场仍用 EdgeAgent。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-rtu"],
+  "io": {
+    "outputs": [],
+    "inputs": ["gateway_online"]
+  },
+  "channels": [
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [],
+  "safetyEnvelope": {
+    "allowlist": [],
+    "requireEvidence": []
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class Wi-Fi; optional 4G DTU on serial",
+    "notes": "Does not replace iot-edge-agent for OCPP / OPC UA."
+  }
+}

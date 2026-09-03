@@ -4,7 +4,7 @@
 
 <h1 align="center">SyncroBrain · 万物智脑</h1>
 
-**连接每一台设备，赋予它一个大脑。** 基于 **ThingsBoard CE** 的可交付 IoT 平台：Industry Pack 覆盖冷链 / 充储 / 工业传感，白标 OEM 出海，AI 经 `@luminaryworks/ai-client` 接外部模型。卖点：**功能丰富 · 二开容易 · AI 融合**。
+**连接每一台设备，赋予它一个大脑。** 基于 **ThingsBoard CE** 的可交付 IoT 平台：Industry Pack 覆盖冷链 / 充储 / 工业传感 / **楼宇窗控 / 灌溉 / 鱼塘**，白标 OEM 出海，AI 经 `@luminaryworks/ai-client` 接外部模型。卖点：**功能丰富 · 二开容易 · AI 融合**。公版 ESP32 控制器与协议接入见 [spec/controller-kits.md](./spec/controller-kits.md)。
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)（原 LuminaryIoTChain）  
 > **当前阶段**：**Multi-Vertical Production** — [spec/production-scope.md](./spec/production-scope.md)（先交付可谈的垂直 Pack + 基座；**不挂**公开 docs 站）  
@@ -133,6 +133,9 @@ Cloud Lite **独立可售**。下表可选。
 | [plan/product-iterate.md](./plan/product-iterate.md) | Cloud Lite 打磨（表项已齐） |
 | [spec/production-scope.md](./spec/production-scope.md) | **当前**：多垂直生产范围 |
 | [spec/multi-vertical.md](./spec/multi-vertical.md) | Pack 目录 |
+| [spec/controller-kits.md](./spec/controller-kits.md) | 公版控制器（ESP32 窗控/阀/增氧…） |
+| [spec/scenes.md](./spec/scenes.md) | 场景中台（手动 / 自动 / AI） |
+| [playbooks/controller-bench.md](./playbooks/controller-bench.md) | 公版控制器：仿真 → 采购 → 组装 → 组网 → 实机 |
 | [spec/ai-autonomy.md](./spec/ai-autonomy.md) | 产品 AI 与自治包络 |
 | [plan/first-revenue.md](./plan/first-revenue.md) | cold-lab/env-lab 演示基线（触达延后） |
 | [plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md) | 单元 / Fake TB / Playwright；可选 AI 审阅（非门） |

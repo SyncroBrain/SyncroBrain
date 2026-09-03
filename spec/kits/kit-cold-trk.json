@@ -1,0 +1,32 @@
+{
+  "slug": "kit-cold-trk",
+  "version": "0.1-draft",
+  "title": "Cold-chain tracker",
+  "titleKey": "kit.coldTrk.title",
+  "summary": "箱体追踪：温度、门磁、GPS、冲击。被 cold-logistics Pack 引用。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "gps"],
+  "io": {
+    "outputs": [],
+    "inputs": ["temperature", "humidity", "door", "gps", "shock_g"]
+  },
+  "channels": [
+    { "key": "temperature", "kind": "numeric", "unit": "Cel", "required": true },
+    { "key": "humidity", "kind": "numeric", "unit": "%RH", "required": false },
+    { "key": "door", "kind": "bool", "unit": "1", "required": true },
+    { "key": "gps", "kind": "geo", "unit": "1", "required": true },
+    { "key": "shock_g", "kind": "numeric", "unit": "g", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [],
+  "safetyEnvelope": {
+    "allowlist": [],
+    "requireEvidence": ["temperature"]
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class or equivalent GNSS tracker SoC",
+    "notes": "Composes with EdgeAgent GPS protocol. No TMS replacement."
+  }
+}

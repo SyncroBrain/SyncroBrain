@@ -14,6 +14,7 @@
 ├─────────────────────────────────────────────────────────────────────┤
 │  交付与领域层（SyncroBrain 自研，NestJS + Fastify）                    │
 │  Project/Site/Asset/Channel · Incident · Command · Industry Pack     │
+│  Controller Kit 认领 · Scene Kernel（手动/策略/AI）                   │
 │  ActionPolicy / Safety Kernel · AI orchestrator（ai-client）         │
 │  许可/Entitlement · IdP · 安装 · 升级 · 备份                          │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -22,14 +23,15 @@
 │  Rule Engine · Alarm · Dashboard · 多租户                             │
 ├─────────────────────────────────────────────────────────────────────┤
 │  边缘（iot-edge-agent，可选同栈）                                      │
-│  OCPP · Modbus · OPC UA · GPS · 离线缓存 · 本地阈值 · 命令回执       │
+│  OCPP · Modbus · OPC UA · GPS · ESP32 Kit MQTT                         │
+│  离线缓存 · 本地阈值 · Scene Kernel · 命令回执                         │
 ├─────────────────────────────────────────────────────────────────────┤
 │  数据层                                                               │
 │  PostgreSQL（TB 实体 + 时序，默认）                                   │
 │  Gateway 领域表（Incident/Command/Audit/Outbox）                      │
 ├─────────────────────────────────────────────────────────────────────┤
 │  设备与模拟器                                                         │
-│  MQTT 设备 / Pack 演示脚本 / 协议仿真器                               │
+│  MQTT 设备 / 公版 ESP32 Kit 仿真 / Pack 演示脚本 / 协议仿真器         │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,8 +53,8 @@
 |------|------|--------|
 | **ThingsBoard CE** | MQTT 接入、设备/资产、遥测、属性、RPC、Rule Chain、Alarm、基础看板 | Pack 版本、商业许可、安装编排、SyncroBrain 品牌主 UI |
 | **PostgreSQL** | TB 实体与默认时序；Gateway 元数据 | 企业级独立 BI |
-| **iot-edge-agent** | 标准协议、离线缓存、命令执行 | 替代 TB；商业许可 |
-| **iot-gateway** | Pack、领域内核、TB REST、Entitlement、OIDC/Casbin、AI 编排 | 替代 TB Transport / Rule Engine |
+| **iot-edge-agent** | 标准协议、离线缓存、命令执行、**Scene Kernel**、ESP32 Kit 映射 | 替代 TB；商业许可 |
+| **iot-gateway** | Pack、Kit 认领、领域内核、TB REST、Entitlement、OIDC/Casbin、AI 编排 | 替代 TB Transport / Rule Engine |
 | **iot-console-web** | Pack 驱动入口、白标、AI Workspace | 复制 TB 全部 Widget 编辑器 |
 | **EMQX** | — | **Build 不部署**。仅当客户已有 Broker、或 TB Transport 不够时经适配加入 |
 | **DataTalk** | 可选大屏 | 默认依赖 |
@@ -66,7 +68,9 @@ Gateway 调 TB 使用官方 REST / WebSocket，不 fork TB 源码进产品。白
 - Compose 一键起 TB + PG + Gateway + Console
 - TB 租户/设备与 SyncroBrain Project/Site 的映射表（`tbTenantId` / `tbDeviceId`）
 - Pack 能生成或导入：Device Profile、Root Rule Chain、Alarm、Dashboard JSON
+- Controller Kit 目录可查询；认领后资产带 `kitSlug`；场景评估走同一 Command 管道
 - MQTT 设备模拟器（TB 标准 topic：`v1/devices/me/telemetry` 或 `v2/t`）
+- 公版 Kit 仿真器（`iot-edge-agent/sim/esp32-kit-sim.mjs`）
 - 一个通知出口：Webhook，或 TB 通知 + Gateway 转发（企微/钉钉/SMS 择一）
 - CSV 导出遥测与告警
 - 演示脚本、版本清单、备份/恢复步骤

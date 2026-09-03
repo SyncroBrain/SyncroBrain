@@ -1,0 +1,81 @@
+{
+  "slug": "agri-irrigation",
+  "version": "0.1-draft",
+  "status": "validation-defaults",
+  "spec": "spec/controller-kits.md",
+  "vertical": "agri-irrigation",
+  "kind": "irrigation_zone",
+  "kits": ["kit-valve-8z", "kit-rly-4ch", "kit-env-node"],
+  "channels": {
+    "soil_pct": { "unit": "%", "sampleIntervalSec": 300 },
+    "rain": { "unit": "1", "edge": true },
+    "flow_lpm": { "unit": "L/min", "sampleIntervalSec": 10 },
+    "pump": { "unit": "1" }
+  },
+  "commands": [
+    { "id": "zoneOn", "method": "zoneOn", "param": "zone", "min": 1, "max": 8 },
+    { "id": "zoneOff", "method": "zoneOff" },
+    { "id": "pumpOn", "method": "pumpOn" },
+    { "id": "pumpOff", "method": "pumpOff" }
+  ],
+  "policy": {
+    "soilLowPct": 25,
+    "soilOkPct": 40,
+    "maxOnSec": 1800,
+    "dryRunSec": 90
+  },
+  "scenes": [
+    {
+      "id": "irr-manual-zone",
+      "packSlug": "agri-irrigation",
+      "kitSlug": "kit-valve-8z",
+      "mode": "manual",
+      "enabled": true,
+      "triggers": [{ "type": "command", "commandId": "zoneOn" }],
+      "actions": [{ "commandId": "zoneOn" }]
+    },
+    {
+      "id": "irr-soil-low",
+      "packSlug": "agri-irrigation",
+      "kitSlug": "kit-valve-8z",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [{ "type": "threshold", "key": "soil_pct", "op": "lt", "value": 25 }],
+      "actions": [{ "commandId": "zoneOn", "params": { "zone": 1, "durationSec": 600 } }]
+    },
+    {
+      "id": "irr-rain-skip",
+      "packSlug": "agri-irrigation",
+      "kitSlug": "kit-valve-8z",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [{ "type": "threshold", "key": "rain", "op": "eq", "value": 1 }],
+      "actions": [{ "commandId": "zoneOff" }],
+      "safety": { "interlocks": [{ "when": { "rain": 1 }, "deny": ["zoneOn", "pumpOn"] }] }
+    },
+    {
+      "id": "irr-schedule",
+      "packSlug": "agri-irrigation",
+      "kitSlug": "kit-valve-8z",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [{ "type": "schedule" }],
+      "actions": [{ "commandId": "zoneOn", "params": { "zone": 1, "durationSec": 600 } }]
+    },
+    {
+      "id": "irr-ai-et",
+      "packSlug": "agri-irrigation",
+      "kitSlug": "kit-valve-8z",
+      "mode": "ai",
+      "enabled": true,
+      "triggers": [{ "type": "ai" }],
+      "actions": [{ "commandId": "zoneOn" }],
+      "safety": { "requireEvidence": ["soil_pct"], "maxOnSec": 1800 }
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["zoneOn", "zoneOff", "pumpOn", "pumpOff"],
+    "maxPerHour": 24,
+    "requireEvidence": ["soil_pct"]
+  }
+}

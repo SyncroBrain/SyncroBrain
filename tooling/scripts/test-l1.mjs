@@ -53,8 +53,8 @@ run("iot-gateway unit", ["test:unit"], gatewayDir);
 run("iot-gateway api (Fake TB)", ["test:api"], gatewayDir);
 run("iot-console-web unit", ["test"], consoleDir);
 
-console.log("\n==> iot-edge-agent protocols");
-const edge = spawnSync(process.execPath, ["--test", join(metaRoot, "iot-edge-agent/test/protocols.test.mjs")], {
+console.log("\n==> iot-edge-agent protocols + kits/scenes");
+const edge = spawnSync(process.execPath, ["--test", join(metaRoot, "iot-edge-agent/test/protocols.test.mjs"), join(metaRoot, "iot-edge-agent/test/kits-scenes.test.mjs")], {
   cwd: join(metaRoot, "iot-edge-agent"),
   stdio: "inherit",
 });

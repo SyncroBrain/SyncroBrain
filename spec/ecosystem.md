@@ -29,7 +29,7 @@
 |------|----------------------|
 | [LuminaryWorks](https://luminaryworks.dev) | 可选共享 Logto |
 | [DataLuminary](https://dataluminary.dev) | 可选大屏；默认用 TB Dashboard |
-| [BlockyEdu](https://blockyedu.com) | 可选培训 |
+| [BlockyEdu](https://blockyedu.com) | 可选培训；实体课见 [education-bridge.md](./education-bridge.md) |
 | [DoerFlow](https://doerflow.dev) | 不进入 Build |
 | [VistaRemote](https://remote.vistacast.dev) | 可选 |
 | [VistaCast](https://vistacast.dev) | 视频 AI；首年不做 |

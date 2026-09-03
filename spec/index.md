@@ -1,7 +1,7 @@
 # SyncroBrain 规格索引
 
 > **品牌**：[syncrobrain.com](https://syncrobrain.com) · **组织**：[github.com/syncrobrain](https://github.com/syncrobrain)  
-> **当前产品**：Cloud Lite — ThingsBoard CE + Pack Factory + 领域内核 + 可选 Edge/AI。  
+> **当前产品**：Cloud Lite — ThingsBoard CE + Pack Factory + 公版 Kit + 场景中台 + 领域内核 + 可选 Edge/AI。  
 > **ColdGuard**：[coldguard.md](./coldguard.md) 是首个 **Reference Pack**，不是唯一可售 SKU。  
 > **当前阶段**：[production-scope.md](./production-scope.md) Multi-Vertical Production。
 
@@ -13,6 +13,11 @@
 | [slo.md](./slo.md) | SLO 与故障演练 |
 | [release-gates.md](./release-gates.md) | L1 / E2E / 协议 / AI 安全出门门 |
 | [multi-vertical.md](./multi-vertical.md) | Pack 目录与二开约定 |
+| [controller-kits.md](./controller-kits.md) | **公版控制器**：ESP32 执行器/传感 Kit；公版或协议接入 |
+| [../playbooks/controller-bench.md](../playbooks/controller-bench.md) | 台架：先仿真，再买件组网 |
+| [scenes.md](./scenes.md) | 场景中台：手动 / 策略自动 / AI 自动 |
+| [education-bridge.md](./education-bridge.md) | BlockyEdu 实体课：dry-run evaluate + 真机短时会话 |
+| [iot-lab-acceptance.md](./iot-lab-acceptance.md) | 合同 / 仿真 / Fake TB / 实机验收清单 |
 | [ai-autonomy.md](./ai-autonomy.md) | 产品 AI / 自治包络 |
 | [edge-agent.md](./edge-agent.md) | 标准协议边缘 |
 | [compatibility-matrix.md](./compatibility-matrix.md) | protocol vs hardware 验证 |
@@ -55,7 +60,7 @@
 
 ## Vertical Fit 权限（不阻塞 Build）
 
-`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view`、`iot.command:dispatch`、`iot.ai:run`、`iot.edge:manage` 随领域内核启用。
+`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view`、`iot.command:dispatch`、`iot.ai:run`、`iot.edge:manage`、`iot.controller:view` / `iot.controller:claim`、`iot.scene:view` / `iot.scene:manage`、`iot.education:lab` 随领域内核、场景中台与教育桥接启用。课堂角色 `iot_student` 仅 view + dry-run。
 
 长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.chain:earn` 仍不进入本阶段。
 

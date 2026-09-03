@@ -1,0 +1,39 @@
+{
+  "slug": "kit-win-act",
+  "version": "0.1-draft",
+  "title": "Window / vent linear actuator",
+  "titleKey": "kit.winAct.title",
+  "summary": "ESP32 + 电动推杆/管状电机：楼宇窗、遮阳、温室顶窗、通风口。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-tcp"],
+  "io": {
+    "outputs": ["motor_open", "motor_close"],
+    "inputs": ["limit_open", "limit_close", "rain"]
+  },
+  "channels": [
+    { "key": "position_pct", "kind": "numeric", "unit": "%", "required": true, "min": 0, "max": 100 },
+    { "key": "limit_open", "kind": "bool", "unit": "1", "required": true },
+    { "key": "limit_close", "kind": "bool", "unit": "1", "required": true },
+    { "key": "rain", "kind": "bool", "unit": "1", "required": false },
+    { "key": "motor_current_a", "kind": "numeric", "unit": "A", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [
+    { "id": "open", "method": "open", "rollbackId": "stop" },
+    { "id": "close", "method": "close", "rollbackId": "stop" },
+    { "id": "stop", "method": "stop" },
+    { "id": "setPosition", "method": "setPosition", "params": ["pct"], "min": 0, "max": 100, "rollbackId": "stop" }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["open", "close", "stop", "setPosition"],
+    "maxOnSec": 120,
+    "requireEvidence": ["limit_open", "limit_close"],
+    "interlocks": [{ "when": { "rain": 1 }, "deny": ["open", "setPosition"] }]
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32-C3 / ESP32 class Wi-Fi module",
+    "notes": "12/24V actuator isolated from MCU; dual limit switches required. No fictional SKUs."
+  }
+}

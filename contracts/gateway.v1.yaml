@@ -403,6 +403,194 @@ paths:
       responses:
         "201":
           description: Registered
+  /controller-kits:
+    get:
+      operationId: listControllerKits
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Public Controller Kit catalog (ESP32 actuators and sensors)
+  /controller-kits/{slug}:
+    get:
+      operationId: getControllerKit
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Kit channel, command, and safety envelope
+        "404":
+          description: Unknown kit
+  /projects/{id}/controllers/claim:
+    post:
+      operationId: claimController
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Official firmware or protocol bind; asset.kitSlug set
+        "400":
+          description: SERIAL / CHANNEL_GAP / BIND_PATH
+  /projects/{id}/scenes:
+    get:
+      operationId: listScenes
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Pack scene recipes applied to the project
+    post:
+      operationId: createScene
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Site overlay scene (must stay inside kit allowlist)
+  /scenes/{id}/evaluate:
+    post:
+      operationId: evaluateScene
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [assetId]
+              properties:
+                assetId: { type: string, format: uuid }
+                projectId: { type: string, format: uuid }
+                telemetry: { type: object, additionalProperties: true }
+                intent: { type: object, additionalProperties: true }
+                dispatch:
+                  type: boolean
+                  description: Students and classroom dry-run must send false; omitted defaults to true for operators
+                killSwitch: { type: boolean }
+      responses:
+        "200":
+          description: dispatch / hold / deny; deny reasons are fail-closed
+  /education-labs/sessions:
+    post:
+      operationId: createEducationLabSession
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [projectId, assetId, kitSlug]
+              properties:
+                projectId: { type: string, format: uuid }
+                assetId: { type: string, format: uuid }
+                kitSlug: { type: string }
+                ttlSeconds: { type: integer, minimum: 60, maximum: 3600 }
+                allowlist:
+                  type: array
+                  items: { type: string }
+      responses:
+        "201":
+          description: Short-lived live lab session
+        "400":
+          description: KIT_MISMATCH
+    get:
+      operationId: listEducationLabSessions
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Teacher sessions
+  /education-labs/sessions/{id}:
+    get:
+      operationId: getEducationLabSession
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+        "410":
+          description: LAB_SESSION_EXPIRED
+    delete:
+      operationId: stopEducationLabSession
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "204":
+          description: Stopped
+  /education-labs/sessions/{id}/intent:
+    post:
+      operationId: runEducationLabIntent
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sceneId: { type: string }
+                commandId: { type: string }
+                telemetry: { type: object, additionalProperties: true }
+                intent: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: Scene decision (may dispatch)
+        "403":
+          description: COMMAND_DENIED
+        "410":
+          description: LAB_SESSION_EXPIRED
+        "503":
+          description: DEVICE_OFFLINE
+  /demos/smart-window:
+    post:
+      operationId: demoSmartWindow
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Window kit + rain-close / heat-vent scenes
+  /demos/agri-irrigation:
+    post:
+      operationId: demoAgriIrrigation
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Valve kit + soil / rain-skip scenes
+  /demos/agri-pond:
+    post:
+      operationId: demoAgriPond
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Pond aerator / spray scenes with level interlock
 components:
   securitySchemes:
     bearerAuth:

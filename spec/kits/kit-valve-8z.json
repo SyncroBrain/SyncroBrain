@@ -1,0 +1,39 @@
+{
+  "slug": "kit-valve-8z",
+  "version": "0.1-draft",
+  "title": "Eight-zone valve controller",
+  "titleKey": "kit.valve8z.title",
+  "summary": "ESP32 + 分区电磁阀/电动球阀 + 主泵：灌溉与补水。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-tcp"],
+  "io": {
+    "outputs": ["valve_1", "valve_2", "valve_3", "valve_4", "valve_5", "valve_6", "valve_7", "valve_8", "pump"],
+    "inputs": ["flow_lpm"]
+  },
+  "channels": [
+    { "key": "valve_1", "kind": "bool", "unit": "1", "required": true },
+    { "key": "pump", "kind": "bool", "unit": "1", "required": true },
+    { "key": "flow_lpm", "kind": "numeric", "unit": "L/min", "required": false },
+    { "key": "soil_pct", "kind": "numeric", "unit": "%", "required": false, "min": 0, "max": 100 },
+    { "key": "rain", "kind": "bool", "unit": "1", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [
+    { "id": "zoneOn", "method": "zoneOn", "params": ["zone", "durationSec"], "min": 1, "max": 8, "rollbackId": "zoneOff" },
+    { "id": "zoneOff", "method": "zoneOff", "params": ["zone"] },
+    { "id": "pumpOn", "method": "pumpOn", "rollbackId": "pumpOff" },
+    { "id": "pumpOff", "method": "pumpOff" }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["zoneOn", "zoneOff", "pumpOn", "pumpOff"],
+    "maxOnSec": 1800,
+    "dryRunSec": 90,
+    "interlocks": [{ "when": { "rain": 1 }, "deny": ["zoneOn", "pumpOn"] }]
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class module",
+    "notes": "Latching or solenoid valves 12/24V; master pump interlock in firmware."
+  }
+}

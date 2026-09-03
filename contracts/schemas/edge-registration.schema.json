@@ -11,7 +11,10 @@
     "displayName": { "type": "string" },
     "protocols": {
       "type": "array",
-      "items": { "type": "string", "enum": ["mqtt", "ocpp16", "ocpp201", "modbus-tcp", "modbus-rtu", "opcua", "gps"] }
+      "items": {
+        "type": "string",
+        "enum": ["mqtt", "ocpp16", "ocpp201", "modbus-tcp", "modbus-rtu", "opcua", "gps", "esp32-mqtt"]
+      }
     },
     "version": { "type": "string" },
     "mtls": { "type": "boolean" }

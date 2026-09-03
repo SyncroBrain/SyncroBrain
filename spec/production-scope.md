@@ -31,14 +31,18 @@
 | 充电桩 | `ev-charging` | 站/桩/枪/会话、OCPP 状态、故障、功率限制、安全启停 | 支付清分、互联互通结算 |
 | 储能 | `energy-storage` | PCS/BMS、SOC/SOH、功率、温度、受约束充放电 | VPP / 电力市场 |
 | 工业传感器 | `industrial-sensor` | 模拟量/数字量 + 预置量；Modbus/OPC UA/MQTT | 自研 PLC 运行时 |
+| 楼宇/设施窗控 | `smart-window` | 公版 ESP32 窗机或协议接入；手动 / 雨关 / 高温开缝 / 包络内 AI | 消费级百万在线 App、涂鸦式 C 端商城 |
+| 智慧灌溉 | `agri-irrigation` | 分区阀+泵、土壤阈值、雨停、干转保护 | 替代全套农事 ERP |
+| 鱼塘增氧喷水 | `agri-pond` | 溶氧增氧、高温喷水、水位互锁 | 替代水产交易/投饲全栈 |
+| 公版控制器 | Kit 目录 | ESP32 类参考固件 + 通道合同；双路径绑定 | 自研芯片、单一模组锁死 |
 | 白标 OEM | Console/许可 | 部署级品牌、中英 locale、Pack 白名单、导出包 | 改 TB 商标冒充自有内核 |
 
 ## 3. 非目标（首版）
 
 - 支付清分、VPP、电力现货/辅助服务
 - TMS/WMS/LIMS 全量替代（只做证据字段与导出）
-- 自研 Broker、时序引擎、传感器固件、芯片
-- 百万消费级设备、智能家居
+- 自研 Broker、时序引擎、芯片；公版 Kit 只给参考固件合同与 BOM 原则
+- 消费级百万在线设备与 C 端 App 生态（涂鸦式智能家居商城）
 - LLM 任意 RPC、任意代码执行、绕过 Casbin / 许可 / Safety Kernel
 - 未实机认证的厂商方言宣称「已兼容」
 
@@ -46,9 +50,9 @@
 
 | 层 | 拥有 | 不拥有 |
 |----|------|--------|
-| EdgeAgent | 协议、离线缓存、本地阈值、命令执行 | 商业许可、Pack 版本 |
+| EdgeAgent | 协议、离线缓存、本地阈值、Scene Kernel、命令执行 | 商业许可、Pack 版本 |
 | ThingsBoard CE | MQTT、设备、遥测、基础 Alarm | 行业 Incident、计费、品牌主 UI |
-| Gateway | 领域模型、Pack、命令、AI 策略、审计 | 替代 TB Transport |
+| Gateway | 领域模型、Pack、Kit 认领、场景编排、命令、AI 策略、审计 | 替代 TB Transport |
 | AI | 建议与包络内自治动作 | 设备凭据、基础告警唯一依赖 |
 | 客户 / 渠道 | 现场安装、校准证书、值班响应 | — |
 

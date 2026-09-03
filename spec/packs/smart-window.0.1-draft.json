@@ -1,0 +1,70 @@
+{
+  "slug": "smart-window",
+  "version": "0.1-draft",
+  "status": "validation-defaults",
+  "spec": "spec/controller-kits.md",
+  "vertical": "smart-window",
+  "kind": "window",
+  "kits": ["kit-win-act", "kit-env-node"],
+  "channels": {
+    "position_pct": { "unit": "%", "sampleIntervalSec": 5 },
+    "rain": { "unit": "1", "edge": true },
+    "temperature": { "unit": "Cel", "sampleIntervalSec": 60 }
+  },
+  "commands": [
+    { "id": "open", "method": "open", "rollbackId": "stop" },
+    { "id": "close", "method": "close", "rollbackId": "stop" },
+    { "id": "stop", "method": "stop" },
+    { "id": "setPosition", "method": "setPosition", "param": "pct", "min": 0, "max": 100 }
+  ],
+  "policy": {
+    "rainClose": true,
+    "heatVentC": 28,
+    "ventPct": 30
+  },
+  "scenes": [
+    {
+      "id": "win-manual",
+      "packSlug": "smart-window",
+      "kitSlug": "kit-win-act",
+      "mode": "manual",
+      "enabled": true,
+      "triggers": [{ "type": "command" }],
+      "actions": [{ "commandId": "open" }]
+    },
+    {
+      "id": "win-rain-close",
+      "packSlug": "smart-window",
+      "kitSlug": "kit-win-act",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [{ "type": "threshold", "key": "rain", "op": "eq", "value": 1 }],
+      "actions": [{ "commandId": "close" }]
+    },
+    {
+      "id": "win-heat-vent",
+      "packSlug": "smart-window",
+      "kitSlug": "kit-win-act",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [{ "type": "threshold", "key": "temperature", "op": "gte", "value": 28 }],
+      "actions": [{ "commandId": "setPosition", "params": { "pct": 30 } }],
+      "safety": { "interlocks": [{ "when": { "rain": 1 }, "deny": ["setPosition", "open"] }] }
+    },
+    {
+      "id": "win-ai-weather",
+      "packSlug": "smart-window",
+      "kitSlug": "kit-win-act",
+      "mode": "ai",
+      "enabled": true,
+      "triggers": [{ "type": "ai" }],
+      "actions": [{ "commandId": "setPosition" }],
+      "safety": { "requireEvidence": ["temperature", "rain"] }
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["open", "close", "stop", "setPosition"],
+    "maxPerHour": 60,
+    "requireEvidence": ["limit_open", "limit_close"]
+  }
+}

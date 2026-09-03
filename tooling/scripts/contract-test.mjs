@@ -57,6 +57,14 @@ mustContain(
     "/ai/tools",
     "/ai/connection",
     "/edge/nodes",
+    "/controller-kits",
+    "/projects/{id}/controllers/claim",
+    "/scenes/{id}/evaluate",
+    "/education-labs/sessions",
+    "LAB_SESSION_EXPIRED",
+    "/demos/smart-window",
+    "/demos/agri-irrigation",
+    "/demos/agri-pond",
   ],
   "gateway.v1",
 );
@@ -74,6 +82,8 @@ const requiredSchemas = [
   "incident.schema.json",
   "edge-registration.schema.json",
   "action-policy.schema.json",
+  "controller-kit.schema.json",
+  "scene.schema.json",
 ];
 
 if (!existsSync(schemasDir)) {

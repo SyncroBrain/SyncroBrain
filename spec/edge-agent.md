@@ -6,16 +6,16 @@
 ## 1. 职责
 
 - 设备身份、TLS/mTLS、证书轮换
-- 协议适配：OCPP 1.6J / 2.0.1、Modbus RTU/TCP、OPC UA、MQTT/HTTP GPS
-- 本地环形缓存、时钟/质量标记、本地阈值、签名配置
+- 协议适配：OCPP 1.6J / 2.0.1、Modbus RTU/TCP、OPC UA、MQTT/HTTP GPS、**ESP32 Kit MQTT（公版通道映射）**
+- 本地环形缓存、时钟/质量标记、本地阈值、**Scene Kernel**、签名配置
 - 命令执行与回执；离线时本地策略继续，上线后补传 `quality=backfill`
 
 ## 2. 与 Cloud Lite 的关系
 
 ```text
-设备 ──协议──► EdgeAgent ──MQTT/REST──► ThingsBoard CE ──► Gateway
+设备 / Kit ──协议──► EdgeAgent ──MQTT/REST──► ThingsBoard CE ──► Gateway
                      ▲                                      │
-                     └──────── 命令回执 / 配置 ─────────────┘
+                     └──── 命令回执 / 场景本地评估 ──────────┘
 ```
 
 Gateway 注册边缘节点（`POST /api/v1/edge/nodes`）。Edge 只持有站点范围凭据。

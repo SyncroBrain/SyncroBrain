@@ -1,0 +1,36 @@
+{
+  "slug": "kit-rly-4ch",
+  "version": "0.1-draft",
+  "title": "Quad relay switch",
+  "titleKey": "kit.rly4ch.title",
+  "summary": "ESP32 + 四路继电器：浇水、喷淋、增氧、灯、除霜、通用负载。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-tcp"],
+  "io": {
+    "outputs": ["relay_1", "relay_2", "relay_3", "relay_4"],
+    "inputs": ["current_a"]
+  },
+  "channels": [
+    { "key": "relay_1", "kind": "bool", "unit": "1", "required": true },
+    { "key": "relay_2", "kind": "bool", "unit": "1", "required": true },
+    { "key": "relay_3", "kind": "bool", "unit": "1", "required": true },
+    { "key": "relay_4", "kind": "bool", "unit": "1", "required": true },
+    { "key": "current_a", "kind": "numeric", "unit": "A", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [
+    { "id": "relayOn", "method": "relayOn", "params": ["ch", "durationSec"], "min": 1, "max": 4, "rollbackId": "relayOff" },
+    { "id": "relayOff", "method": "relayOff", "params": ["ch"], "min": 1, "max": 4 }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["relayOn", "relayOff"],
+    "maxOnSec": 3600,
+    "requireEvidence": []
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class module",
+    "notes": "Opto-isolated relays; optional CT per channel. Dual supplier, no locked SKU."
+  }
+}

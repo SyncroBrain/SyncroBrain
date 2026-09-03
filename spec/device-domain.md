@@ -35,12 +35,12 @@ Build：`Asset` / 遗留 `Device` 必须带 `tbDeviceId`（及可选 `tbTenantId
 
 | 实体 | 关键字段 | 说明 |
 |------|----------|------|
-| Asset | id, siteId, zoneId?, name, kind, vendor, model, status | `kind`: fridge / freezer_20 / freezer_80 / cold_room / gateway（`incubator` 不进 cold-lab v1） |
-| SensorChannel | id, assetId, type, unit, schemaVersion, sampleIntervalSec | `type`: temperature / door / power / gateway_online |
+| Asset | id, siteId, zoneId?, name, kind, vendor, model, status, kitSlug? | `kind` 见各 Pack；`kitSlug` 指向公版 Controller Kit（可选） |
+| SensorChannel | id, assetId, type, unit, schemaVersion, sampleIntervalSec | 传感与执行器状态共用通道表；执行器命令不进 Channel |
 | Calibration | id, channelId, certificateRef, validFrom, validTo, vendor | 过期须在总览暴露 |
 | Device（遗留） | id, tenantId, externalUserId, name, protocol, status, metadata | v0.1 API 主键；Wedge 映射到 Asset 或 Gateway |
 
-遗留 Device.protocol：`mqtt` \| `modbus` \| `http`。新模型优先描述 SensorChannel，协议细节放 metadata / Pack。
+遗留 Device.protocol：`mqtt` \| `modbus` \| `http`。新模型优先描述 SensorChannel，协议细节放 metadata / Pack。新增 kind 由 Pack 声明（如 `window` / `irrigation_zone` / `pond`），不在领域模型里按垂直枚举锁死。公版控制器见 [controller-kits.md](./controller-kits.md)。
 
 ### 2.3 策略、事件与处置
 
@@ -138,7 +138,13 @@ MQTT：
 | POST | `/api/v1/assets/:id/alarms` | `iot.incident:ack` |
 | POST | `/api/v1/alarms/:id/ack` | `iot.incident:ack` |
 | POST | `/api/v1/alarms/:id/clear` | `iot.incident:ack` |
-| POST | `/api/v1/demos/cold-lab` | `iot.pack:apply` |
+| GET | `/api/v1/controller-kits` | `iot.controller:view` |
+| POST | `/api/v1/projects/:id/controllers/claim` | `iot.controller:claim` |
+| GET/POST | `/api/v1/projects/:id/scenes` | `iot.scene:view` / `iot.scene:manage` |
+| POST | `/api/v1/scenes/:id/evaluate` | `iot.command:dispatch` |
+| POST | `/api/v1/demos/smart-window` | `iot.pack:apply` |
+| POST | `/api/v1/demos/agri-irrigation` | `iot.pack:apply` |
+| POST | `/api/v1/demos/agri-pond` | `iot.pack:apply` |
 | GET | `/api/v1/incidents` | `iot.incident:view` |
 | POST | `/api/v1/incidents/:id/ack` | `iot.incident:ack` |
 | POST | `/api/v1/incidents/:id/escalate` | `iot.incident:escalate` |
@@ -149,6 +155,8 @@ MQTT：
 | GET/PUT | `/api/v1/sites/:id/duty-roster` | `iot.site:manage` |
 
 完整权限表见 [index.md](./index.md)。
+
+公版 Kit / 场景中台已写入 [`contracts/gateway.v1.yaml`](../contracts/gateway.v1.yaml)：`/controller-kits`、`/projects/{id}/controllers/claim`、`/projects/{id}/scenes`、`/scenes/{id}/evaluate`、`/demos/smart-window`、`/demos/agri-irrigation`、`/demos/agri-pond`。边缘可运行实现见 `iot-edge-agent`；`iot-gateway` 子仓需按同一合同落地 HTTP。
 
 ## 7. Industry Pack
 

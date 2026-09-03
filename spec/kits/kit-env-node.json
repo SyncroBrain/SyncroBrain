@@ -1,0 +1,32 @@
+{
+  "slug": "kit-env-node",
+  "version": "0.1-draft",
+  "title": "Environment sensor node",
+  "titleKey": "kit.envNode.title",
+  "summary": "ESP32 传感节点：空气温湿度、土壤、光照、雨量。无执行器命令。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb", "modbus-tcp"],
+  "io": {
+    "outputs": [],
+    "inputs": ["temperature", "humidity", "soil_pct", "illuminance_lux", "rain"]
+  },
+  "channels": [
+    { "key": "temperature", "kind": "numeric", "unit": "Cel", "required": true },
+    { "key": "humidity", "kind": "numeric", "unit": "%RH", "required": false },
+    { "key": "soil_pct", "kind": "numeric", "unit": "%", "required": false, "min": 0, "max": 100 },
+    { "key": "illuminance_lux", "kind": "numeric", "unit": "lx", "required": false },
+    { "key": "rain", "kind": "bool", "unit": "1", "required": false },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [],
+  "safetyEnvelope": {
+    "allowlist": [],
+    "requireEvidence": []
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class module",
+    "notes": "I2C / 1-Wire / ADC probes; calibration via domain Calibration entity."
+  }
+}

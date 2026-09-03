@@ -1,0 +1,38 @@
+{
+  "slug": "kit-pond-ctrl",
+  "version": "0.1-draft",
+  "title": "Pond aerator / sprayer",
+  "titleKey": "kit.pondCtrl.title",
+  "summary": "ESP32 + 增氧机/喷水泵：鱼塘增氧、喷水降温。",
+  "mcuClass": "esp32",
+  "bindPaths": ["official", "protocol"],
+  "protocols": ["mqtt-tb"],
+  "io": {
+    "outputs": ["aerator", "sprayer"],
+    "inputs": ["do_mgl", "water_temp_c", "water_level_m"]
+  },
+  "channels": [
+    { "key": "do_mgl", "kind": "numeric", "unit": "mg/L", "required": true },
+    { "key": "water_temp_c", "kind": "numeric", "unit": "Cel", "required": true },
+    { "key": "water_level_m", "kind": "numeric", "unit": "m", "required": true },
+    { "key": "aerator", "kind": "bool", "unit": "1", "required": true },
+    { "key": "sprayer", "kind": "bool", "unit": "1", "required": true },
+    { "key": "gateway_online", "kind": "bool", "unit": "1", "required": true }
+  ],
+  "commands": [
+    { "id": "aeratorOn", "method": "aeratorOn", "rollbackId": "aeratorOff" },
+    { "id": "aeratorOff", "method": "aeratorOff" },
+    { "id": "sprayOn", "method": "sprayOn", "rollbackId": "sprayOff" },
+    { "id": "sprayOff", "method": "sprayOff" }
+  ],
+  "safetyEnvelope": {
+    "allowlist": ["aeratorOn", "aeratorOff", "sprayOn", "sprayOff"],
+    "maxOnSec": 14400,
+    "interlocks": [{ "when": { "water_level_m": { "lt": 0.2 } }, "deny": ["sprayOn"] }]
+  },
+  "bom": {
+    "principle": "dual-source-modules",
+    "mcu": "ESP32 class module",
+    "notes": "DO / level probes are third-party; dual supplier. Never dry-run the spray pump."
+  }
+}
