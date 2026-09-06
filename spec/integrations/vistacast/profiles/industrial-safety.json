@@ -1,0 +1,54 @@
+{
+  "slug": "industrial-safety",
+  "titleKey": "vistacast.profile.industrialSafety",
+  "summaryKey": "vistacast.profile.industrialSafetyHint",
+  "maturity": "integration-verified",
+  "source": "vistacast",
+  "schemaVersion": "alert.v1",
+  "mqttAllowed": true,
+  "autoActionDefault": false,
+  "autoActionAllowed": true,
+  "careRequired": false,
+  "stubKinds": ["fall", "fight", "smoke", "face.stranger", "staff.away", "staff.phone"],
+  "kindMap": {
+    "intrusion": {
+      "incidentType": "visual.intrusion",
+      "severity": "WARNING",
+      "autoActionEligible": true
+    },
+    "device.offline": {
+      "incidentType": "visual.camera_offline",
+      "severity": "WARNING",
+      "autoActionEligible": false
+    },
+    "smoke": {
+      "incidentType": "visual.smoke",
+      "severity": "CRITICAL",
+      "autoActionEligible": false
+    }
+  },
+  "scenes": [
+    {
+      "id": "vis-intrusion-strobe",
+      "packSlug": "industrial-sensor",
+      "kitSlug": "kit-rly-4ch",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [
+        {
+          "type": "external_event",
+          "source": "vistacast",
+          "schema": "alert.v1",
+          "kind": "intrusion",
+          "state": "open"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "relayOn",
+          "params": { "ch": 1, "durationSec": 30 }
+        }
+      ]
+    }
+  ]
+}

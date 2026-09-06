@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/doerflow-event.schema.json",
+  "title": "SyncroBrain outbound DoerFlow CloudEvent",
+  "description": "CloudEvents 1.0 posted to DoerFlow /integrations/events. data is a string whitelist; not TB MQTT.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": ["com.syncrobrain.incident.v1", "com.syncrobrain.work-order.v1"]
+    },
+    "subject": { "type": "string" },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string" },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceTenantId", "sourceId", "audience"],
+      "properties": {
+        "sourceTenantId": { "type": "string" },
+        "sourceId": { "type": "string" },
+        "severity": { "type": "string" },
+        "summary": { "type": "string" },
+        "audience": { "type": "string", "enum": ["human", "agent"] },
+        "budget": { "type": "string" },
+        "callbackUrl": { "type": "string", "format": "uri" },
+        "sourceRef": { "type": "string" },
+        "orgId": { "type": "string" }
+      }
+    }
+  }
+}

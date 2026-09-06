@@ -85,7 +85,8 @@ Gateway 调 TB 使用官方 REST / WebSocket，不 fork TB 源码进产品。白
 - DataTalk 大屏（客户愿为跨站点分析付费）
 - Kafka、微服务、Kubernetes、多区域主动主动
 - 自研规则引擎替代 TB 基础 Alarm（Incident 在 Gateway，TB Alarm 仍为输入）
-- 原生 App、链上结算、自研大模型
+- 原生 App、自研大模型
+- **DoerFlow / 链上结算**：可选适配器默认关闭，见 [integrations/doerflow.md](./integrations/doerflow.md)。不得把 TelemetryEnvelope 或 TB MQTT 当成跨产品总线，也不得把 DoerFlow 打进默认 Compose
 - 未实机认证的厂商兼容宣称
 
 ## 6. 数据流（Cloud Lite）
@@ -121,7 +122,20 @@ Build 以 **ThingsBoard MQTT API** 为准，不发明第二套生产 topic。
 
 参考：[ThingsBoard MQTT API](https://thingsboard.io/docs/reference/mqtt-api/)。
 
-当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。Gateway 新 API 另开合同，禁止静默破坏 v1。信封草案仅用于 Pack 内部规范化，不是设备必须实现的第二协议。
+当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。Gateway 新 API 另开合同，禁止静默破坏 v1。信封草案仅用于 Pack 内部规范化，不是设备必须实现的第二协议。跨产品变现信封是 CloudEvents（[doerflow.v1.yaml](../contracts/doerflow.v1.yaml)），**不是** `telemetry-envelope`，也 **不得** 发到 TB MQTT topic。
+
+### 6.4 可选 DoerFlow（默认关）
+
+```text
+DoerFlow ──HMAC invoke──► Gateway /integrations/doerflow/invoke
+                          └── 领域服务 → telemetry-digest.v1 / incident-report.v1（hash/ref）
+
+Incident open/escalated ──策略/预算/许可──► outbox ──CloudEvents──► DoerFlow /integrations/events
+DoerFlow settled/task  ──HMAC──► /integrations/doerflow/callbacks
+                          └── Safety Kernel 评估建议；禁止 TB RPC；禁止自动 close Incident
+```
+
+未设 `DOERFLOW_ENABLED=true` 时模块 no-op。Cloud Lite Compose **不含** DoerFlow。实现：`iot-gateway/src/modules/doerflow`，HTTP 细节只放在 `DoerFlowClient`。
 
 ## 7. Cloud Lite compose（Build 目标）
 
@@ -136,7 +150,8 @@ docker compose (deploy/)
 可选（非 Build）：
 ├── emqx              # 仅合同触发
 ├── redis / minio
-└── DataTalk
+├── DataTalk
+└── DoerFlow adapter  # Gateway 模块；DOERFLOW_ENABLED 默认关；不进 Compose
 
 外部身份：
 └── Logto 或客户 IdP

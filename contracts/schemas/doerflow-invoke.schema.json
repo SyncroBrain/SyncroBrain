@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/doerflow-invoke.schema.json",
+  "title": "DoerFlow trading job invoke CloudEvent",
+  "description": "Inbound HMAC CloudEvent. type is always com.doerflow.trading.job.invoke.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "data"],
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "type": { "type": "string", "const": "com.doerflow.trading.job.invoke" },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string" },
+    "data": {
+      "type": "object",
+      "required": ["offeringCode", "sourceTenantId"],
+      "properties": {
+        "jobId": { "type": "string" },
+        "offeringCode": {
+          "type": "string",
+          "enum": [
+            "syncrobrain.telemetry-digest.v1",
+            "syncrobrain.incident-report.v1"
+          ]
+        },
+        "sourceTenantId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "windowStart": { "type": "string", "format": "date-time" },
+        "windowEnd": { "type": "string", "format": "date-time" },
+        "units": { "type": "number" }
+      }
+    }
+  }
+}

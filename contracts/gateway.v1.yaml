@@ -6,6 +6,10 @@ info:
     Product Iterate HTTP surface on iot-gateway (NestJS Fastify).
     Server default is http://localhost:13200/api/v1.
     Device CRUD in device.v1.yaml is a legacy subset and is not the Cloud Lite contract.
+    Optional VistaCast ingest is HMAC webhook at /integrations/vistacast/connections/{id}/events.
+    Optional DoerFlow adapter is default-off at /integrations/doerflow/* (HMAC invoke/callback).
+    DoerFlow is not a telemetry bus and is not ThingsBoard MQTT. Callbacks never close Incidents
+    and never execute TB RPC; command suggestions go through Safety Kernel.
 servers:
   - url: http://localhost:13200/api/v1
 paths:
@@ -228,6 +232,13 @@ paths:
       responses:
         "200":
           description: Domain incidents
+  /incidents/{id}:
+    get:
+      operationId: getIncident
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Incident with acknowledgements and escalations
   /incidents/{id}/ack:
     post:
       operationId: ackIncident
@@ -591,6 +602,239 @@ paths:
       responses:
         "201":
           description: Pond aerator / spray scenes with level interlock
+  /demos/vistacast-bridge:
+    post:
+      operationId: demoVistaCastBridge
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile:
+                  type: string
+                  enum: [industrial-safety, building-facility, home-care]
+                projectName: { type: string }
+                siteName: { type: string }
+                assetName: { type: string }
+                autoActionEnabled: { type: boolean }
+      responses:
+        "201":
+          description: Pack demo plus VistaCast connection, binding, and a drill event
+  /integrations/vistacast/profiles:
+    get:
+      operationId: listVistaCastProfiles
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: industrial-safety / building-facility / home-care profiles
+  /integrations/vistacast/connections:
+    get:
+      operationId: listVistaCastConnections
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Connections (secrets never listed)
+    post:
+      operationId: createVistaCastConnection
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Connection created; webhookSecret returned once
+  /integrations/vistacast/connections/{id}:
+    get:
+      operationId: getVistaCastConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Connection (no secret)
+    patch:
+      operationId: patchVistaCastConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Updated
+    delete:
+      operationId: deleteVistaCastConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Removed
+  /integrations/vistacast/connections/{id}/rotate-secret:
+    post:
+      operationId: rotateVistaCastWebhookSecret
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: New webhookSecret returned once
+  /integrations/vistacast/connections/{id}/events:
+    post:
+      operationId: ingestVistaCastWebhook
+      description: HMAC-SHA256 ingest. No user JWT. Header x-vistacast-signature.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "202":
+          description: Accepted (processed, duplicate, or quarantined)
+        "401":
+          description: Bad signature
+        "413":
+          description: Body too large
+  /integrations/vistacast/bindings:
+    get:
+      operationId: listVistaCastBindings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: cameraId ↔ assetId rows
+    post:
+      operationId: upsertVistaCastBinding
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Bound
+  /integrations/vistacast/bindings/{id}:
+    delete:
+      operationId: deleteVistaCastBinding
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Unbound
+  /integrations/vistacast/events:
+    get:
+      operationId: listVistaCastInbox
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Inbox rows including quarantined
+  /integrations/vistacast/events/{id}/retry:
+    post:
+      operationId: retryVistaCastInbox
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Reprocessed
+  /integrations/doerflow/status:
+    get:
+      operationId: doerflowStatus
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Default-off flag, license feature doerflow, frozen offerings
+  /integrations/doerflow/offerings:
+    get:
+      operationId: listDoerflowOfferings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: syncrobrain.telemetry-digest.v1 and syncrobrain.incident-report.v1
+  /integrations/doerflow/connections:
+    get:
+      operationId: listDoerflowConnections
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Tenant/project policy rows
+    post:
+      operationId: createDoerflowConnection
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Created; invokeSecret once
+        "503":
+          description: DOERFLOW_DISABLED
+  /integrations/doerflow/connections/{id}/register:
+    post:
+      operationId: registerDoerflowOfferings
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: productCode/offeringCode/sourceTenantId/pricingUnit/readiness/endpointUrl/unitPrice/payee
+  /integrations/doerflow/invoke:
+    post:
+      operationId: invokeDoerflowOffering
+      description: HMAC CloudEvent type=com.doerflow.trading.job.invoke. Header x-doerflow-signature.
+      responses:
+        "200":
+          description: Hash/ref payload
+        "401":
+          description: Bad HMAC
+        "409":
+          description: Duplicate invoke id
+  /integrations/doerflow/callbacks:
+    post:
+      operationId: doerflowLifecycleCallback
+      description: HMAC lifecycle. Never executes device commands.
+      responses:
+        "202":
+          description: Stored suggestion or quarantined
+        "401":
+          description: Bad HMAC
+  /integrations/doerflow/outbox:
+    get:
+      operationId: listDoerflowOutbox
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: CloudEvents com.syncrobrain.incident.v1 / com.syncrobrain.work-order.v1
+  /integrations/doerflow/outbox/{id}/retry:
+    post:
+      operationId: retryDoerflowOutbox
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Retry toward /integrations/events
+  /integrations/doerflow/work-orders:
+    post:
+      operationId: createDoerflowWorkOrder
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: needsExternal work order; no TB RPC
 components:
   securitySchemes:
     bearerAuth:

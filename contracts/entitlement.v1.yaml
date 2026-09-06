@@ -5,6 +5,7 @@ info:
   description: |
     Configurable SKU catalog. Not Stripe / LuminaryWorks online billing.
     License files are Ed25519-signed JSON (productCode=syncrobrain).
+    Optional feature "doerflow" is not in the Cloud Lite SKU. Not an online price plan.
 servers:
   - url: http://localhost:13200/api/v1
 paths:

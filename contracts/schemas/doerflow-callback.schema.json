@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/doerflow-callback.schema.json",
+  "title": "DoerFlow lifecycle callback CloudEvent",
+  "description": "HMAC-verified lifecycle. Must not contain device commands or credentials. Product never auto-acks.",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type"],
+  "properties": {
+    "specversion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string" },
+    "subject": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "com.doerflow.trading.job.settled",
+        "com.doerflow.trading.job.voided",
+        "com.doerflow.trading.job.failed",
+        "com.doerflow.trading.job.captured",
+        "com.doerflow.trading.job.succeeded",
+        "com.doerflow.task.created",
+        "com.doerflow.task.correlated"
+      ]
+    },
+    "time": { "type": "string", "format": "date-time" },
+    "datacontenttype": { "type": "string" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "jobId": { "type": "string" },
+        "taskId": { "type": "string" },
+        "correlationId": { "type": "string" },
+        "status": { "type": "string" },
+        "dispatchStatus": { "type": "string" },
+        "sourceTenantId": { "type": "string" },
+        "sourceRef": { "type": "string" },
+        "eventId": { "type": "string" },
+        "outputHash": { "type": "string" }
+      }
+    }
+  }
+}

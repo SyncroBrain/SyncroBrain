@@ -1,0 +1,15 @@
+{
+  "specversion": "1.0",
+  "id": "invoke-1",
+  "source": "doerflow/trading",
+  "type": "com.doerflow.trading.job.invoke",
+  "time": "2026-09-06T00:00:00.000Z",
+  "data": {
+    "jobId": "job-1",
+    "offeringCode": "syncrobrain.telemetry-digest.v1",
+    "sourceTenantId": "proj-1",
+    "windowStart": "2026-09-06T00:00:00.000Z",
+    "windowEnd": "2026-09-06T01:00:00.000Z",
+    "units": 1
+  }
+}

@@ -104,6 +104,10 @@ pnpm install && pnpm dev
 # http://localhost:15180
 ```
 
+可选 VistaCast 联动：两边都起栈后，在 Console **边缘** 按界面步骤接入。点击路径：[playbooks/vistacast-bridge.md](./playbooks/vistacast-bridge.md)。
+
+可选 DoerFlow（**默认关**）：Gateway `DOERFLOW_ENABLED=true` 且许可含 feature `doerflow`。不进入 Compose。契约：[spec/integrations/doerflow.md](./spec/integrations/doerflow.md)。
+
 统一登录：Console `pnpm dev` 打开 `http://localhost:15180/login`，使用 Headless 面板（需 Logto `:3001`）。Redirect：`http://localhost:15180/auth/callback`。Gateway 须设 `IDP_ISSUER=http://localhost:3001/oidc`。
 
 ## 按角色单独开发

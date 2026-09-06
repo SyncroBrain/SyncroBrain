@@ -1,0 +1,20 @@
+{
+  "specversion": "1.0",
+  "id": "incident:inc-1:open",
+  "source": "syncrobrain/proj-1",
+  "type": "com.syncrobrain.incident.v1",
+  "subject": "inc-1",
+  "time": "2026-09-06T00:00:00.000Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "sourceTenantId": "proj-1",
+    "sourceId": "inc-1",
+    "severity": "CRITICAL",
+    "summary": "over-temperature",
+    "audience": "agent",
+    "budget": "1",
+    "callbackUrl": "http://127.0.0.1:13200/api/v1/integrations/doerflow/callbacks",
+    "sourceRef": "proj-1:inc-1",
+    "orgId": "proj-1"
+  }
+}

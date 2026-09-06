@@ -119,9 +119,9 @@ Cloud Lite **独立可售**。下表可选。
 | [LuminaryWorks](https://luminaryworks.dev) | 可选共享身份 |
 | [DataLuminary](https://dataluminary.dev) | 可选大屏；默认 TB Dashboard |
 | [BlockyEdu](https://blockyedu.com) | 可选培训 |
-| [DoerFlow](https://doerflow.dev) | 不进入当前阶段 |
+| [DoerFlow](https://doerflow.dev) | 可选、默认关闭；不进入 Build |
 | [VistaRemote](https://remote.vistacast.dev) | 可选 |
-| [VistaCast](https://vistacast.dev) | 首年不做 |
+| [VistaCast](https://vistacast.dev) | 可选视频 AI 联动（签名 `alert.v1`；非 Cloud Lite 前置）。界面接入：[playbooks/vistacast-bridge.md](./playbooks/vistacast-bridge.md) |
 
 ## 文档
 
@@ -136,6 +136,7 @@ Cloud Lite **独立可售**。下表可选。
 | [spec/controller-kits.md](./spec/controller-kits.md) | 公版控制器（ESP32 窗控/阀/增氧…） |
 | [spec/scenes.md](./spec/scenes.md) | 场景中台（手动 / 自动 / AI） |
 | [playbooks/controller-bench.md](./playbooks/controller-bench.md) | 公版控制器：仿真 → 采购 → 组装 → 组网 → 实机 |
+| [playbooks/vistacast-bridge.md](./playbooks/vistacast-bridge.md) | 可选 VistaCast：Console / Admin 点击接入 |
 | [spec/ai-autonomy.md](./spec/ai-autonomy.md) | 产品 AI 与自治包络 |
 | [plan/first-revenue.md](./plan/first-revenue.md) | cold-lab/env-lab 演示基线（触达延后） |
 | [plan/validation/acceptance/README.md](./plan/validation/acceptance/README.md) | 单元 / Fake TB / Playwright；可选 AI 审阅（非门） |

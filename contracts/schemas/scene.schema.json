@@ -19,13 +19,17 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["command", "threshold", "schedule", "ai"]
+            "enum": ["command", "threshold", "schedule", "ai", "external_event"]
           },
           "commandId": { "type": "string" },
           "key": { "type": "string" },
           "op": { "type": "string", "enum": ["lt", "lte", "gt", "gte", "eq"] },
           "value": { "type": ["number", "integer", "boolean"] },
-          "windowCron": { "type": "string" }
+          "windowCron": { "type": "string" },
+          "source": { "type": "string", "description": "external_event source product, e.g. vistacast" },
+          "schema": { "type": "string", "description": "external_event schema id, e.g. alert.v1" },
+          "kind": { "type": "string" },
+          "state": { "type": "string" }
         }
       }
     },

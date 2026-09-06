@@ -65,6 +65,14 @@ export function triggerHits(triggers = [], telemetry, source) {
       if (actual === undefined || actual === null) return false;
       return compare(trigger.op ?? "eq", actual, trigger.value);
     }
+    if (trigger.type === "external_event") {
+      if (source !== "policy") return false;
+      if (trigger.source && telemetry?.external_source !== trigger.source) return false;
+      if (trigger.schema && telemetry?.external_schema !== trigger.schema) return false;
+      if (trigger.kind && telemetry?.external_kind !== trigger.kind) return false;
+      if (trigger.state && telemetry?.external_state !== trigger.state) return false;
+      return true;
+    }
     return false;
   });
 }

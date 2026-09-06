@@ -66,6 +66,8 @@
 
 产品码仍为 `syncrobrain`。这不是 Stripe / LuminaryWorks 在线计费。合同文本见 [legal/](../legal/README.md)（须律师审阅）。
 
+可选 DoerFlow 适配器复用同一离线许可：功能码 `doerflow`。**Cloud Lite SKU 不含此功能**；Private / HA 许可可声明。开启仍须 `DOERFLOW_ENABLED=true`。不得为此发明在线价格套餐或绕过 Casbin。命令建议不得跳过 Safety Kernel。
+
 ## 6. 尽调材料
 
 LICENSE + 本文件 + SBOM + 演示脚本/版本/部署记录。缺证据不得进融资数据室。

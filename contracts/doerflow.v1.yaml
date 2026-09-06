@@ -1,0 +1,176 @@
+openapi: 3.1.0
+info:
+  title: SyncroBrain × DoerFlow integration
+  version: 0.1.0
+  description: |
+    Optional bidirectional monetization adapter. Default off (DOERFLOW_ENABLED).
+    Not part of Cloud Lite / Build compose. Not a telemetry or TB MQTT bus.
+    Seller offerings are fixed: syncrobrain.telemetry-digest.v1 (window) and
+    syncrobrain.incident-report.v1 (batch). Invoke type is com.doerflow.trading.job.invoke.
+    Outbound events are CloudEvents 1.0 to DoerFlow /integrations/events.
+    Callbacks (invoke settled / task created|correlated) never execute device RPC and never close Incidents.
+    Accepted callback types: com.doerflow.trading.job.settled|voided|failed and com.doerflow.task.created|correlated.
+    Command suggestions must pass Entitlement + Casbin + ActionPolicy/Safety Kernel.
+    Provider registration fields: productCode, offeringCode, sourceTenantId, pricingUnit,
+    readiness, idempotencyKey, endpointUrl, unitPrice, payee.
+    DoerFlow HTTP (M2M token, register, /integrations/events) is isolated in one client adapter.
+    Callback HMAC accepts the connection invoke secret or DOERFLOW_HMAC_SECRET (DoerFlow TRADING_WEBHOOK_SECRET).
+servers:
+  - url: http://localhost:13200/api/v1
+paths:
+  /integrations/doerflow/status:
+    get:
+      operationId: doerflowStatus
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: enabled flag, license feature, offerings (no secrets)
+  /integrations/doerflow/offerings:
+    get:
+      operationId: listDoerflowOfferings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Frozen seller offerings
+  /integrations/doerflow/connections:
+    get:
+      operationId: listDoerflowConnections
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Project policies (secrets never listed)
+    post:
+      operationId: createDoerflowConnection
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: Policy created; invokeSecret returned once
+        "503":
+          description: DOERFLOW_DISABLED
+  /integrations/doerflow/connections/{id}:
+    get:
+      operationId: getDoerflowConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Connection without secrets
+    patch:
+      operationId: patchDoerflowConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Updated
+    delete:
+      operationId: deleteDoerflowConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Removed
+  /integrations/doerflow/connections/{id}/register:
+    post:
+      operationId: registerDoerflowOfferings
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Provider registration via centralized client adapter
+  /integrations/doerflow/connections/{id}/rotate-secret:
+    post:
+      operationId: rotateDoerflowInvokeSecret
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: New invokeSecret returned once
+  /integrations/doerflow/invoke:
+    post:
+      operationId: invokeDoerflowOffering
+      description: HMAC CloudEvent com.doerflow.trading.job.invoke. Header x-doerflow-signature.
+      responses:
+        "200":
+          description: Digest or incident report (hash/ref only)
+        "401":
+          description: Bad HMAC
+        "409":
+          description: Duplicate CloudEvents id (idempotent replay)
+  /integrations/doerflow/callbacks:
+    post:
+      operationId: doerflowLifecycleCallback
+      description: HMAC lifecycle callback. Must not dispatch device commands or close Incidents. Types include com.doerflow.trading.job.settled.
+      responses:
+        "202":
+          description: Accepted or quarantined
+        "401":
+          description: Bad HMAC
+  /integrations/doerflow/outbox:
+    get:
+      operationId: listDoerflowOutbox
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Correlation and retry rows
+  /integrations/doerflow/outbox/{id}/retry:
+    post:
+      operationId: retryDoerflowOutbox
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Retry attempted
+  /integrations/doerflow/work-orders:
+    post:
+      operationId: createDoerflowWorkOrder
+      security: [{ bearerAuth: [] }]
+      responses:
+        "201":
+          description: External work order queued (no device RPC)
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    doerflowHmac:
+      type: apiKey
+      in: header
+      name: x-doerflow-signature
+  schemas:
+    ProviderRegistration:
+      $ref: "./schemas/doerflow-provider-registration.schema.json"
+    InvokeCloudEvent:
+      $ref: "./schemas/doerflow-invoke.schema.json"
+    OutboundCloudEvent:
+      $ref: "./schemas/doerflow-event.schema.json"
+    LifecycleCallback:
+      $ref: "./schemas/doerflow-callback.schema.json"
+    TelemetryDigest:
+      $ref: "./schemas/telemetry-digest.v1.schema.json"
+    IncidentReport:
+      $ref: "./schemas/incident-report.v1.schema.json"

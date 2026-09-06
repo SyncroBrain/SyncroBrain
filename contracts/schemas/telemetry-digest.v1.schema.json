@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/telemetry-digest.v1.schema.json",
+  "title": "SyncroBrain telemetry digest v1",
+  "description": "Time-window aggregates plus hash. Not point-billed. No device tokens. Not TelemetryEnvelope.",
+  "type": "object",
+  "required": ["offeringCode", "window", "digestSha256", "ref"],
+  "properties": {
+    "offeringCode": {
+      "type": "string",
+      "const": "syncrobrain.telemetry-digest.v1"
+    },
+    "window": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" }
+      }
+    },
+    "projectId": { "type": "string" },
+    "assetCount": { "type": "integer" },
+    "sampleCount": { "type": "integer" },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "avg": { "type": "number" },
+          "n": { "type": "integer" }
+        }
+      }
+    },
+    "digestSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "ref": { "type": "string" }
+  }
+}

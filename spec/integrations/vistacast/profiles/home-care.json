@@ -1,0 +1,21 @@
+{
+  "slug": "home-care",
+  "titleKey": "vistacast.profile.homeCare",
+  "summaryKey": "vistacast.profile.homeCareHint",
+  "maturity": "integration-verified",
+  "source": "vistacast",
+  "schemaVersion": "alert.v1",
+  "mqttAllowed": false,
+  "autoActionDefault": false,
+  "autoActionAllowed": false,
+  "careRequired": true,
+  "stubKinds": ["fall", "fight", "smoke", "face.stranger", "staff.away", "staff.phone"],
+  "kindMap": {
+    "fall": {
+      "incidentType": "visual.care_fall",
+      "severity": "CRITICAL",
+      "autoActionEligible": false
+    }
+  },
+  "scenes": []
+}

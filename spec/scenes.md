@@ -46,7 +46,7 @@
 | `kitSlug` | 执行所用 Kit |
 | `mode` | `manual` \| `policy` \| `ai` |
 | `enabled` | 关闭则只接受 `user` 且仍过互锁，或完全拒绝（站点策略） |
-| `triggers[]` | `command` / `threshold` / `schedule` / `ai` |
+| `triggers[]` | `command` / `threshold` / `schedule` / `ai` / `external_event` |
 | `actions[]` | `commandId` + `params`（必须在 Kit 命令表） |
 | `safety` | 叠加 Kit 包络：`maxOnSec`、`interlocks`、`requireEvidence` |
 
@@ -88,6 +88,7 @@
 ## 4. 与命令、AI、边缘的关系
 
 - **唯一下行**：`POST /api/v1/commands`（已有）。Scene 评估通过后构造同一 Command 对象（`source=user|policy|ai`）。
+- **外部事件**：VistaCast `alert.v1` 经签名 Inbox 映射为 `source=policy` 的 `external_event` 触发。视频不得绕过 Kit 互锁；`care` 不走 MQTT、不自动执行。见 [integrations/vistacast.md](./integrations/vistacast.md)。
 - **边缘**：断网时 `policy` 场景由 EdgeAgent 本地评估；上线补传遥测 `quality=backfill`，命令回执走 Outbox。
 - **AI**：工具面只允许 Pack/Kit 声明的 `commandId`；禁止任意 RPC、拼 MQTT、关互锁。见 [ai-autonomy.md](./ai-autonomy.md)。
 - **幂等**：同一 `idempotencyKey` 不重复开阀；手动与策略冲突时 **互锁优先于开**（fail closed）。
@@ -99,5 +100,6 @@
 | 窗控 | `POST /demos/smart-window` | 手动开窗；雨量=1 自动关；AI 无证据被拒 |
 | 灌溉 | `POST /demos/agri-irrigation` | 土壤低开阀；雨天 skip；干转停泵 |
 | 鱼塘 | `POST /demos/agri-pond` | 溶氧低增氧；水位低拒绝喷水 |
+| VistaCast | Console **边缘**演示按钮，或 `POST /demos/vistacast-bridge` | 签名 drill 打开 Incident；自动动作默认关；看护无 MQTT。点击路径见 [playbooks/vistacast-bridge.md](../playbooks/vistacast-bridge.md) |
 
 边缘单测：`pnpm --dir iot-edge-agent test`。仿真：`node iot-edge-agent/sim/esp32-kit-sim.mjs`。云编排已在 Gateway 落地（`/controller-kits`、`/scenes/:id/evaluate`、一键演示仿真后跑 Pack 策略场景）。台架顺序：[playbooks/controller-bench.md](../playbooks/controller-bench.md)。

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/external-event-profile.schema.json",
+  "title": "SyncroBrain external event profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "maturity", "source", "schemaVersion", "mqttAllowed", "autoActionDefault", "kindMap"],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "enum": ["industrial-safety", "building-facility", "home-care"]
+    },
+    "titleKey": { "type": "string" },
+    "summaryKey": { "type": "string" },
+    "maturity": { "type": "string", "const": "integration-verified" },
+    "source": { "type": "string", "const": "vistacast" },
+    "schemaVersion": { "type": "string", "const": "alert.v1" },
+    "mqttAllowed": { "type": "boolean" },
+    "autoActionDefault": { "type": "boolean" },
+    "autoActionAllowed": { "type": "boolean" },
+    "careRequired": { "type": "boolean" },
+    "stubKinds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "kindMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["incidentType", "severity", "autoActionEligible"],
+        "properties": {
+          "incidentType": { "type": "string" },
+          "severity": { "type": "string", "enum": ["INFO", "WARNING", "CRITICAL"] },
+          "autoActionEligible": { "type": "boolean" }
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": { "$ref": "https://syncrobrain.com/schemas/scene.schema.json" }
+    }
+  }
+}

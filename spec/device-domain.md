@@ -144,7 +144,6 @@ MQTT：
 | POST | `/api/v1/scenes/:id/evaluate` | `iot.command:dispatch` |
 | POST | `/api/v1/demos/smart-window` | `iot.pack:apply` |
 | POST | `/api/v1/demos/agri-irrigation` | `iot.pack:apply` |
-| POST | `/api/v1/demos/agri-pond` | `iot.pack:apply` |
 | GET | `/api/v1/incidents` | `iot.incident:view` |
 | POST | `/api/v1/incidents/:id/ack` | `iot.incident:ack` |
 | POST | `/api/v1/incidents/:id/escalate` | `iot.incident:escalate` |
@@ -156,7 +155,9 @@ MQTT：
 
 完整权限表见 [index.md](./index.md)。
 
-公版 Kit / 场景中台已写入 [`contracts/gateway.v1.yaml`](../contracts/gateway.v1.yaml)：`/controller-kits`、`/projects/{id}/controllers/claim`、`/projects/{id}/scenes`、`/scenes/{id}/evaluate`、`/demos/smart-window`、`/demos/agri-irrigation`、`/demos/agri-pond`。边缘可运行实现见 `iot-edge-agent`；`iot-gateway` 子仓需按同一合同落地 HTTP。
+公版 Kit / 场景中台 / VistaCast 联动已写入 [`contracts/gateway.v1.yaml`](../contracts/gateway.v1.yaml)：`/controller-kits`、`/projects/{id}/controllers/claim`、`/projects/{id}/scenes`、`/scenes/{id}/evaluate`、`/demos/smart-window`、`/demos/agri-irrigation`、`/demos/agri-pond`、`/demos/vistacast-bridge`、`/integrations/vistacast/*`、`/incidents`。可选 DoerFlow（**默认关闭**）见 [`contracts/doerflow.v1.yaml`](../contracts/doerflow.v1.yaml) 与 `/integrations/doerflow/*`：卖方 offering 仅 `syncrobrain.telemetry-digest.v1` / `syncrobrain.incident-report.v1`；处置事件 `com.syncrobrain.incident.v1` / `com.syncrobrain.work-order.v1`。边缘可运行实现见 `iot-edge-agent`。
+
+DoerFlow 回调 **禁止** 直接下发设备命令，也 **禁止** 自动 close Incident。建议动作必须显式经过 Entitlement + Casbin + ActionPolicy / Safety Kernel（`evaluateAction`）；内核允许仍不等于 RPC。不得把设备 token / MQTT 凭据写入跨产品信封。实现仓：`iot-gateway/src/modules/doerflow`。
 
 ## 7. Industry Pack
 

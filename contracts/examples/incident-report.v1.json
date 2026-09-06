@@ -1,0 +1,19 @@
+{
+  "offeringCode": "syncrobrain.incident-report.v1",
+  "batch": { "from": "2026-09-06T00:00:00.000Z", "to": "2026-09-06T01:00:00.000Z" },
+  "projectId": "proj-1",
+  "incidentCount": 1,
+  "bySeverity": { "CRITICAL": 1 },
+  "items": [
+    {
+      "id": "inc-1",
+      "type": "overtemp",
+      "severity": "CRITICAL",
+      "state": "open",
+      "openedAt": "2026-09-06T00:10:00.000Z",
+      "summaryHash": "abcd1234abcd1234"
+    }
+  ],
+  "digestSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "ref": "sb:incident-report:bbbbbbbbbbbbbbbbbbbbbbbb"
+}

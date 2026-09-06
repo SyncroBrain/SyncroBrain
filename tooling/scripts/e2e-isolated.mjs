@@ -100,11 +100,13 @@ spawnInherit("pnpm", ["--ignore-workspace", "dev"], consoleDir, {
 const gatewayOk = await waitForHttpOk("http://127.0.0.1:13200/api/v1/health", 60_000);
 if (!gatewayOk) {
   console.error("Gateway Fake TB did not become healthy");
+  shutdown();
   process.exit(1);
 }
 const consoleOk = await waitForHttpOk("http://127.0.0.1:15180", 90_000);
 if (!consoleOk) {
   console.error("Console did not become ready");
+  shutdown();
   process.exit(1);
 }
 

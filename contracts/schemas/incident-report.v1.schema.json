@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/incident-report.v1.schema.json",
+  "title": "SyncroBrain incident report v1",
+  "description": "Batch incident hashes/refs. No device credentials or raw evidence blobs.",
+  "type": "object",
+  "required": ["offeringCode", "batch", "digestSha256", "ref"],
+  "properties": {
+    "offeringCode": {
+      "type": "string",
+      "const": "syncrobrain.incident-report.v1"
+    },
+    "batch": {
+      "type": "object",
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "type": "string", "format": "date-time" },
+        "to": { "type": "string", "format": "date-time" }
+      }
+    },
+    "projectId": { "type": "string" },
+    "incidentCount": { "type": "integer" },
+    "bySeverity": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "severity": { "type": "string" },
+          "state": { "type": "string" },
+          "openedAt": { "type": "string" },
+          "summaryHash": { "type": "string" }
+        }
+      }
+    },
+    "digestSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "ref": { "type": "string" }
+  }
+}

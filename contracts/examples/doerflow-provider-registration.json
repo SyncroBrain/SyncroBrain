@@ -1,0 +1,11 @@
+{
+  "productCode": "syncrobrain",
+  "offeringCode": "syncrobrain.telemetry-digest.v1",
+  "sourceTenantId": "proj-1",
+  "pricingUnit": "window",
+  "readiness": "lab",
+  "idempotencyKey": "syncrobrain:proj-1:syncrobrain.telemetry-digest.v1",
+  "endpointUrl": "http://127.0.0.1:13200/api/v1/integrations/doerflow/invoke",
+  "unitPrice": "0",
+  "payee": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+}

@@ -1,0 +1,61 @@
+{
+  "slug": "building-facility",
+  "titleKey": "vistacast.profile.buildingFacility",
+  "summaryKey": "vistacast.profile.buildingFacilityHint",
+  "maturity": "integration-verified",
+  "source": "vistacast",
+  "schemaVersion": "alert.v1",
+  "mqttAllowed": true,
+  "autoActionDefault": false,
+  "autoActionAllowed": true,
+  "careRequired": false,
+  "stubKinds": ["fall", "fight", "smoke", "face.stranger", "staff.away", "staff.phone"],
+  "kindMap": {
+    "intrusion": {
+      "incidentType": "visual.intrusion",
+      "severity": "WARNING",
+      "autoActionEligible": true
+    },
+    "fall": {
+      "incidentType": "visual.fall",
+      "severity": "CRITICAL",
+      "autoActionEligible": false
+    },
+    "device.offline": {
+      "incidentType": "visual.camera_offline",
+      "severity": "WARNING",
+      "autoActionEligible": false
+    }
+  },
+  "scenes": [
+    {
+      "id": "vis-hazard-close",
+      "packSlug": "smart-window",
+      "kitSlug": "kit-win-act",
+      "mode": "policy",
+      "enabled": true,
+      "triggers": [
+        {
+          "type": "external_event",
+          "source": "vistacast",
+          "schema": "alert.v1",
+          "kind": "intrusion",
+          "state": "open"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "close"
+        }
+      ],
+      "safety": {
+        "interlocks": [
+          {
+            "when": { "rain": 1 },
+            "deny": ["open", "setPosition"]
+          }
+        ]
+      }
+    }
+  ]
+}

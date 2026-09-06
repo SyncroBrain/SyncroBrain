@@ -95,7 +95,8 @@ DataTalk、BlockyEdu、DoerFlow、VistaRemote 均为可选，不是成交前提�
 ## 8. 长期可选项（不进入本阶段核心）
 
 - EMQX 作为独立 MQTT 平面
-- DoerFlow / 链上、VistaCast 视频 AI
+- DoerFlow / 链上（可选 Gateway 适配器默认关闭，见 [integrations/doerflow.md](./integrations/doerflow.md)；不进入 Compose）
+- VistaCast 视频进 ThingsBoard 或 Gateway 代理 RTP（联动只交换 `alert.v1`）
 - 原生 Flutter / RN App
 - 多区域主动主动、Kafka、Kubernetes
 - 通用低代码 Decoder 市场

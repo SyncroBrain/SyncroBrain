@@ -10,7 +10,7 @@
 
 客户可**只部署 SyncroBrain Cloud Lite**：ThingsBoard CE + PostgreSQL + Gateway + Console。
 
-- **不需要** DataLuminary、DoerFlow、VistaRemote、VistaCast、BlockyEdu
+- **不需要** DataLuminary、DoerFlow、VistaRemote、VistaCast、BlockyEdu（VistaCast 与 DoerFlow 联动均为可选 addon，默认关闭）
 - **需要** ThingsBoard CE 作为默认运行时（上游 Apache-2.0，随交付保留 NOTICE）
 - **不需要** 默认 EMQX
 - Entitlement `syncrobrain` 是收费 SKU 门槛，不是全家桶前置
@@ -30,9 +30,9 @@
 | [LuminaryWorks](https://luminaryworks.dev) | 可选共享 Logto |
 | [DataLuminary](https://dataluminary.dev) | 可选大屏；默认用 TB Dashboard |
 | [BlockyEdu](https://blockyedu.com) | 可选培训；实体课见 [education-bridge.md](./education-bridge.md) |
-| [DoerFlow](https://doerflow.dev) | 不进入 Build |
+| [DoerFlow](https://doerflow.dev) | **可选双向变现**，**默认关闭**，**不进入 Build / Cloud Lite 默认栈**。未设 `DOERFLOW_ENABLED` 时 Gateway 必须 no-op。契约见 [integrations/doerflow.md](./integrations/doerflow.md) |
 | [VistaRemote](https://remote.vistacast.dev) | 可选 |
-| [VistaCast](https://vistacast.dev) | 视频 AI；首年不做 |
+| [VistaCast](https://vistacast.dev) | 可选视频 AI。签名 `alert.v1` Webhook 进 Incident/Scene；Cloud Lite 仍可单独部署。界面点击路径见 [playbooks/vistacast-bridge.md](../playbooks/vistacast-bridge.md)，契约见 [integrations/vistacast.md](./integrations/vistacast.md) |
 
 旧名 VibeEdu / VibeAgent 已废止。
 

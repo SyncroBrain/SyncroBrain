@@ -15,7 +15,8 @@
 | [multi-vertical.md](./multi-vertical.md) | Pack 目录与二开约定 |
 | [controller-kits.md](./controller-kits.md) | **公版控制器**：ESP32 执行器/传感 Kit；公版或协议接入 |
 | [../playbooks/controller-bench.md](../playbooks/controller-bench.md) | 台架：先仿真，再买件组网 |
-| [scenes.md](./scenes.md) | 场景中台：手动 / 策略自动 / AI 自动 |
+| [../playbooks/vistacast-bridge.md](../playbooks/vistacast-bridge.md) | 可选 VistaCast：Console / Admin 点击接入 |
+| [scenes.md](./scenes.md) | 场景中台：手动 / 策略自动 / AI 自动 / 外部事件 |
 | [education-bridge.md](./education-bridge.md) | BlockyEdu 实体课：dry-run evaluate + 真机短时会话 |
 | [iot-lab-acceptance.md](./iot-lab-acceptance.md) | 合同 / 仿真 / Fake TB / 实机验收清单 |
 | [ai-autonomy.md](./ai-autonomy.md) | 产品 AI / 自治包络 |
@@ -29,6 +30,8 @@
 | [reliability.md](./reliability.md) | 垂直场景 SLO（Build 先用 TB Alarm） |
 | [device-domain.md](./device-domain.md) | 领域模型；v0.1 Device API；TB 映射 |
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
+| [integrations/vistacast.md](./integrations/vistacast.md) | 可选 VistaCast：签名事件 Inbox + Scene；界面接入见 playbook |
+| [integrations/doerflow.md](./integrations/doerflow.md) | 可选 DoerFlow 双向变现：卖方 digest/report + 处置事件；默认关闭，不进 Build |
 | [licensing.md](./licensing.md) | 自研 Polyform-NC；TB Apache-2.0 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | Console / 官网原型 |
 | [plan/validation.md](../plan/validation.md) | 附录：渠道触达（不阻塞 Build） |
@@ -60,9 +63,9 @@
 
 ## Vertical Fit 权限（不阻塞 Build）
 
-`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view`、`iot.command:dispatch`、`iot.ai:run`、`iot.edge:manage`、`iot.controller:view` / `iot.controller:claim`、`iot.scene:view` / `iot.scene:manage`、`iot.education:lab` 随领域内核、场景中台与教育桥接启用。课堂角色 `iot_student` 仅 view + dry-run。
+`iot.incident:*`、`iot.calibration:*`、`iot.report:*`、`iot.audit:view`、`iot.command:dispatch`、`iot.ai:run`、`iot.edge:manage`、`iot.controller:view` / `iot.controller:claim`、`iot.scene:view` / `iot.scene:manage`、`iot.education:lab`、`iot.integration:view` / `iot.integration:manage` 随领域内核、场景中台、教育桥接、VistaCast 与可选 DoerFlow 适配器启用。课堂角色 `iot_student` 仅 view + dry-run。DoerFlow 操作员面仍走 `iot.integration:*`，**不得**用 JWT 绕过 Casbin。回调/invoke 用 HMAC，不授予设备 RPC。
 
-长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.chain:earn` 仍不进入本阶段。
+长期扩展：`iot.rule:edit`、`iot.template:publish`、`iot.chain:earn` 仍不进入本阶段（DoerFlow 适配器不是链上结算，也不发明在线价格套餐）。
 
 ## 阶段门
 
