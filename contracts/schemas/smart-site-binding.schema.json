@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/smart-site-binding.schema.json",
+  "title": "SyncroBrain smart-site cross-product binding",
+  "description": "Reference contract for the three stable smart-site binding keys: tenant↔project, camera↔asset, remote-device↔asset. Ids and display names only — never credentials. A binding grants no action permission; remote intervention still passes Casbin + ActionPolicy / Safety Kernel.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["bindingVersion", "kind", "projectId", "external"],
+  "properties": {
+    "bindingVersion": { "type": "string", "const": "1" },
+    "kind": {
+      "type": "string",
+      "enum": ["tenant-project", "camera-asset", "remote-device-asset"]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["integration-verified", "contract-only"],
+      "description": "camera-asset and tenant-project are integration-verified; remote-device-asset is contract-only."
+    },
+    "connectionId": { "type": "string", "format": "uuid" },
+    "projectId": { "type": "string", "format": "uuid" },
+    "siteId": { "type": "string", "format": "uuid" },
+    "assetId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Required for camera-asset and remote-device-asset."
+    },
+    "external": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "tenantId"],
+      "properties": {
+        "product": {
+          "type": "string",
+          "enum": ["vistacast", "vistaremote", "dataluminary"]
+        },
+        "tenantId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "cameraId": { "type": "string", "maxLength": 64 },
+        "remoteDeviceId": { "type": "string", "maxLength": 64 },
+        "displayName": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "autoActionEnabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Even when true, only Pack/Kit declared commands are eligible and Safety Kernel still fails closed."
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string", "maxLength": 120 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "camera-asset" } }, "required": ["kind"] },
+      "then": { "required": ["assetId"], "properties": { "external": { "required": ["cameraId"] } } }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "remote-device-asset" } }, "required": ["kind"] },
+      "then": { "required": ["assetId"], "properties": { "external": { "required": ["remoteDeviceId"] } } }
+    }
+  ],
+  "$comment": "Forbidden anywhere in a binding: device tokens, MQTT passwords, ThingsBoard admin credentials, sibling-product API keys, ThingsBoard telemetry topics."
+}

@@ -1,0 +1,15 @@
+{
+  "embedVersion": "1",
+  "projectId": "0a2f1c5d-7e44-4a1b-9c31-1d8b6e5f4a22",
+  "dashboardId": "cold-lab-overview",
+  "origin": "https://board.example.com",
+  "token": "sbemb_9tVq2fJr7wKcN1xLd4Ub6ZmA",
+  "expiresAt": "2026-09-06T02:19:31Z",
+  "ttlSeconds": 300,
+  "scope": "dashboard:read",
+  "export": {
+    "mode": "pull",
+    "envelope": "syncrobrain.telemetry-digest.v1",
+    "window": "PT1H"
+  }
+}

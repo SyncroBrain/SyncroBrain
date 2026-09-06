@@ -2,10 +2,13 @@
 
 | 文件 | 状态 | 用途 |
 |------|------|------|
-| [gateway.v1.yaml](./gateway.v1.yaml) | **Cloud Lite** | health / packs / demos / alarms / projects / incidents / commands / AI / edge / license / education-labs / 可选 integrations；端口 **13200** |
+| [gateway.v1.yaml](./gateway.v1.yaml) | **Cloud Lite** | health / **ready** / **version** / packs / demos / alarms / projects / incidents / commands / AI / edge / license / education-labs / 可选 integrations；端口 **13200** |
 | [doerflow.v1.yaml](./doerflow.v1.yaml) | **可选、默认关** | DoerFlow HMAC invoke / callback / connections；不进默认 Build |
 | [entitlement.v1.yaml](./entitlement.v1.yaml) | **离线 SKU** | 可配置许可，非在线扣费 |
 | [device.v1.yaml](./device.v1.yaml) | **遗留 Device CRUD** | 禁止静默破坏；**不是** Pack/告警合同 |
+| [schemas/control-manifest.schema.json](./schemas/control-manifest.schema.json) | **部署拓扑** | required vs optional 组件；`GET /ready` 的唯一判据；只描述依赖，不授权动作 |
+| [schemas/smart-site-binding.schema.json](./schemas/smart-site-binding.schema.json) | 跨产品绑定 | `tenant↔project` · `camera↔asset` · `remote-device↔asset`；只放 id，不放凭据 |
+| [schemas/dataluminary-embed.schema.json](./schemas/dataluminary-embed.schema.json) | **默认关、contract-only** | 短期只读 embed grant + origin/dashboard 白名单；未交付 iframe 大屏 |
 | [schemas/pack-manifest.schema.json](./schemas/pack-manifest.schema.json) | **Pack Factory** | Industry Pack manifest |
 | [schemas/telemetry-envelope.schema.json](./schemas/telemetry-envelope.schema.json) | Pack 内部信封 | 设备生产 MQTT 仍用 TB topic |
 | [schemas/command.schema.json](./schemas/command.schema.json) | 命令 | 幂等投递与回执 |
@@ -22,7 +25,7 @@
 | [schemas/doerflow-callback.schema.json](./schemas/doerflow-callback.schema.json) | 生命周期 callback | HMAC；禁止设备命令 |
 | [schemas/telemetry-digest.v1.schema.json](./schemas/telemetry-digest.v1.schema.json) | 时间窗 digest | 聚合 + hash；非逐点、非 TelemetryEnvelope |
 | [schemas/incident-report.v1.schema.json](./schemas/incident-report.v1.schema.json) | 批次 incident report | hash/引用；无凭据 |
-| [examples/](./examples/) | 合同样例 | provider / invoke / event / digest / report |
+| [examples/](./examples/) | 合同样例 | provider / invoke / event / digest / report / control-manifest / smart-site-binding / dataluminary-embed |
 | [drafts/telemetry-envelope.md](./drafts/telemetry-envelope.md) | 叙事草案 | 与 JSON Schema 对齐 |
 
 契约烟测（无活栈）：`pnpm test:contract`。

@@ -1,8 +1,9 @@
 # SyncroBrain 架构 (v3.0)
 
 > **核心逻辑**：ThingsBoard CE 是可替换的 IoT 运行时；SyncroBrain 拥有 Pack、领域内核、命令、AI 策略、许可与产品入口。  
-> **默认交付（Cloud Lite）**：ThingsBoard CE + PostgreSQL + iot-gateway + iot-console-web；可选 iot-edge-agent。  
-> **本阶段不含**：EMQX、Timescale 独立路径、DataTalk、Kafka、K8s。见 [platform-vision.md](./platform-vision.md)、[production-scope.md](./production-scope.md)。
+> **Cloud Lite standalone**：ThingsBoard CE + iot-gateway + iot-console-web + **独立 PostgreSQL**（与 TB 内嵌 PG 分离）。iot-edge-agent、IdP、Entitlement 控制面与全部兄弟产品 **均为可选**。  
+> **本阶段不含**：EMQX、Timescale 独立路径、DataTalk、Kafka、K8s。见 [platform-vision.md](./platform-vision.md)、[production-scope.md](./production-scope.md)。  
+> **部署拓扑权威**：[deployment.md](./deployment.md)（compose 矩阵、control manifest、探针、Entitlement 模式、部署红线）。
 
 ## 1. 分层总览
 
@@ -37,13 +38,19 @@
 
 **边界**：ThingsBoard 拥有设备运行时事实（连接、遥测、属性、RPC、TB Alarm）。SyncroBrain 拥有项目、Pack、Incident 内核、命令、AI 策略、商业许可、交付记录。LLM 禁止直接调用 TB 任意 RPC。
 
+**Safety Kernel 权威**：任何动作建议（AI、Scene、兄弟产品回调、大屏按钮）落到设备前必须依次过 Entitlement → Casbin → ActionPolicy / Safety Kernel `evaluateAction` → Command Outbox → TB RPC。Safety Kernel 是唯一权威，越界 fail closed；允许 ≠ 下发。浏览器不持 TB 凭据、设备 token 或集成 secret。
+
 ## 2. 部署档位
 
 | 档位 | 适用 | 最小栈 | 何时启用 |
 |------|------|--------|----------|
-| **Cloud Lite** | 演示、评估、首单私有化 | TB CE + PG + Gateway + Console | **立即（Build）** |
-| **Private Single-node** | 数据不出园 | 同上 Compose + 离线许可执法 + 可选客户 OIDC | [deploy/INSTALL-PRIVATE.md](../deploy/INSTALL-PRIVATE.md) |
+| **Cloud Lite standalone** | 演示、评估、首单私有化 | TB CE + **独立 PG** + Gateway + Console | **立即（Build）** |
+| **Private Single-node** | 数据不出园 | 同上 + `ENTITLEMENT_MODE=offline_license` + 可选客户 OIDC | [deploy/INSTALL-PRIVATE.md](../deploy/INSTALL-PRIVATE.md) |
 | **Enterprise HA** | 多节点 / 合同 SLA | 应用副本 + Caddy；**TB CE 仍单节点** | [deploy/HA.md](../deploy/HA.md)；TB 集群仅合同附录 |
+
+standalone 的 **必需集合只有四件**：TB CE、Gateway、Console、独立 PostgreSQL。Gateway 领域库 **不得** 混进 ThingsBoard 镜像内嵌的 PG（升级/恢复会整卷覆盖，迁移互不知情）。Edge、IdP、Entitlement 控制面、DataLuminary / VistaCast / VistaRemote / DoerFlow / BlockyEdu 全部可选且默认关闭；**可选组件 down 不得让 standalone 的 `/ready` 变红**（判据是 control manifest，见 [deployment.md §4](./deployment.md#4-control-manifest)）。
+
+compose 文件矩阵（core / dev / prod / external-db / control-plane / smoke / HA）与部署红线见 [deployment.md §3](./deployment.md#3-compose-文件矩阵)。
 
 本地开发可用 TB 官方 docker 单体。Mosquitto 仅作历史 POC，**不是**生产 MQTT 平面。
 
@@ -122,6 +129,15 @@ Build 以 **ThingsBoard MQTT API** 为准，不发明第二套生产 topic。
 
 参考：[ThingsBoard MQTT API](https://thingsboard.io/docs/reference/mqtt-api/)。
 
+**两个平面必须分离**（红线，[deployment.md §2](./deployment.md#2-事件平面分离红线)）：
+
+| 平面 | 传输 | 标识 | 载荷 |
+|------|------|------|------|
+| 设备平面 | ThingsBoard MQTT Transport | `v1/devices/me/*`（或 `v2/*`） | TB 原生遥测 / 属性 / RPC |
+| 跨产品事件平面 | 独立 broker `EVENT_BUS_MQTT_URL` 或签名 HTTPS | `lw/v1/{tenantId}/{product}/{eventType}` · CloudEvents | `alert.v1` · `com.syncrobrain.incident.v1` · digest / report |
+
+禁止把 `lw/v1/*` 或 CloudEvents 发到 TB MQTT topic、禁止把 `EVENT_BUS_MQTT_URL` 指向 ThingsBoard `:1883`、禁止把设备 token 放进跨产品信封。`home-care` 载荷只走签名 Webhook。
+
 当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。Gateway 新 API 另开合同，禁止静默破坏 v1。信封草案仅用于 Pack 内部规范化，不是设备必须实现的第二协议。跨产品变现信封是 CloudEvents（[doerflow.v1.yaml](../contracts/doerflow.v1.yaml)），**不是** `telemetry-envelope`，也 **不得** 发到 TB MQTT topic。
 
 ### 6.4 可选 DoerFlow（默认关）
@@ -137,24 +153,32 @@ DoerFlow settled/task  ──HMAC──► /integrations/doerflow/callbacks
 
 未设 `DOERFLOW_ENABLED=true` 时模块 no-op。Cloud Lite Compose **不含** DoerFlow。实现：`iot-gateway/src/modules/doerflow`，HTTP 细节只放在 `DoerFlowClient`。
 
-## 7. Cloud Lite compose（Build 目标）
+## 7. Cloud Lite compose
+
+权威矩阵与红线：[deployment.md §3](./deployment.md#3-compose-文件矩阵)。
 
 ```text
-docker compose (deploy/)
-├── thingsboard-ce    # image: thingsboard/tb-postgres；host HTTP :19080 → 容器 9090；MQTT :1883
-│                     # Week 1：镜像内嵌 TB 用 PostgreSQL（volume syncrobrain_tb_data）
-├── postgres          # Gateway iot_core（:5438）；日后可与 TB 同实例分库
-├── iot-gateway       # :13200 Fastify；调 TB REST（Compose 默认；改代码时可宿主机 pnpm dev）
-└── iot-console-web   # :15180 产品入口（Compose 默认）
+deploy/
+├── docker-compose.core.yml            # 模板：服务定义唯一来源（不单独启动）
+├── docker-compose.dev.yml             # 本地开发 / 演示
+├── docker-compose.prod.yml            # 生产单节点（secret 必填；PG 不映射宿主端口）
+├── docker-compose.private.yml         # 兼容别名：继承 prod + 离线许可
+├── docker-compose.ha.yml              # 应用层 HA（TB CE 仍单节点）
+├── docker-compose.external-db.yml     # 客户托管 PostgreSQL
+├── docker-compose.control-plane.yml   # 叠加层：OIDC / Entitlement:3040 / 兄弟产品（共享网络 DNS）
+├── docker-compose.smoke.yml           # 叠加层：冒烟容器
+└── docker-compose.dev-host-bridge.yml # 叠加层：仅 dev 的 host.docker.internal
+```
 
-可选（非 Build）：
-├── emqx              # 仅合同触发
-├── redis / minio
-├── DataTalk
-└── DoerFlow adapter  # Gateway 模块；DOERFLOW_ENABLED 默认关；不进 Compose
+standalone 必需服务：`thingsboard` · `iot-postgres`（或 external-db）· `iot-gateway` · `iot-console`。
 
-外部身份：
-└── Logto 或客户 IdP
+```text
+可选（非 standalone）：
+├── iot-edge-agent    # profile: edge
+├── emqx / redis / minio / DataTalk    # 仅合同或证据触发
+├── Logto 或客户 IdP  # 外部；control-plane 叠加层
+├── Entitlement :3040 # 外部；ENTITLEMENT_MODE=off|shadow|enforce|offline_license
+└── DoerFlow / VistaCast / VistaRemote / DataLuminary 适配器  # Gateway 模块；默认关；不进默认 compose
 ```
 
 ## 8. 阶段对照

@@ -9,6 +9,7 @@
 |------|------|
 | [platform-vision.md](./platform-vision.md) | 交付平台愿景与红线 |
 | [architecture.md](./architecture.md) | TB CE + Gateway + Console |
+| [deployment.md](./deployment.md) | **部署拓扑权威**：standalone 四件套、compose 矩阵、control manifest、health/ready/version、Entitlement 模式、部署红线 |
 | [production-scope.md](./production-scope.md) | **当前**：生产范围、非目标、责任 |
 | [slo.md](./slo.md) | SLO 与故障演练 |
 | [release-gates.md](./release-gates.md) | L1 / E2E / 协议 / AI 安全出门门 |
@@ -31,6 +32,7 @@
 | [device-domain.md](./device-domain.md) | 领域模型；v0.1 Device API；TB 映射 |
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
 | [integrations/vistacast.md](./integrations/vistacast.md) | 可选 VistaCast：签名事件 Inbox + Scene；界面接入见 playbook |
+| [integrations/smart-site.md](./integrations/smart-site.md) | 跨产品绑定参考合同：camera↔asset、tenant↔project、remote-device↔asset、DataLuminary embed/export（默认全关） |
 | [integrations/doerflow.md](./integrations/doerflow.md) | 可选 DoerFlow 双向变现：卖方 digest/report + 处置事件；默认关闭，不进 Build |
 | [licensing.md](./licensing.md) | 自研 Polyform-NC；TB Apache-2.0 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | Console / 官网原型 |

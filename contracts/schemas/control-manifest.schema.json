@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/control-manifest.schema.json",
+  "title": "SyncroBrain control manifest",
+  "description": "Declares which deployment components are required vs optional. Sole judge of GET /api/v1/ready. Describes dependency topology only — it never authorizes an action (Casbin + Safety Kernel still apply).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifestVersion", "deployment", "components"],
+  "properties": {
+    "manifestVersion": { "type": "string", "const": "1" },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "topology"],
+      "properties": {
+        "profile": { "type": "string", "enum": ["dev", "prod", "private", "ha"] },
+        "topology": { "type": "string", "enum": ["standalone", "external-db", "control-plane", "ha"] },
+        "label": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "kind", "requirement"],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,39}$",
+            "description": "Stable probe key, e.g. postgres, thingsboard, entitlement, idp, edge, vistacast."
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["database", "runtime", "control-plane", "identity", "edge", "sibling-product", "event-bus"]
+          },
+          "requirement": {
+            "type": "string",
+            "enum": ["required", "optional"],
+            "description": "required → /ready returns 503 when the probe fails. optional → degraded only."
+          },
+          "probe": {
+            "type": "string",
+            "enum": ["postgres", "thingsboard", "http", "none"],
+            "default": "none",
+            "description": "How the Gateway checks the component. Unknown keys default to none (reported as skipped)."
+          },
+          "timeoutMs": { "type": "integer", "minimum": 200, "maximum": 15000, "default": 3000 },
+          "note": { "type": "string", "maxLength": 240 }
+        }
+      }
+    }
+  },
+  "$comment": "Never put URLs with embedded credentials, tokens, passwords or connection strings in a manifest. Endpoints come from environment variables, not from this file."
+}

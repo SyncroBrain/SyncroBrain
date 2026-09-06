@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://syncrobrain.com/schemas/dataluminary-embed.schema.json",
+  "title": "SyncroBrain → DataLuminary embed grant",
+  "description": "Reference contract for the optional DataLuminary dashboard embed. DATALUMINARY_EMBED_ENABLED defaults to false and SyncroBrain has NOT shipped an iframe dashboard — the default board is still a ThingsBoard Dashboard. When enabled, the Gateway mints a short-lived, single-purpose grant against an explicit origin and dashboard allowlist.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["embedVersion", "projectId", "dashboardId", "origin", "token", "expiresAt", "ttlSeconds"],
+  "properties": {
+    "embedVersion": { "type": "string", "const": "1" },
+    "projectId": { "type": "string", "format": "uuid" },
+    "dashboardId": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Must be present in DATALUMINARY_EMBED_DASHBOARDS, otherwise 403."
+    },
+    "origin": {
+      "type": "string",
+      "format": "uri",
+      "description": "Must match an entry in DATALUMINARY_EMBED_ORIGINS exactly. Wildcards are rejected."
+    },
+    "token": {
+      "type": "string",
+      "minLength": 16,
+      "description": "Opaque short-lived grant. Carries projectId / dashboardId / aud / exp only — never a DataLuminary API key, ThingsBoard credential or DB connection string."
+    },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "ttlSeconds": {
+      "type": "integer",
+      "minimum": 30,
+      "maximum": 900,
+      "description": "DATALUMINARY_EMBED_TTL_SECONDS, default 300, hard cap 900. Not renewable."
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["dashboard:read"],
+      "default": "dashboard:read",
+      "description": "Read-only. An embed grant never carries command or write scope."
+    },
+    "export": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional export reference. Pull-mode aggregates only — never per-point telemetry, never ThingsBoard MQTT.",
+      "required": ["mode", "envelope"],
+      "properties": {
+        "mode": { "type": "string", "const": "pull" },
+        "envelope": {
+          "type": "string",
+          "enum": ["syncrobrain.telemetry-digest.v1", "syncrobrain.incident-report.v1"]
+        },
+        "window": { "type": "string", "maxLength": 32 }
+      }
+    }
+  },
+  "$comment": "The browser never holds credentials. Issuing a grant requires iot.integration:view and is written to the audit log."
+}

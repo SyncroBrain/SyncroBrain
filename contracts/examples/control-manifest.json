@@ -1,0 +1,58 @@
+{
+  "manifestVersion": "1",
+  "deployment": {
+    "profile": "prod",
+    "topology": "standalone",
+    "label": "Cloud Lite standalone — TB CE + Gateway + Console + dedicated PostgreSQL"
+  },
+  "components": [
+    {
+      "key": "postgres",
+      "kind": "database",
+      "requirement": "required",
+      "probe": "postgres",
+      "note": "Gateway iot_core. Must be a separate instance from the ThingsBoard embedded PG."
+    },
+    {
+      "key": "thingsboard",
+      "kind": "runtime",
+      "requirement": "required",
+      "probe": "thingsboard",
+      "note": "Device runtime: MQTT transport, telemetry, RPC, alarms."
+    },
+    {
+      "key": "entitlement",
+      "kind": "control-plane",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "ENTITLEMENT_MODE=off for standalone. Never replaces Casbin or Safety Kernel."
+    },
+    {
+      "key": "idp",
+      "kind": "identity",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "External OIDC. Empty IDP_ISSUER falls back to operator/demo login."
+    },
+    {
+      "key": "edge",
+      "kind": "edge",
+      "requirement": "optional",
+      "probe": "none"
+    },
+    {
+      "key": "vistacast",
+      "kind": "sibling-product",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "Optional addon. Down must not make standalone unready."
+    },
+    {
+      "key": "dataluminary",
+      "kind": "sibling-product",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "Embed/export is contract-only and default off."
+    }
+  ]
+}

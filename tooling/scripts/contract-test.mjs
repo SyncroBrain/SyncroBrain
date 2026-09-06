@@ -35,6 +35,18 @@ mustContain(
   [
     "13200",
     "/health",
+    "/ready",
+    "/version",
+    "not_ready",
+    "control-manifest.schema.json",
+    "MANIFEST_SIBLING_REQUIRED",
+    "entitlementMode",
+    "offline_license",
+    "/integrations/dataluminary/status",
+    "/integrations/dataluminary/embed-token",
+    "ORIGIN_NOT_ALLOWED",
+    "DASHBOARD_NOT_ALLOWED",
+    "INTEGRATION_DISABLED",
     "/auth/demo",
     "/packs",
     "/demos/cold-lab",
@@ -128,6 +140,9 @@ const requiredSchemas = [
   "doerflow-callback.schema.json",
   "telemetry-digest.v1.schema.json",
   "incident-report.v1.schema.json",
+  "control-manifest.schema.json",
+  "smart-site-binding.schema.json",
+  "dataluminary-embed.schema.json",
 ];
 
 if (!existsSync(schemasDir)) {
@@ -155,6 +170,9 @@ const examplePairs = [
   ["doerflow-event.json", "doerflow-event.schema.json"],
   ["telemetry-digest.v1.json", "telemetry-digest.v1.schema.json"],
   ["incident-report.v1.json", "incident-report.v1.schema.json"],
+  ["control-manifest.json", "control-manifest.schema.json"],
+  ["smart-site-binding.json", "smart-site-binding.schema.json"],
+  ["dataluminary-embed.json", "dataluminary-embed.schema.json"],
 ];
 for (const [exampleName, schemaName] of examplePairs) {
   const examplePath = join(examplesDir, exampleName);
@@ -173,6 +191,28 @@ for (const [exampleName, schemaName] of examplePairs) {
   const blob = JSON.stringify(example);
   if (/deviceToken|mqttPassword|tbTenantAdmin|v1\/devices\/me\/telemetry/i.test(blob)) {
     console.error(`${exampleName} leaks telemetry bus or credentials`);
+    process.exit(1);
+  }
+}
+
+/**
+ * Cloud Lite standalone stays standalone: postgres + thingsboard are the only required
+ * components, and no sibling product may be promoted to required.
+ */
+{
+  const manifest = JSON.parse(
+    readFileSync(join(examplesDir, "control-manifest.json"), "utf8"),
+  );
+  const required = manifest.components.filter((c) => c.requirement === "required");
+  const requiredKeys = required.map((c) => c.key).sort();
+  if (requiredKeys.join(",") !== "postgres,thingsboard") {
+    console.error(
+      `control-manifest.json standalone required set must be postgres+thingsboard, got ${requiredKeys.join(",")}`,
+    );
+    process.exit(1);
+  }
+  if (required.some((c) => c.kind === "sibling-product" || c.kind === "control-plane")) {
+    console.error("control-manifest.json marks a sibling product / control plane as required");
     process.exit(1);
   }
 }

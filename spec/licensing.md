@@ -61,8 +61,9 @@
 | `GET /api/v1/license` | 状态；`enforcement` 为 `report_only` 或 `block` |
 | `POST /api/v1/license/activate` | 写入 `LICENSE_FILE`；block 档必须 Ed25519 验签 |
 | `LICENSE_PUBLIC_KEY` / `_FILE` | 签发方公钥 |
-| `DEPLOY_PROFILE=private\|ha` | 拒绝演示默认口令后才启动 |
+| `DEPLOY_PROFILE=prod\|private\|ha` | 拒绝演示默认口令后才启动 |
 | `samples/license.private-single.json` | 实验室签名样例 |
+| `ENTITLEMENT_MODE=off\|shadow\|enforce\|offline_license` | 统一入口；默认 `off`。`offline_license` 等价旧 `LICENSE_ENFORCEMENT=block`。模式语义见 [deployment.md §6](./deployment.md#6-entitlement-模式) |
 
 产品码仍为 `syncrobrain`。这不是 Stripe / LuminaryWorks 在线计费。合同文本见 [legal/](../legal/README.md)（须律师审阅）。
 

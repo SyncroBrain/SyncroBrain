@@ -16,6 +16,7 @@ paths:
   /health:
     get:
       operationId: health
+      description: Liveness. 200 while the process is alive. Never returns secrets.
       responses:
         "200":
           description: Gateway + ThingsBoard ping (TB_MODE=fake reports up)
@@ -23,6 +24,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Health"
+  /ready:
+    get:
+      operationId: ready
+      description: |
+        Readiness judged solely by the control manifest
+        (contracts/schemas/control-manifest.schema.json). Only components marked
+        required fail closed. Optional components (Entitlement control plane, IdP,
+        edge, sibling products such as VistaCast / DoerFlow / DataLuminary) being
+        down must never make a Cloud Lite standalone deployment not_ready — they
+        report degraded instead. Never returns secrets or connection strings.
+      responses:
+        "200":
+          description: ready (all required up) or degraded (an optional component is down)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+        "503":
+          description: not_ready — a required component (postgres, or thingsboard when required) failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+  /version:
+    get:
+      operationId: version
+      description: Version / commit / deploy profile / entitlement mode / manifest summary. No secrets.
+      responses:
+        "200":
+          description: Version and deployment identity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VersionInfo"
   /ops/inventory:
     get:
       operationId: opsInventory
@@ -748,6 +783,53 @@ paths:
       responses:
         "200":
           description: Reprocessed
+  /integrations/dataluminary/status:
+    get:
+      operationId: dataluminaryStatus
+      security: [{ bearerAuth: [] }]
+      description: |
+        Optional DataLuminary embed/export status. DATALUMINARY_EMBED_ENABLED defaults to
+        false and SyncroBrain has NOT shipped an iframe dashboard — the default board is
+        still a ThingsBoard Dashboard. Reports allowlist sizes only, never secrets.
+      responses:
+        "200":
+          description: enabled flag, ttlSeconds, allowlisted origin/dashboard counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataLuminaryStatus"
+  /integrations/dataluminary/embed-token:
+    post:
+      operationId: dataluminaryEmbedToken
+      security: [{ bearerAuth: [] }]
+      description: |
+        Mints a short-lived, non-renewable, read-only embed grant
+        (contracts/schemas/dataluminary-embed.schema.json). Requires iot.integration:view.
+        origin and dashboardId must both be on the explicit allowlist; wildcards are rejected.
+        The grant carries projectId / dashboardId / aud / exp only — the browser never holds a
+        DataLuminary API key, ThingsBoard credential or DB connection string. Issuance is audited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [projectId, dashboardId, origin]
+              properties:
+                projectId: { type: string, format: uuid }
+                dashboardId: { type: string }
+                origin: { type: string, format: uri }
+      responses:
+        "201":
+          description: Short-lived embed grant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataLuminaryEmbedGrant"
+        "403":
+          description: ORIGIN_NOT_ALLOWED or DASHBOARD_NOT_ALLOWED
+        "404":
+          description: INTEGRATION_DISABLED — DATALUMINARY_EMBED_ENABLED is not true
   /integrations/doerflow/status:
     get:
       operationId: doerflowStatus
@@ -876,6 +958,102 @@ components:
             enforcement: { type: string, enum: [report_only, block] }
             sku: { type: string, nullable: true }
             verified: { type: boolean }
+    Readiness:
+      type: object
+      required: [status, checks]
+      properties:
+        status:
+          type: string
+          enum: [ready, degraded, not_ready]
+          description: degraded is still HTTP 200 (optional component down); only not_ready is 503.
+        topology: { type: string, enum: [standalone, external-db, control-plane, ha] }
+        manifestSource: { type: string, enum: [default, file] }
+        checks:
+          type: object
+          required: [required, optional]
+          properties:
+            required:
+              type: array
+              items: { $ref: "#/components/schemas/ReadinessCheck" }
+            optional:
+              type: array
+              items: { $ref: "#/components/schemas/ReadinessCheck" }
+        warnings:
+          type: array
+          items:
+            type: string
+            enum:
+              - ENTITLEMENT_SHADOW
+              - ENTITLEMENT_CONTROL_PLANE_UNREACHABLE
+              - MANIFEST_SIBLING_REQUIRED
+              - MANIFEST_INVALID
+              - IDP_NOT_CONFIGURED
+    ReadinessCheck:
+      type: object
+      required: [key, kind, state]
+      properties:
+        key: { type: string }
+        kind:
+          type: string
+          enum: [database, runtime, control-plane, identity, edge, sibling-product, event-bus]
+        state: { type: string, enum: [up, down, skipped] }
+        latencyMs: { type: integer, nullable: true }
+        reason: { type: string, nullable: true, description: Machine code only — never a connection string. }
+    VersionInfo:
+      type: object
+      required: [service, version, deployProfile, entitlementMode]
+      properties:
+        service: { type: string, const: iot-gateway }
+        version: { type: string }
+        commit: { type: string, nullable: true }
+        node: { type: string }
+        deployProfile: { type: string, enum: [dev, prod, private, ha] }
+        entitlementMode:
+          type: string
+          enum: [off, shadow, enforce, offline_license]
+        oidc:
+          type: object
+          properties:
+            configured: { type: boolean }
+            issuerHost: { type: string, nullable: true, description: Host only — never the full URL with query or credentials. }
+        manifest:
+          type: object
+          properties:
+            source: { type: string, enum: [default, file] }
+            topology: { type: string }
+            requiredKeys:
+              type: array
+              items: { type: string }
+    DataLuminaryStatus:
+      type: object
+      required: [enabled, implemented]
+      properties:
+        enabled: { type: boolean, description: DATALUMINARY_EMBED_ENABLED }
+        implemented:
+          type: boolean
+          description: |
+            Always false for the iframe dashboard in this release. The default board is a
+            ThingsBoard Dashboard; do not present embed as delivered.
+        ttlSeconds: { type: integer }
+        allowedOriginCount: { type: integer }
+        allowedDashboardCount: { type: integer }
+        exportEnvelopes:
+          type: array
+          items:
+            type: string
+            enum: [syncrobrain.telemetry-digest.v1, syncrobrain.incident-report.v1]
+    DataLuminaryEmbedGrant:
+      type: object
+      required: [embedVersion, projectId, dashboardId, origin, token, expiresAt, ttlSeconds]
+      properties:
+        embedVersion: { type: string, const: "1" }
+        projectId: { type: string, format: uuid }
+        dashboardId: { type: string }
+        origin: { type: string, format: uri }
+        token: { type: string }
+        expiresAt: { type: string, format: date-time }
+        ttlSeconds: { type: integer, minimum: 30, maximum: 900 }
+        scope: { type: string, const: "dashboard:read" }
     DemoBootstrapRequest:
       type: object
       properties:
