@@ -19,7 +19,8 @@
         "com.doerflow.trading.job.captured",
         "com.doerflow.trading.job.succeeded",
         "com.doerflow.task.created",
-        "com.doerflow.task.correlated"
+        "com.doerflow.task.correlated",
+        "com.doerflow.ledger.credited.v1"
       ]
     },
     "time": { "type": "string", "format": "date-time" },
@@ -35,7 +36,10 @@
         "sourceTenantId": { "type": "string" },
         "sourceRef": { "type": "string" },
         "eventId": { "type": "string" },
-        "outputHash": { "type": "string" }
+        "outputHash": { "type": "string" },
+        "payee": { "type": "string" },
+        "amount": { "type": "string" },
+        "digestSha256": { "type": "string" }
       }
     }
   }

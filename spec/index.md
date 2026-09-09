@@ -33,7 +33,7 @@
 | [ecosystem.md](./ecosystem.md) | 独立可售；兄弟产品可选 |
 | [integrations/vistacast.md](./integrations/vistacast.md) | 可选 VistaCast：签名事件 Inbox + Scene；界面接入见 playbook |
 | [integrations/smart-site.md](./integrations/smart-site.md) | 跨产品绑定参考合同：camera↔asset、tenant↔project、remote-device↔asset、DataLuminary embed/export（默认全关） |
-| [integrations/doerflow.md](./integrations/doerflow.md) | 可选 DoerFlow 双向变现：卖方 digest/report + 处置事件；默认关闭，不进 Build |
+| [integrations/doerflow.md](./integrations/doerflow.md) | 可选 DoerFlow：卖方 digest/report + 处置事件 + 时间窗账本入账；默认关闭，不进 Build |
 | [licensing.md](./licensing.md) | 自研 Polyform-NC；TB Apache-2.0 |
 | [design/v0-prompts.md](./design/v0-prompts.md) | Console / 官网原型 |
 | [plan/validation.md](../plan/validation.md) | 附录：渠道触达（不阻塞 Build） |

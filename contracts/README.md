@@ -22,6 +22,7 @@
 | [schemas/doerflow-provider-registration.schema.json](./schemas/doerflow-provider-registration.schema.json) | DoerFlow 卖方注册 | productCode=syncrobrain + 固定 offeringCode |
 | [schemas/doerflow-invoke.schema.json](./schemas/doerflow-invoke.schema.json) | Invoke CloudEvent | `com.doerflow.trading.job.invoke` |
 | [schemas/doerflow-event.schema.json](./schemas/doerflow-event.schema.json) | 出站 CloudEvent | incident / work-order → `/integrations/events` |
+| [schemas/doerflow-telemetry-credit.schema.json](./schemas/doerflow-telemetry-credit.schema.json) | 时间窗入账 | digest → DoerFlow `/integrations/syncrobrain/telemetry-credits` |
 | [schemas/doerflow-callback.schema.json](./schemas/doerflow-callback.schema.json) | 生命周期 callback | HMAC；禁止设备命令 |
 | [schemas/telemetry-digest.v1.schema.json](./schemas/telemetry-digest.v1.schema.json) | 时间窗 digest | 聚合 + hash；非逐点、非 TelemetryEnvelope |
 | [schemas/incident-report.v1.schema.json](./schemas/incident-report.v1.schema.json) | 批次 incident report | hash/引用；无凭据 |

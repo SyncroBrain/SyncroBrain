@@ -147,7 +147,9 @@ DoerFlow ──HMAC invoke──► Gateway /integrations/doerflow/invoke
                           └── 领域服务 → telemetry-digest.v1 / incident-report.v1（hash/ref）
 
 Incident open/escalated ──策略/预算/许可──► outbox ──CloudEvents──► DoerFlow /integrations/events
-DoerFlow settled/task  ──HMAC──► /integrations/doerflow/callbacks
+TB 时间窗 digest ──CloudEvents──► DoerFlow /integrations/syncrobrain/telemetry-credits
+                          └── ledger.credit(payee)；非逐点、非 MQTT 总线
+DoerFlow settled/task/credited  ──HMAC──► /integrations/doerflow/callbacks
                           └── Safety Kernel 评估建议；禁止 TB RPC；禁止自动 close Incident
 ```
 

@@ -1,0 +1,28 @@
+{
+  "specversion": "1.0",
+  "id": "sb:telemetry-credit:t1:asset-1:2026-09-09T00:00:00.000Z",
+  "source": "syncrobrain/t1",
+  "type": "com.syncrobrain.telemetry-credit.v1",
+  "time": "2026-09-09T01:00:05.000Z",
+  "datacontenttype": "application/json",
+  "subject": "asset-1",
+  "data": {
+    "sourceTenantId": "t1",
+    "sourceId": "asset-1",
+    "sourceRef": "proj-1:asset-1:2026-09-09T00:00:00.000Z",
+    "offeringCode": "syncrobrain.telemetry-digest.v1",
+    "window": {
+      "start": "2026-09-09T00:00:00.000Z",
+      "end": "2026-09-09T01:00:00.000Z"
+    },
+    "digestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sampleCount": 12,
+    "assetCount": 1,
+    "amount": "1000",
+    "asset": "USDC",
+    "payee": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "channel": "agent-iot",
+    "settlementRail": "ledger",
+    "callbackUrl": "http://127.0.0.1:13200/api/v1/integrations/doerflow/callbacks"
+  }
+}

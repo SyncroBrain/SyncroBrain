@@ -3,7 +3,8 @@
 > **状态**：optional addon（**默认关闭**）  
 > **不是** Cloud Lite / Build 前置。未设 `DOERFLOW_ENABLED=true` 时 Gateway **必须 no-op**。  
 > **契约**：[`doerflow.v1.yaml`](../../contracts/doerflow.v1.yaml) · [schemas](../../contracts/schemas/) · [`gateway.v1.yaml`](../../contracts/gateway.v1.yaml)  
-> **实现**：`iot-gateway/src/modules/doerflow`（Fastify）。DoerFlow HTTP 全部集中在 `DoerFlowClient`。
+> **实现**：`iot-gateway/src/modules/doerflow`（Fastify）。DoerFlow HTTP 全部集中在 `DoerFlowClient`。  
+> **入账合同（DoerFlow 权威）**：兄弟仓 `spec/SYNCROBRAIN_TELEMETRY_CREDIT.md` · 本仓 schema [`doerflow-telemetry-credit.schema.json`](../../contracts/schemas/doerflow-telemetry-credit.schema.json)
 
 Cloud Lite 仍可独立交付。DoerFlow 不进入默认 Compose、不进入默认 SKU 功能表、**不进入 TB MQTT 数据面**。
 
@@ -34,6 +35,21 @@ Provider 注册（Gateway 用集中 client adapter；DoerFlow 路径若未冻结
 `productCode` · `offeringCode` · `sourceTenantId` · `pricingUnit` · `readiness` · `idempotencyKey` · `endpointUrl` · `unitPrice` · `payee`
 
 Invoke：`type=com.doerflow.trading.job.invoke`，头 `X-DoerFlow-Signature: sha256=<hex>`，对 **原始 body** HMAC-SHA256。
+
+## 2.1 设备入账（TB 时间窗 → DoerFlow 账本）
+
+与卖方 invoke **方向相反**：Gateway 在 TB 遥测落入时间窗后，把 **digest + 计数**（不是原始点、不是 MQTT topic）POST 到 DoerFlow，给映射 payee 做链下 `ledger.credit`。
+
+| 项 | 值 |
+|----|----|
+| DoerFlow 路径 | `POST {base}/integrations/syncrobrain/telemetry-credits` |
+| `type` | `com.syncrobrain.telemetry-credit.v1` |
+| 鉴权 | M2M `integration.event.submit`（与 `/integrations/events` 相同）；可选 HMAC |
+| 幂等 | CloudEvents `id`（推荐 `sb:telemetry-credit:{tenant}:{assetId}:{window.start}`） |
+| 功能门 | 仍须 `DOERFLOW_ENABLED=true` + license feature `doerflow`；未开则 **不得** 出站 |
+| 本步 | Client 方法 `postTelemetryCredit`；**尚未**挂 TB 时间窗聚合（下一步） |
+
+禁止把 `tbDeviceId` / device token / `series` / TelemetryEnvelope 写入该信封。回调 `com.doerflow.ledger.credited.v1` 只记证据，**不** close Incident，**不** RPC。
 
 ## 3. 处置（买方求助）
 

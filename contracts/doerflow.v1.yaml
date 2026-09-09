@@ -4,10 +4,12 @@ info:
   version: 0.1.0
   description: |
     Optional bidirectional monetization adapter. Default off (DOERFLOW_ENABLED).
-    Not part of Cloud Lite / Build compose. Not a telemetry or TB MQTT bus.
+    Not part of Cloud Lite / Build compose.     Not a telemetry or TB MQTT bus.
     Seller offerings are fixed: syncrobrain.telemetry-digest.v1 (window) and
     syncrobrain.incident-report.v1 (batch). Invoke type is com.doerflow.trading.job.invoke.
     Outbound events are CloudEvents 1.0 to DoerFlow /integrations/events.
+    Device earnings use a separate DoerFlow path POST /integrations/syncrobrain/telemetry-credits
+    with type com.syncrobrain.telemetry-credit.v1 (window digest, not TelemetryEnvelope).
     Callbacks (invoke settled / task created|correlated) never execute device RPC and never close Incidents.
     Accepted callback types: com.doerflow.trading.job.settled|voided|failed and com.doerflow.task.created|correlated.
     Command suggestions must pass Entitlement + Casbin + ActionPolicy/Safety Kernel.
@@ -174,3 +176,5 @@ components:
       $ref: "./schemas/telemetry-digest.v1.schema.json"
     IncidentReport:
       $ref: "./schemas/incident-report.v1.schema.json"
+    TelemetryCreditCloudEvent:
+      $ref: "./schemas/doerflow-telemetry-credit.schema.json"
