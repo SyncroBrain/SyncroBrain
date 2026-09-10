@@ -312,6 +312,13 @@ paths:
       responses:
         "200":
           description: Replaced duty roster
+  /duty-roster/gaps:
+    get:
+      operationId: listDutyRosterGaps
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Sites with no duty roster (must not be marked live)
   /calibrations:
     get:
       operationId: listCalibrations

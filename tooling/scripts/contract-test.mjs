@@ -62,6 +62,7 @@ mustContain(
     "/incidents",
     "/incidents/{id}/ack",
     "/sites/{id}/duty-roster",
+    "/duty-roster/gaps",
     "/calibrations",
     "/reports",
     "/commands",

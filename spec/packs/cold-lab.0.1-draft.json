@@ -89,5 +89,20 @@
   "kits": [
     "kit-env-node",
     "kit-rly-4ch"
+  ],
+  "commands": [
+    {
+      "id": "setTemperatureSetpoint",
+      "labelKey": "command.setTemperatureSetpoint",
+      "method": "setTemperatureSetpoint",
+      "param": "setpointC",
+      "min": -86,
+      "max": 15
+    },
+    {
+      "id": "ping",
+      "labelKey": "command.ping",
+      "method": "ping"
+    }
   ]
 }

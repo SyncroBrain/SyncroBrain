@@ -71,6 +71,13 @@
   ],
   "commands": [
     {
+      "id": "remoteStart",
+      "method": "RemoteStartTransaction",
+      "rollbackId": "remoteStop",
+      "label": "远程启动",
+      "labelKey": "command.remoteStart"
+    },
+    {
       "id": "remoteStop",
       "method": "RemoteStopTransaction",
       "rollbackId": "remoteStart",
@@ -130,6 +137,7 @@
   ],
   "safetyEnvelope": {
     "allowlist": [
+      "remoteStart",
       "remoteStop",
       "setChargingProfile",
       "ping"

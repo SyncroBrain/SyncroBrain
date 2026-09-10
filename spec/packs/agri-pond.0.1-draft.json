@@ -38,7 +38,8 @@
     {
       "id": "aeratorOn",
       "labelKey": "command.aeratorOn",
-      "method": "aeratorOn"
+      "method": "aeratorOn",
+      "rollbackId": "aeratorOff"
     },
     {
       "id": "aeratorOff",
@@ -48,7 +49,8 @@
     {
       "id": "sprayOn",
       "labelKey": "command.sprayOn",
-      "method": "sprayOn"
+      "method": "sprayOn",
+      "rollbackId": "sprayOff"
     },
     {
       "id": "sprayOff",
