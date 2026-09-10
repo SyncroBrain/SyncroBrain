@@ -7,6 +7,8 @@ info:
     Server default is http://localhost:13200/api/v1.
     Device CRUD in device.v1.yaml is a legacy subset and is not the Cloud Lite contract.
     Optional VistaCast ingest is HMAC webhook at /integrations/vistacast/connections/{id}/events.
+    Optional VistaRemote remote-device↔asset binding is at /integrations/vistaremote/*.
+    Binding stores ids only and never starts a remote desktop session.
     Optional DoerFlow adapter is default-off at /integrations/doerflow/* (HMAC invoke/callback).
     DoerFlow is not a telemetry bus and is not ThingsBoard MQTT. Callbacks never close Incidents
     and never execute TB RPC; command suggestions go through Safety Kernel.
@@ -31,7 +33,7 @@ paths:
         Readiness judged solely by the control manifest
         (contracts/schemas/control-manifest.schema.json). Only components marked
         required fail closed. Optional components (Entitlement control plane, IdP,
-        edge, sibling products such as VistaCast / DoerFlow / DataLuminary) being
+        edge, sibling products such as VistaCast / VistaRemote / DoerFlow / DataLuminary) being
         down must never make a Cloud Lite standalone deployment not_ready — they
         report degraded instead. Never returns secrets or connection strings.
       responses:
@@ -239,6 +241,8 @@ paths:
       responses:
         "200":
           description: Pack application
+        "403":
+          description: PACK_NOT_ALLOWLISTED when BRAND_PACK_ALLOWLIST is set and the slug is outside it
   /assets:
     get:
       operationId: listAssets
@@ -783,14 +787,129 @@ paths:
       responses:
         "200":
           description: Reprocessed
+  /integrations/vistaremote/status:
+    get:
+      operationId: vistaremoteStatus
+      security: [{ bearerAuth: [] }]
+      description: |
+        Binding API is always present (enabled=true). siblingConfigured reflects
+        VISTAREMOTE_BASE_URL. Never returns secrets. Down VistaRemote must not fail /ready.
+      responses:
+        "200":
+          description: enabled / siblingConfigured / interventionEnabled flags only
+  /integrations/vistaremote/connections:
+    get:
+      operationId: listVistaRemoteConnections
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Connections (ids and display fields only; never secrets)
+    post:
+      operationId: createVistaRemoteConnection
+      security: [{ bearerAuth: [] }]
+      description: Requires iot.integration:manage. Unique external tenantId. Unknown projectId is rejected.
+      responses:
+        "201":
+          description: Connection created
+        "400":
+          description: TENANT_ALREADY_BOUND
+        "404":
+          description: Project not found
+  /integrations/vistaremote/connections/{id}:
+    get:
+      operationId: getVistaRemoteConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Connection (no secrets)
+    delete:
+      operationId: deleteVistaRemoteConnection
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Removed (bindings dropped; assets and Incidents are kept)
+  /integrations/vistaremote/connections/{id}/intervention:
+    post:
+      operationId: requestVistaRemoteIntervention
+      security: [{ bearerAuth: [] }]
+      description: |
+        Optional human-confirmation deep link (VistaRemote FR-SSI-01). Never auto-creates
+        a remote session, never returns JWT/sessionId, never dispatches TB RPC.
+        Requires VISTAREMOTE_BASE_URL and HMAC env; otherwise 404 INTEGRATION_DISABLED.
+        HMAC headers X-VR-Intervention-Key-Id / Timestamp / Signature.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string }
+                remoteDeviceId: { type: string }
+                assetId: { type: string, format: uuid }
+                severity: { type: string, enum: [low, medium, high] }
+      responses:
+        "201":
+          description: pending_user_confirmation with deepLink / webFallbackUrl only
+        "404":
+          description: INTEGRATION_DISABLED — sibling URL or HMAC env is not set
+  /integrations/vistaremote/bindings:
+    get:
+      operationId: listVistaRemoteBindings
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: remoteDeviceId ↔ assetId rows (ids and display names only)
+    post:
+      operationId: upsertVistaRemoteBinding
+      security: [{ bearerAuth: [] }]
+      description: |
+        Unique (connectionId, remoteDeviceId). One asset may have at most one remote device.
+        Unknown assetId is rejected; devices are never auto-created. Grants no command permission.
+      responses:
+        "201":
+          description: Bound
+        "400":
+          description: ASSET_ALREADY_BOUND or ASSET_PROJECT_MISMATCH
+        "404":
+          description: Asset or connection not found
+  /integrations/vistaremote/bindings/{id}:
+    delete:
+      operationId: deleteVistaRemoteBinding
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Unbound (asset and Incidents are kept)
   /integrations/dataluminary/status:
     get:
       operationId: dataluminaryStatus
       security: [{ bearerAuth: [] }]
       description: |
         Optional DataLuminary embed/export status. DATALUMINARY_EMBED_ENABLED defaults to
-        false and SyncroBrain has NOT shipped an iframe dashboard — the default board is
-        still a ThingsBoard Dashboard. Reports allowlist sizes only, never secrets.
+        false. The Console iframe host is shipped but still default-off; the default board
+        remains a ThingsBoard Dashboard. Reports allowlist sizes, iframeReady, and hostname
+        only of DATALUMINARY_EMBED_BASE_URL — never secrets or URLs with query/userinfo.
       responses:
         "200":
           description: enabled flag, ttlSeconds, allowlisted origin/dashboard counts
@@ -804,7 +923,7 @@ paths:
       security: [{ bearerAuth: [] }]
       description: |
         Mints a short-lived, non-renewable, read-only embed grant
-        (contracts/schemas/dataluminary-embed.schema.json). Requires iot.integration:view.
+        (contracts/schemas/dataluminary-embed.schema.json). Requires iot.integration:manage.
         origin and dashboardId must both be on the explicit allowlist; wildcards are rejected.
         The grant carries projectId / dashboardId / aud / exp only — the browser never holds a
         DataLuminary API key, ThingsBoard credential or DB connection string. Issuance is audited.
@@ -828,6 +947,38 @@ paths:
                 $ref: "#/components/schemas/DataLuminaryEmbedGrant"
         "403":
           description: ORIGIN_NOT_ALLOWED or DASHBOARD_NOT_ALLOWED
+        "404":
+          description: INTEGRATION_DISABLED — DATALUMINARY_EMBED_ENABLED is not true
+  /integrations/dataluminary/export:
+    get:
+      operationId: dataluminaryExport
+      security: [{ bearerAuth: [] }]
+      description: |
+        Pull-mode aggregates for DataLuminary. Requires iot.integration:view and
+        DATALUMINARY_EMBED_ENABLED. Returns hash/ref and window aggregates — never
+        per-point telemetry, ThingsBoard device tokens, or MQTT topics.
+      parameters:
+        - name: projectId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+        - name: envelope
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [syncrobrain.telemetry-digest.v1, syncrobrain.incident-report.v1]
+        - name: window
+          in: query
+          required: false
+          schema: { type: string, maxLength: 32, example: PT1H }
+      responses:
+        "200":
+          description: Aggregates plus digestSha256 and ref
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataLuminaryExport"
         "404":
           description: INTEGRATION_DISABLED — DATALUMINARY_EMBED_ENABLED is not true
   /integrations/doerflow/status:
@@ -1032,16 +1183,61 @@ components:
         implemented:
           type: boolean
           description: |
-            Always false for the iframe dashboard in this release. The default board is a
-            ThingsBoard Dashboard; do not present embed as delivered.
+            True once the Console iframe host exists in this release. Independent of
+            DATALUMINARY_EMBED_ENABLED. The default board remains a ThingsBoard Dashboard
+            until embed is explicitly enabled.
+        iframeReady:
+          type: boolean
+          description: True only when embed is enabled and DATALUMINARY_EMBED_BASE_URL is set.
+        embedBaseHost:
+          type: string
+          description: Hostname only of DATALUMINARY_EMBED_BASE_URL — never query or userinfo. Omitted when unset.
         ttlSeconds: { type: integer }
         allowedOriginCount: { type: integer }
         allowedDashboardCount: { type: integer }
+        allowedDashboards:
+          type: array
+          items: { type: string }
         exportEnvelopes:
           type: array
           items:
             type: string
             enum: [syncrobrain.telemetry-digest.v1, syncrobrain.incident-report.v1]
+    DataLuminaryExport:
+      type: object
+      required: [offeringCode, digestSha256, ref]
+      properties:
+        offeringCode:
+          type: string
+          enum: [syncrobrain.telemetry-digest.v1, syncrobrain.incident-report.v1]
+        digestSha256: { type: string, pattern: "^[0-9a-f]{64}$" }
+        ref: { type: string }
+        projectId: { type: string, format: uuid }
+        assetCount: { type: integer }
+        sampleCount: { type: integer }
+        incidentCount: { type: integer }
+        windowLabel: { type: string }
+        window:
+          type: object
+          properties:
+            start: { type: string, format: date-time }
+            end: { type: string, format: date-time }
+        batch:
+          type: object
+          properties:
+            from: { type: string, format: date-time }
+            to: { type: string, format: date-time }
+        series:
+          type: array
+          description: Key-level aggregates (min/max/avg/n) only — never per-point samples.
+          items:
+            type: object
+            properties:
+              key: { type: string }
+              min: { type: number }
+              max: { type: number }
+              avg: { type: number }
+              n: { type: integer }
     DataLuminaryEmbedGrant:
       type: object
       required: [embedVersion, projectId, dashboardId, origin, token, expiresAt, ttlSeconds]

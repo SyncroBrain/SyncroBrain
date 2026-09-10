@@ -37,9 +37,13 @@ describe("edge agent protocols", () => {
       { nodeId: "ns=2;s=Other", value: 1 },
     ]);
     assert.equal(notes.length, 1);
-    agent.gps({ lat: 31.2, lon: 121.4, temperature: 4, eventTime: new Date(Date.now() - 10 * 60_000).toISOString() });
+    const gps = agent.gps({ lat: 31.2, lon: 121.4, temperature: 4, eventTime: new Date(Date.now() - 10 * 60_000).toISOString() });
+    assert.equal(gps.gps, "31.20,121.40");
+    assert.equal(gps.lat, 31.2);
+    assert.equal(gps.lon, 121.4);
     const flushed = agent.flush();
     assert.equal(flushed[0].quality, "backfill");
+    assert.equal(flushed[0].gps, "31.20,121.40");
   });
 
   it("accepts OCPP 2.0.1 RequestStopTransaction unless kill switch", () => {

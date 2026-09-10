@@ -37,7 +37,7 @@
 | 公版控制器 | Kit 目录 | ESP32 类参考固件 + 通道合同；双路径绑定 | 自研芯片、单一模组锁死 |
 | VistaCast 联动 | optional addon | 签名 `alert.v1` → Incident / 可选 Scene；Console **边缘**点击接入；integration-verified | 视频进 TB、自动急救、stub 种类自动执行 |
 | DoerFlow 变现 | optional addon（**默认关**）· **lab** | 时间窗 digest / 批次 incident report 出售；Incident/WorkOrder CloudEvents 求助；HMAC invoke + settled/task callback；M2M token 缓存 | 进入默认 Build、逐点计费、跨产品总线=TB MQTT、回调直接 RPC 或自动 close Incident、在线价格套餐 |
-| 白标 OEM | Console/许可 | 部署级品牌、中英 locale、Pack 白名单、导出包 | 改 TB 商标冒充自有内核 |
+| 白标 OEM | Console/许可 | 部署级品牌、中英 locale、`BRAND_PACK_ALLOWLIST`（空=全部 Pack；非空则目录/apply/演示对其它 slug 返回 403 `PACK_NOT_ALLOWLISTED`）、导出包 | 改 TB 商标冒充自有内核 |
 
 ## 3. 非目标（首版）
 

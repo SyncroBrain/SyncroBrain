@@ -22,53 +22,136 @@ unsigned long lastTelemetry = 0;
 unsigned long actuatorUntil = 0;
 String lastCommand = "stop";
 int positionPct = 0;
+int fanPct = 0;
+bool relays[4] = {false, false, false, false};
 bool rain = false;
+bool doorOpen = false;
 float temperature = 24.0;
+float humidity = 55.0;
 float soil = 40.0;
 float dissolvedOxygen = 6.5;
-float waterLevel = 80.0;
+float waterLevelM = 0.80;
+float illuminanceLux = 400.0;
+float shockG = 0.10;
+
+int parseJsonInt(const String& json, const char* key, int fallback) {
+  String needle = String("\"") + key + "\"";
+  int at = json.indexOf(needle);
+  if (at < 0) return fallback;
+  int colon = json.indexOf(':', at + needle.length());
+  if (colon < 0) return fallback;
+  return json.substring(colon + 1).toInt();
+}
+
+void allRelaysOff() {
+  for (int i = 0; i < 4; i++) relays[i] = false;
+}
+
+void forceKillIdle() {
+  lastCommand = "stop";
+  actuatorUntil = 0;
+  fanPct = 0;
+  allRelaysOff();
+}
 
 void publishTelemetry() {
-  char payload[384];
+  char payload[512];
+  int gw = mqtt.connected() ? 1 : 0;
+  int limitOpen = positionPct >= 95 ? 1 : 0;
+  int limitClose = positionPct <= 5 ? 1 : 0;
+  int rainI = rain ? 1 : 0;
+  int motorOn = actuatorUntil > millis() ? 1 : 0;
+  float motorA = motorOn ? 0.35 : 0.0;
+  int aerator = lastCommand == "aeratorOn" ? 1 : 0;
+  int sprayer = lastCommand == "sprayOn" ? 1 : 0;
+  int pump = (lastCommand == "pumpOn" || lastCommand == "zoneOn") ? 1 : 0;
+  int valve1 = lastCommand == "zoneOn" ? 1 : 0;
+  float flow = motorOn ? 1.2 : 0.0;
+  int anyRelay = relays[0] || relays[1] || relays[2] || relays[3];
+  float relayCurrent = anyRelay ? 0.20 : 0.0;
+
   if (strcmp(KIT_SLUG, "kit-win-act") == 0) {
     snprintf(payload, sizeof(payload),
-             "{\"kitSlug\":\"%s\",\"rain\":%d,\"temperature\":%.1f,\"position\":%d,\"limit_open\":%d,\"limit_close\":%d,\"killSwitch\":%d}",
-             KIT_SLUG, rain ? 1 : 0, temperature, positionPct, positionPct >= 95, positionPct <= 5, killSwitch ? 1 : 0);
+             "{\"position_pct\":%d,\"limit_open\":%d,\"limit_close\":%d,\"rain\":%d,\"motor_current_a\":%.2f,\"gateway_online\":%d}",
+             positionPct, limitOpen, limitClose, rainI, motorA, gw);
   } else if (strcmp(KIT_SLUG, "kit-valve-8z") == 0) {
     snprintf(payload, sizeof(payload),
-             "{\"kitSlug\":\"%s\",\"soil\":%.1f,\"rain\":%d,\"flow\":%.1f,\"pump\":%d,\"killSwitch\":%d}",
-             KIT_SLUG, soil, rain ? 1 : 0, actuatorUntil > millis() ? 1.2 : 0.0, actuatorUntil > millis(), killSwitch ? 1 : 0);
+             "{\"soil_pct\":%.1f,\"valve_1\":%d,\"pump\":%d,\"flow_lpm\":%.1f,\"rain\":%d,\"gateway_online\":%d}",
+             soil, valve1, pump, flow, rainI, gw);
   } else if (strcmp(KIT_SLUG, "kit-pond-ctrl") == 0) {
     snprintf(payload, sizeof(payload),
-             "{\"kitSlug\":\"%s\",\"do_mgl\":%.2f,\"level_pct\":%.1f,\"temp\":%.1f,\"aerator\":%d,\"spray\":%d,\"killSwitch\":%d}",
-             KIT_SLUG, dissolvedOxygen, waterLevel, temperature, lastCommand == "aerateOn", lastCommand == "sprayOn", killSwitch ? 1 : 0);
+             "{\"do_mgl\":%.2f,\"water_temp_c\":%.1f,\"water_level_m\":%.2f,\"aerator\":%d,\"sprayer\":%d,\"gateway_online\":%d}",
+             dissolvedOxygen, temperature, waterLevelM, aerator, sprayer, gw);
+  } else if (strcmp(KIT_SLUG, "kit-env-node") == 0) {
+    snprintf(payload, sizeof(payload),
+             "{\"temperature\":%.1f,\"humidity\":%.1f,\"soil_pct\":%.1f,\"illuminance_lux\":%.0f,\"rain\":%d,\"gateway_online\":%d}",
+             temperature, humidity, soil, illuminanceLux, rainI, gw);
+  } else if (strcmp(KIT_SLUG, "kit-rly-4ch") == 0) {
+    snprintf(payload, sizeof(payload),
+             "{\"relay_1\":%d,\"relay_2\":%d,\"relay_3\":%d,\"relay_4\":%d,\"current_a\":%.2f,\"gateway_online\":%d}",
+             relays[0] ? 1 : 0, relays[1] ? 1 : 0, relays[2] ? 1 : 0, relays[3] ? 1 : 0, relayCurrent, gw);
+  } else if (strcmp(KIT_SLUG, "kit-fan-pwm") == 0) {
+    snprintf(payload, sizeof(payload),
+             "{\"fan_pct\":%d,\"temperature\":%.1f,\"humidity\":%.1f,\"gateway_online\":%d}",
+             fanPct, temperature, humidity, gw);
+  } else if (strcmp(KIT_SLUG, "kit-gw-esp") == 0) {
+    snprintf(payload, sizeof(payload),
+             "{\"gateway_online\":%d}",
+             gw);
+  } else if (strcmp(KIT_SLUG, "kit-cold-trk") == 0) {
+    snprintf(payload, sizeof(payload),
+             "{\"temperature\":%.1f,\"humidity\":%.1f,\"door\":%d,\"gps\":\"0.00,0.00\",\"lat\":0.00,\"lon\":0.00,\"shock_g\":%.2f,\"gateway_online\":%d}",
+             temperature, humidity, doorOpen ? 1 : 0, shockG, gw);
   } else {
     snprintf(payload, sizeof(payload),
-             "{\"kitSlug\":\"%s\",\"temperature\":%.1f,\"humidity\":55.0,\"killSwitch\":%d}",
-             KIT_SLUG, temperature, killSwitch ? 1 : 0);
+             "{\"gateway_online\":%d}",
+             gw);
   }
   mqtt.publish("v1/devices/me/telemetry", payload);
 }
 
 void applyCommand(const String& method, const String& params) {
   if (killSwitch || digitalRead(LOCAL_KILL_GPIO) == LOW) {
-    lastCommand = "stop";
-    actuatorUntil = 0;
+    forceKillIdle();
     return;
   }
   lastCommand = method;
-  if (method == "open" || method == "setPosition") {
-    positionPct = method == "open" ? 80 : 40;
+  if (method == "open") {
+    positionPct = 80;
     actuatorUntil = millis() + MAX_ON_MS;
-  } else if (method == "close" || method == "stop") {
-    positionPct = method == "close" ? 0 : positionPct;
+  } else if (method == "setPosition") {
+    int pct = parseJsonInt(params, "pct", 40);
+    if (pct < 0) pct = 0;
+    if (pct > 100) pct = 100;
+    positionPct = pct;
+    actuatorUntil = millis() + MAX_ON_MS;
+  } else if (method == "close") {
+    positionPct = 0;
     actuatorUntil = 0;
-  } else if (method == "pumpOn" || method == "zoneOn" || method == "aerateOn" || method == "sprayOn") {
+  } else if (method == "stop") {
+    actuatorUntil = 0;
+    fanPct = 0;
+    allRelaysOff();
+  } else if (method == "setFan") {
+    int pct = parseJsonInt(params, "pct", 0);
+    if (pct < 0) pct = 0;
+    if (pct > 100) pct = 100;
+    fanPct = pct;
+  } else if (method == "relayOn") {
+    int ch = parseJsonInt(params, "ch", 0);
+    if (ch >= 1 && ch <= 4) {
+      relays[ch - 1] = true;
+      actuatorUntil = millis() + MAX_ON_MS;
+    }
+  } else if (method == "relayOff") {
+    int ch = parseJsonInt(params, "ch", 0);
+    if (ch >= 1 && ch <= 4) relays[ch - 1] = false;
+    if (!relays[0] && !relays[1] && !relays[2] && !relays[3]) actuatorUntil = 0;
+  } else if (method == "pumpOn" || method == "zoneOn" || method == "aeratorOn" || method == "sprayOn") {
     actuatorUntil = millis() + MAX_ON_MS;
   } else {
     actuatorUntil = 0;
   }
-  (void)params;
 }
 
 void onRpc(char* topic, byte* payload, unsigned int length) {
@@ -112,12 +195,12 @@ void setup() {
 void loop() {
   if (digitalRead(LOCAL_KILL_GPIO) == LOW) {
     killSwitch = true;
-    lastCommand = "stop";
-    actuatorUntil = 0;
+    forceKillIdle();
   }
   if (actuatorUntil && millis() > actuatorUntil) {
     lastCommand = "stop";
     actuatorUntil = 0;
+    allRelaysOff();
   }
   if (!mqtt.connected()) reconnect();
   mqtt.loop();

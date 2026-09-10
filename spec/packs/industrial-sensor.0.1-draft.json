@@ -1,0 +1,143 @@
+{
+  "slug": "industrial-sensor",
+  "version": "0.1-draft",
+  "title": "工业传感器",
+  "titleKey": "pack.industrialSensor.title",
+  "description": "通用模拟量/数字量；温度、压力、振动预置。Modbus/OPC UA/MQTT。",
+  "vertical": "industrial-sensor",
+  "kind": "sensor",
+  "assetKinds": [
+    "sensor"
+  ],
+  "profileName": "industrial-sensor-sensor-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.sensor.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "kits": [
+    "kit-rly-4ch",
+    "kit-env-node"
+  ],
+  "channels": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "kind": "numeric"
+    },
+    {
+      "key": "pressure",
+      "label": "压力",
+      "labelKey": "channel.pressure",
+      "unit": "kPa",
+      "kind": "numeric"
+    },
+    {
+      "key": "vibration",
+      "label": "振动",
+      "labelKey": "channel.vibration",
+      "unit": "mm/s",
+      "kind": "numeric"
+    },
+    {
+      "key": "digital",
+      "label": "开关量",
+      "labelKey": "channel.digital",
+      "unit": "bool",
+      "kind": "bool"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "display": "numeric",
+      "max": 80,
+      "alarmHigh": 85
+    },
+    {
+      "key": "pressure",
+      "label": "压力",
+      "labelKey": "channel.pressure",
+      "unit": "kPa",
+      "display": "numeric",
+      "max": 600,
+      "alarmHigh": 650
+    },
+    {
+      "key": "vibration",
+      "label": "振动",
+      "labelKey": "channel.vibration",
+      "unit": "mm/s",
+      "display": "numeric",
+      "max": 7,
+      "alarmHigh": 8
+    }
+  ],
+  "commands": [
+    {
+      "id": "ping",
+      "method": "ping",
+      "label": "Ping",
+      "labelKey": "command.ping"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "overtemp",
+      "alarmType": "Temperature High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 92,
+        "pressure": 400,
+        "vibration": 2
+      },
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp"
+    },
+    {
+      "id": "normal",
+      "telemetry": {
+        "temperature": 42,
+        "pressure": 350,
+        "vibration": 1.2
+      },
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal"
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "ping"
+    ],
+    "maxPerHour": 20
+  },
+  "policy": {
+    "sensor": {
+      "tempMaxC": 80,
+      "pressureMaxKpa": 600
+    }
+  },
+  "summary": {
+    "normalWindow": "工艺上限见站点 Policy",
+    "extras": [
+      "通用模拟量/数字量；温度、压力、振动预置。Modbus/OPC UA/MQTT。"
+    ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
+  ],
+  "adapters": {
+    "protocol": "modbus-tcp"
+  }
+}

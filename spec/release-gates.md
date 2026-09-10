@@ -30,12 +30,12 @@ cold-lab / env-lab 黄金路径必须绿。新 Pack 用 Fake TB API `POST /demos
 
 真实模型评测 **不** 代替确定性门。
 
-## 当前实现状态（2026-08-31）
+## 当前实现状态（2026-09-10）
 
 | 门 | 状态 |
 |----|------|
 | L1 | Gateway/Console/Edge/合同 可本地 `pnpm test:l1` |
-| Isolated E2E | **14 passed**，`pnpm e2e:isolated` 退出码 0（cold-lab / env-lab + production-packs） |
+| Isolated E2E | 2026-09-10 `pnpm e2e:isolated` 退出码 0：Playwright **26 passed / 0 skipped / 0 failed**（含 `vistaremote`、`education-lab`、`doerflow`、`dataluminary`、`production-packs` 与 cold-logistics `alarms-sim-geofence`）。不得据此宣称多垂直完成或 hardware-verified。 |
 | 领域内核 | Alarm → Incident；值班/校准/合规 CSV；Outbox → Edge 回执（Fake TB 内联） |
 | AI 包 | `@luminaryworks/ai-client` / `@luminaryworks/ai-react` ModelForm；测试桩 fail-closed |
 | 硬件 | 未实机；不得宣称全硬件生产兼容 |

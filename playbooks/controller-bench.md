@@ -63,7 +63,7 @@ pnpm --dir iot-gateway mqtt:sim -- --profile smart-window --asset-id <uuid>
 - MCU 5 V/3.3 V 与 12 V 执行器 **隔离**（光耦继电器或 H 桥）。
 - 双限位：到位必须停 PWM/继电器，不能只靠云端。
 - 雨量、限位用数字输入；行程用时间或电流估 `position_pct`（0–100）。
-- 公版固件尚未发发行包：用 Arduino / ESP-IDF 实现 TB MQTT 即可（协议绑定同样有效）。
+- 参考固件在 [`firmware/esp32-kit/`](../firmware/esp32-kit/)（Arduino sketch），可用 `firmware/esp32-kit/pack-reference.sh` 打源码归档。这**不是**二进制发行包，也**未经** hardware-verified；协议绑定仍以 TB MQTT 为准。
 
 最小上报（窗机必选）：
 

@@ -115,47 +115,49 @@ MQTT：
 
 本地 TB 模拟用 mosquitto_pub 或 Pack 脚本，不要再依赖 `npm run mqtt:presence` 作为主演示。
 
-### 6.2 计划中的领域 API（下一合同版本）
+### 6.2 已发布 Gateway API（见 gateway.v1.yaml）
 
-以下路径**尚未**写入 OpenAPI，供实现排期，禁止当作已发布合同：
+下列 Cloud Lite 路径**已发布**于 [`contracts/gateway.v1.yaml`](../contracts/gateway.v1.yaml)（服务器前缀 `/api/v1`）。[`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 仍是遗留 Device CRUD 合同，禁止静默破坏。完整权限表见 [index.md](./index.md)。本表不是 hardware-verified 声明，也不是公开站点文档。
 
-| 方法 | 路径（草案） | 权限 |
-|------|----------------|------|
+| 方法 | 路径 | 权限 |
+|------|------|------|
 | GET/POST | `/api/v1/projects` | `iot.tenant:manage` |
-| POST | `/api/v1/projects/:id/provision-tb` | `iot.tenant:manage` |
-| POST | `/api/v1/projects/:id/link-tb` | `iot.tenant:manage` |
 | GET/POST | `/api/v1/projects/:id/sites` | `iot.site:view` / `iot.site:manage` |
-| GET | `/api/v1/sites/:id` | `iot.site:view` |
-| GET/POST | `/api/v1/sites/:id/assets` | `iot.asset:view` / `iot.asset:manage` |
 | GET | `/api/v1/assets` | `iot.asset:view` |
-| GET | `/api/v1/assets/:id` | `iot.asset:view` |
 | GET | `/api/v1/assets/:id/telemetry` | `iot.asset:view` |
 | GET | `/api/v1/packs` | `iot.pack:apply` |
-| GET | `/api/v1/projects/:id/packs` | `iot.pack:apply` |
 | POST | `/api/v1/projects/:id/packs/apply` | `iot.pack:apply` |
 | GET | `/api/v1/alarms` | `iot.incident:view` |
-| GET | `/api/v1/projects/:id/alarms` | `iot.incident:view` |
-| POST | `/api/v1/assets/:id/alarms` | `iot.incident:ack` |
 | POST | `/api/v1/alarms/:id/ack` | `iot.incident:ack` |
-| POST | `/api/v1/alarms/:id/clear` | `iot.incident:ack` |
 | GET | `/api/v1/controller-kits` | `iot.controller:view` |
 | POST | `/api/v1/projects/:id/controllers/claim` | `iot.controller:claim` |
 | GET/POST | `/api/v1/projects/:id/scenes` | `iot.scene:view` / `iot.scene:manage` |
 | POST | `/api/v1/scenes/:id/evaluate` | `iot.command:dispatch` |
 | POST | `/api/v1/demos/smart-window` | `iot.pack:apply` |
 | POST | `/api/v1/demos/agri-irrigation` | `iot.pack:apply` |
+| POST | `/api/v1/demos/agri-pond` | `iot.pack:apply` |
 | GET | `/api/v1/incidents` | `iot.incident:view` |
 | POST | `/api/v1/incidents/:id/ack` | `iot.incident:ack` |
 | POST | `/api/v1/incidents/:id/escalate` | `iot.incident:escalate` |
 | GET/POST | `/api/v1/calibrations` | `iot.calibration:view` / `iot.calibration:manage` |
-| GET | `/api/v1/reports/:id` | `iot.report:view` |
+| GET | `/api/v1/reports` | `iot.report:view` |
 | POST | `/api/v1/reports/:id/export` | `iot.report:export` |
 | GET | `/api/v1/audit-events` | `iot.audit:view` |
 | GET/PUT | `/api/v1/sites/:id/duty-roster` | `iot.site:manage` |
+| GET/POST | `/api/v1/education-labs/sessions` | 教师：`iot.asset:manage`（见 [education-bridge.md](./education-bridge.md)） |
+| GET/DELETE | `/api/v1/education-labs/sessions/:id` | GET `iot.asset:view`；DELETE `iot.asset:manage` |
+| POST | `/api/v1/education-labs/sessions/:id/intent` | `iot.device:control`（学生 dry-run 走 `/scenes/:id/evaluate` 且 dispatch=false） |
+| GET/POST | `/api/v1/integrations/vistacast/*` | `iot.integration:view` / `iot.integration:manage` |
+| GET/POST | `/api/v1/integrations/vistaremote/*` | `iot.integration:view` / `iot.integration:manage` |
+| GET | `/api/v1/integrations/dataluminary/status` | `iot.integration:view` |
+| POST | `/api/v1/integrations/dataluminary/embed-token` | `iot.integration:manage` |
+| GET | `/api/v1/integrations/dataluminary/export` | `iot.integration:view` |
+| GET | `/api/v1/integrations/doerflow/status` | `iot.integration:view`（**默认关闭**） |
+| GET/POST | `/api/v1/integrations/doerflow/connections` | `iot.integration:view` / `iot.integration:manage`（**默认关闭**） |
+| POST | `/api/v1/integrations/doerflow/invoke` | HMAC（**默认关闭**；无设备 RPC） |
+| POST | `/api/v1/integrations/doerflow/callbacks` | HMAC（**默认关闭**；禁止 close Incident / 下发命令） |
 
-完整权限表见 [index.md](./index.md)。
-
-公版 Kit / 场景中台 / VistaCast 联动已写入 [`contracts/gateway.v1.yaml`](../contracts/gateway.v1.yaml)：`/controller-kits`、`/projects/{id}/controllers/claim`、`/projects/{id}/scenes`、`/scenes/{id}/evaluate`、`/demos/smart-window`、`/demos/agri-irrigation`、`/demos/agri-pond`、`/demos/vistacast-bridge`、`/integrations/vistacast/*`、`/incidents`。可选 DoerFlow（**默认关闭**）见 [`contracts/doerflow.v1.yaml`](../contracts/doerflow.v1.yaml) 与 `/integrations/doerflow/*`：卖方 offering 仅 `syncrobrain.telemetry-digest.v1` / `syncrobrain.incident-report.v1`；处置事件 `com.syncrobrain.incident.v1` / `com.syncrobrain.work-order.v1`。边缘可运行实现见 `iot-edge-agent`。
+可选 DoerFlow 另见 [`contracts/doerflow.v1.yaml`](../contracts/doerflow.v1.yaml)：卖方 offering 仅 `syncrobrain.telemetry-digest.v1` / `syncrobrain.incident-report.v1`；处置事件 `com.syncrobrain.incident.v1` / `com.syncrobrain.work-order.v1`。边缘可运行实现见 `iot-edge-agent`。
 
 DoerFlow 回调 **禁止** 直接下发设备命令，也 **禁止** 自动 close Incident。建议动作必须显式经过 Entitlement + Casbin + ActionPolicy / Safety Kernel（`evaluateAction`）；内核允许仍不等于 RPC。不得把设备 token / MQTT 凭据写入跨产品信封。实现仓：`iot-gateway/src/modules/doerflow`。
 

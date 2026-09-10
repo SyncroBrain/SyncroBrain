@@ -1,0 +1,142 @@
+{
+  "slug": "env-lab",
+  "version": "0.1-draft",
+  "title": "环境机房",
+  "description": "机房温湿度点：温度 + 湿度，证明换 Pack 不换运行时。",
+  "kind": "room",
+  "profileName": "env-lab-room-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.room.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "channels": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "sampleSec": 60,
+      "kind": "numeric"
+    },
+    {
+      "key": "humidity",
+      "label": "湿度",
+      "labelKey": "channel.humidity",
+      "unit": "%",
+      "sampleSec": 60,
+      "kind": "numeric"
+    }
+  ],
+  "policy": {
+    "room": {
+      "tempMaxC": 28,
+      "humidityMaxPct": 70,
+      "criticalAfterSec": 180
+    }
+  },
+  "summary": {
+    "normalWindow": "温度 ≤28 °C · 湿度 ≤70%",
+    "alarmBand": "超阈持续 ≥180s → CRITICAL（见 Device Profile）",
+    "extras": [
+      "用于证明 Pack 可替换，非第二垂直产品"
+    ]
+  },
+  "vertical": "demo",
+  "titleKey": "pack.envLab.title",
+  "assetKinds": [
+    "room"
+  ],
+  "metrics": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "display": "numeric",
+      "max": 28,
+      "alarmHigh": 28,
+      "warnBand": 2
+    },
+    {
+      "key": "humidity",
+      "label": "湿度",
+      "labelKey": "channel.humidity",
+      "unit": "%",
+      "display": "numeric",
+      "max": 70,
+      "alarmHigh": 70,
+      "warnBand": 5
+    }
+  ],
+  "commands": [
+    {
+      "id": "setHumiditySetpoint",
+      "label": "设定湿度",
+      "labelKey": "command.setHumiditySetpoint",
+      "method": "setHumiditySetpoint",
+      "param": "setpointHumidityPct",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "id": "setTemperatureSetpoint",
+      "label": "设定温度",
+      "labelKey": "command.setTemperatureSetpoint",
+      "method": "setTemperatureSetpoint",
+      "param": "setpointC",
+      "min": 0,
+      "max": 40
+    },
+    {
+      "id": "ping",
+      "label": "Ping",
+      "labelKey": "command.ping",
+      "method": "ping"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "overtemp",
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp",
+      "alarmType": "Temperature High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 32.5,
+        "humidity": 78
+      }
+    },
+    {
+      "id": "humidity",
+      "label": "超湿",
+      "labelKey": "sim.scenario.humidity",
+      "alarmType": "Humidity High",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 24,
+        "humidity": 82
+      }
+    },
+    {
+      "id": "normal",
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal",
+      "telemetry": {
+        "temperature": 24,
+        "humidity": 52
+      }
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "setHumiditySetpoint",
+      "setTemperatureSetpoint",
+      "ping"
+    ],
+    "maxPerHour": 40
+  },
+  "kits": [
+    "kit-env-node"
+  ]
+}

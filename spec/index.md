@@ -61,7 +61,7 @@
 | `iot.site:view` / `iot.site:manage` | 站点 |
 | `iot.asset:view` / `iot.asset:manage` | 映射 TB 设备/资产 |
 | `iot.device:view` / `iot.device:manage` / `iot.device:control` | 遗留 v0.1 + RPC（须审计） |
-| `iot.pack:apply` | 应用 Industry Pack（Build 新增；未实现不得写入已发布 OpenAPI） |
+| `iot.pack:apply` | 应用 Industry Pack（已发布于 Gateway；Casbin `iot.pack:apply`） |
 
 ## Vertical Fit 权限（不阻塞 Build）
 

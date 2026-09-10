@@ -2,14 +2,19 @@
 
 export function createRingCache(limit = 1024) {
   const items = [];
+  let lastOverflow = null;
   return {
     push(record) {
+      if (items.length >= limit) {
+        const dropped = items.shift();
+        lastOverflow = { ...dropped, quality: "buffer_overflow" };
+      }
       items.push(record);
-      if (items.length > limit) items.shift();
     },
     drain() {
-      const copy = items.slice();
+      const copy = [...items, lastOverflow].filter(Boolean);
       items.length = 0;
+      lastOverflow = null;
       return copy;
     },
     size() {

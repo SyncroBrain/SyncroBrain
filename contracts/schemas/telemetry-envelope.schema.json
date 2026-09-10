@@ -16,7 +16,7 @@
     "unit": { "type": "string" },
     "quality": {
       "type": "string",
-      "enum": ["ok", "late", "out_of_order", "clock_skew", "backfill", "unmapped"]
+      "enum": ["ok", "late", "out_of_order", "clock_skew", "backfill", "unmapped", "buffer_overflow"]
     },
     "idempotencyKey": { "type": "string" }
   }

@@ -30,7 +30,9 @@ export function createAgent(opts = {}) {
       return stamped;
     },
     flush() {
-      return cache.drain().map((r) => ({ ...r, quality: "backfill" }));
+      return cache.drain().map((r) =>
+        r.quality === "buffer_overflow" ? r : { ...r, quality: "backfill" },
+      );
     },
     handleOcpp(raw) {
       const frame = parseOcpp(raw);

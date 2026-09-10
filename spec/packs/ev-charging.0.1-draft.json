@@ -1,0 +1,162 @@
+{
+  "slug": "ev-charging",
+  "version": "0.1-draft",
+  "title": "充电桩",
+  "titleKey": "pack.evCharging.title",
+  "description": "站/桩/枪/会话、OCPP 状态、功率限制、安全启停。不含支付清分。",
+  "vertical": "ev-charging",
+  "kind": "charger",
+  "assetKinds": [
+    "charger"
+  ],
+  "profileName": "ev-charging-charger-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.charger.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "kits": [
+    "kit-fan-pwm",
+    "kit-rly-4ch"
+  ],
+  "channels": [
+    {
+      "key": "connector_status",
+      "label": "枪状态",
+      "labelKey": "channel.connector_status",
+      "unit": "enum",
+      "kind": "enum"
+    },
+    {
+      "key": "power_kw",
+      "label": "功率",
+      "labelKey": "channel.power_kw",
+      "unit": "kW",
+      "kind": "numeric"
+    },
+    {
+      "key": "session_kwh",
+      "label": "电量",
+      "labelKey": "channel.session_kwh",
+      "unit": "kWh",
+      "kind": "numeric"
+    },
+    {
+      "key": "fault",
+      "label": "故障",
+      "labelKey": "channel.fault",
+      "unit": "bool",
+      "kind": "bool"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "power_kw",
+      "label": "功率",
+      "labelKey": "channel.power_kw",
+      "unit": "kW",
+      "display": "numeric",
+      "max": 120,
+      "alarmHigh": 130
+    },
+    {
+      "key": "fault",
+      "label": "故障",
+      "labelKey": "channel.fault",
+      "display": "bool",
+      "trueLabel": "故障",
+      "falseLabel": "正常",
+      "trueStatus": "alarm"
+    }
+  ],
+  "commands": [
+    {
+      "id": "remoteStop",
+      "method": "RemoteStopTransaction",
+      "rollbackId": "remoteStart",
+      "label": "远程停机",
+      "labelKey": "command.remoteStop"
+    },
+    {
+      "id": "setChargingProfile",
+      "method": "SetChargingProfile",
+      "param": "limitKw",
+      "min": 0,
+      "max": 60,
+      "label": "设定充电功率",
+      "labelKey": "command.setChargingProfile"
+    },
+    {
+      "id": "ping",
+      "method": "ping",
+      "label": "Ping",
+      "labelKey": "command.ping"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "fault",
+      "alarmType": "Charger Fault",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "power_kw": 0,
+        "fault": 1,
+        "connector_status": 4
+      },
+      "label": "故障",
+      "labelKey": "sim.scenario.fault"
+    },
+    {
+      "id": "overtemp",
+      "alarmType": "Charger Fault",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "power_kw": 0,
+        "fault": 1
+      },
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp"
+    },
+    {
+      "id": "normal",
+      "telemetry": {
+        "power_kw": 22,
+        "fault": 0,
+        "connector_status": 2
+      },
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal"
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "remoteStop",
+      "setChargingProfile",
+      "ping"
+    ],
+    "maxPerHour": 20
+  },
+  "policy": {
+    "charger": {
+      "maxKw": 60
+    }
+  },
+  "summary": {
+    "normalWindow": "功率 ≤60 kW",
+    "extras": [
+      "站/桩/枪/会话、OCPP 状态、功率限制、安全启停。不含支付清分。"
+    ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
+  ],
+  "adapters": {
+    "protocol": "ocpp16"
+  }
+}

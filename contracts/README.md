@@ -8,7 +8,7 @@
 | [device.v1.yaml](./device.v1.yaml) | **遗留 Device CRUD** | 禁止静默破坏；**不是** Pack/告警合同 |
 | [schemas/control-manifest.schema.json](./schemas/control-manifest.schema.json) | **部署拓扑** | required vs optional 组件；`GET /ready` 的唯一判据；只描述依赖，不授权动作 |
 | [schemas/smart-site-binding.schema.json](./schemas/smart-site-binding.schema.json) | 跨产品绑定 | `tenant↔project` · `camera↔asset` · `remote-device↔asset`；只放 id，不放凭据 |
-| [schemas/dataluminary-embed.schema.json](./schemas/dataluminary-embed.schema.json) | **默认关、contract-only** | 短期只读 embed grant + origin/dashboard 白名单；未交付 iframe 大屏 |
+| [schemas/dataluminary-embed.schema.json](./schemas/dataluminary-embed.schema.json) | **默认关；iframe host 已交付** | 短期只读 embed grant + origin/dashboard 白名单；Console iframe 与 pull export 默认关闭，默认看板仍是 TB Dashboard |
 | [schemas/pack-manifest.schema.json](./schemas/pack-manifest.schema.json) | **Pack Factory** | Industry Pack manifest |
 | [schemas/telemetry-envelope.schema.json](./schemas/telemetry-envelope.schema.json) | Pack 内部信封 | 设备生产 MQTT 仍用 TB topic |
 | [schemas/command.schema.json](./schemas/command.schema.json) | 命令 | 幂等投递与回执 |

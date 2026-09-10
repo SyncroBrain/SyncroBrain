@@ -6,7 +6,7 @@
 > **实现**：`iot-gateway/src/modules/doerflow`（Fastify）。DoerFlow HTTP 全部集中在 `DoerFlowClient`。  
 > **入账合同（DoerFlow 权威）**：兄弟仓 `spec/SYNCROBRAIN_TELEMETRY_CREDIT.md` · 本仓 schema [`doerflow-telemetry-credit.schema.json`](../../contracts/schemas/doerflow-telemetry-credit.schema.json)
 
-Cloud Lite 仍可独立交付。DoerFlow 不进入默认 Compose、不进入默认 SKU 功能表、**不进入 TB MQTT 数据面**。
+Cloud Lite 仍可独立交付。DoerFlow 不进入默认 Compose、不进入默认 SKU 功能表、**不进入 TB MQTT 数据面**。操作员在 Console **边缘**（连接页）查看与配置该适配器；适配器仍默认关闭，不宣称生产商业化。
 
 ## 1. 边界
 
@@ -47,7 +47,9 @@ Invoke：`type=com.doerflow.trading.job.invoke`，头 `X-DoerFlow-Signature: sha
 | 鉴权 | M2M `integration.event.submit`（与 `/integrations/events` 相同）；可选 HMAC |
 | 幂等 | CloudEvents `id`（推荐 `sb:telemetry-credit:{tenant}:{assetId}:{window.start}`） |
 | 功能门 | 仍须 `DOERFLOW_ENABLED=true` + license feature `doerflow`；未开则 **不得** 出站 |
-| 本步 | Client 方法 `postTelemetryCredit`；**尚未**挂 TB 时间窗聚合（下一步） |
+| 本步 | Gateway 在 UTC 对齐时间窗**关闭后**聚合 per-asset digest，经 `postTelemetryCredit` 出站；**不**走 TB MQTT 总线，**不**消耗 Incident 出站预算 |
+
+`DOERFLOW_TELEMETRY_CREDIT_WINDOW_MS`（默认 3600000）把墙钟对齐到 UTC：上一完整闭窗 `[floor(now/windowMs)*windowMs - windowMs, floor(now/windowMs)*windowMs)`。`sampleCount === 0` 的窗不出账。实验室信任 `connection.payee || DOERFLOW_PAYEE`；无 payee 则跳过该资产。幂等键 = CloudEvents `id`（outbox `eventId` unique）。
 
 禁止把 `tbDeviceId` / device token / `series` / TelemetryEnvelope 写入该信封。回调 `com.doerflow.ledger.credited.v1` 只记证据，**不** close Incident，**不** RPC。
 

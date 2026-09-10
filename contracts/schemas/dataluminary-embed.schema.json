@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://syncrobrain.com/schemas/dataluminary-embed.schema.json",
   "title": "SyncroBrain → DataLuminary embed grant",
-  "description": "Reference contract for the optional DataLuminary dashboard embed. DATALUMINARY_EMBED_ENABLED defaults to false and SyncroBrain has NOT shipped an iframe dashboard — the default board is still a ThingsBoard Dashboard. When enabled, the Gateway mints a short-lived, single-purpose grant against an explicit origin and dashboard allowlist.",
+  "description": "Reference contract for the optional DataLuminary dashboard embed. DATALUMINARY_EMBED_ENABLED defaults to false. SyncroBrain has shipped a Console iframe host and pull-mode export, still default-off — the default board is a ThingsBoard Dashboard. When enabled, the Gateway mints a short-lived, single-purpose grant against an explicit origin and dashboard allowlist. The browser never holds credentials.",
   "type": "object",
   "additionalProperties": false,
   "required": ["embedVersion", "projectId", "dashboardId", "origin", "token", "expiresAt", "ttlSeconds"],
@@ -52,5 +52,5 @@
       }
     }
   },
-  "$comment": "The browser never holds credentials. Issuing a grant requires iot.integration:view and is written to the audit log."
+  "$comment": "The browser never holds credentials. Issuing a grant requires iot.integration:manage and is written to the audit log. Pull export requires iot.integration:view."
 }

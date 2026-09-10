@@ -5,19 +5,56 @@
   "spec": "spec/controller-kits.md",
   "vertical": "agri-pond",
   "kind": "pond",
-  "kits": ["kit-pond-ctrl", "kit-env-node"],
+  "kits": [
+    "kit-pond-ctrl",
+    "kit-env-node"
+  ],
   "channels": {
-    "do_mgl": { "unit": "mg/L", "sampleIntervalSec": 60 },
-    "water_temp_c": { "unit": "Cel", "sampleIntervalSec": 60 },
-    "water_level_m": { "unit": "m", "sampleIntervalSec": 60 },
-    "aerator": { "unit": "1" },
-    "sprayer": { "unit": "1" }
+    "do_mgl": {
+      "unit": "mg/L",
+      "sampleIntervalSec": 60,
+      "labelKey": "channel.do_mgl"
+    },
+    "water_temp_c": {
+      "unit": "Cel",
+      "sampleIntervalSec": 60,
+      "labelKey": "channel.water_temp_c"
+    },
+    "water_level_m": {
+      "unit": "m",
+      "sampleIntervalSec": 60,
+      "labelKey": "channel.water_level_m"
+    },
+    "aerator": {
+      "unit": "1",
+      "labelKey": "channel.aerator"
+    },
+    "sprayer": {
+      "unit": "1",
+      "labelKey": "channel.sprayer"
+    }
   },
   "commands": [
-    { "id": "aeratorOn", "method": "aeratorOn" },
-    { "id": "aeratorOff", "method": "aeratorOff" },
-    { "id": "sprayOn", "method": "sprayOn" },
-    { "id": "sprayOff", "method": "sprayOff" }
+    {
+      "id": "aeratorOn",
+      "labelKey": "command.aeratorOn",
+      "method": "aeratorOn"
+    },
+    {
+      "id": "aeratorOff",
+      "labelKey": "command.aeratorOff",
+      "method": "aeratorOff"
+    },
+    {
+      "id": "sprayOn",
+      "labelKey": "command.sprayOn",
+      "method": "sprayOn"
+    },
+    {
+      "id": "sprayOff",
+      "labelKey": "command.sprayOff",
+      "method": "sprayOff"
+    }
   ],
   "policy": {
     "doLowMgl": 3,
@@ -31,8 +68,16 @@
       "kitSlug": "kit-pond-ctrl",
       "mode": "manual",
       "enabled": true,
-      "triggers": [{ "type": "command" }],
-      "actions": [{ "commandId": "aeratorOn" }]
+      "triggers": [
+        {
+          "type": "command"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "aeratorOn"
+        }
+      ]
     },
     {
       "id": "pond-do-aerate",
@@ -40,8 +85,19 @@
       "kitSlug": "kit-pond-ctrl",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "threshold", "key": "do_mgl", "op": "lt", "value": 3 }],
-      "actions": [{ "commandId": "aeratorOn" }]
+      "triggers": [
+        {
+          "type": "threshold",
+          "key": "do_mgl",
+          "op": "lt",
+          "value": 3
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "aeratorOn"
+        }
+      ]
     },
     {
       "id": "pond-heat-spray",
@@ -49,8 +105,19 @@
       "kitSlug": "kit-pond-ctrl",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "threshold", "key": "water_temp_c", "op": "gt", "value": 30 }],
-      "actions": [{ "commandId": "sprayOn" }]
+      "triggers": [
+        {
+          "type": "threshold",
+          "key": "water_temp_c",
+          "op": "gt",
+          "value": 30
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "sprayOn"
+        }
+      ]
     },
     {
       "id": "pond-level-lock",
@@ -58,10 +125,32 @@
       "kitSlug": "kit-pond-ctrl",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "threshold", "key": "water_level_m", "op": "lt", "value": 0.2 }],
-      "actions": [{ "commandId": "sprayOff" }],
+      "triggers": [
+        {
+          "type": "threshold",
+          "key": "water_level_m",
+          "op": "lt",
+          "value": 0.2
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "sprayOff"
+        }
+      ],
       "safety": {
-        "interlocks": [{ "when": { "water_level_m": { "lt": 0.2 } }, "deny": ["sprayOn"] }]
+        "interlocks": [
+          {
+            "when": {
+              "water_level_m": {
+                "lt": 0.2
+              }
+            },
+            "deny": [
+              "sprayOn"
+            ]
+          }
+        ]
       }
     },
     {
@@ -70,14 +159,33 @@
       "kitSlug": "kit-pond-ctrl",
       "mode": "ai",
       "enabled": true,
-      "triggers": [{ "type": "ai" }],
-      "actions": [{ "commandId": "aeratorOn" }],
-      "safety": { "requireEvidence": ["do_mgl"] }
+      "triggers": [
+        {
+          "type": "ai"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "aeratorOn"
+        }
+      ],
+      "safety": {
+        "requireEvidence": [
+          "do_mgl"
+        ]
+      }
     }
   ],
   "safetyEnvelope": {
-    "allowlist": ["aeratorOn", "aeratorOff", "sprayOn", "sprayOff"],
+    "allowlist": [
+      "aeratorOn",
+      "aeratorOff",
+      "sprayOn",
+      "sprayOff"
+    ],
     "maxPerHour": 48,
-    "requireEvidence": ["water_level_m"]
+    "requireEvidence": [
+      "water_level_m"
+    ]
   }
 }

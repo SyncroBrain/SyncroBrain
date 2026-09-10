@@ -15,7 +15,7 @@
     "maturity": {
       "type": "string",
       "enum": ["integration-verified", "contract-only"],
-      "description": "camera-asset and tenant-project are integration-verified; remote-device-asset is contract-only."
+      "description": "camera-asset, tenant-project, and remote-device-asset are integration-verified. Remote desktop sessions live in VistaRemote and never auto-start from an alert."
     },
     "connectionId": { "type": "string", "format": "uuid" },
     "projectId": { "type": "string", "format": "uuid" },

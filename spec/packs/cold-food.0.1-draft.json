@@ -1,0 +1,160 @@
+{
+  "slug": "cold-food",
+  "version": "0.1-draft",
+  "title": "食品冷库",
+  "titleKey": "pack.coldFood.title",
+  "description": "冷库分区温湿度、门、断电、能耗；HACCP 证据列。",
+  "vertical": "cold-food",
+  "kind": "cold_room",
+  "assetKinds": [
+    "cold_room"
+  ],
+  "profileName": "cold-food-cold_room-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.cold_room.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "kits": [
+    "kit-env-node",
+    "kit-rly-4ch"
+  ],
+  "channels": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "kind": "numeric"
+    },
+    {
+      "key": "humidity",
+      "label": "湿度",
+      "labelKey": "channel.humidity",
+      "unit": "%",
+      "kind": "numeric"
+    },
+    {
+      "key": "door",
+      "label": "门磁",
+      "labelKey": "channel.door",
+      "unit": "bool",
+      "kind": "bool"
+    },
+    {
+      "key": "power",
+      "label": "市电",
+      "labelKey": "channel.power",
+      "unit": "bool",
+      "kind": "bool"
+    },
+    {
+      "key": "energy_kwh",
+      "label": "能耗",
+      "labelKey": "channel.energy_kwh",
+      "unit": "kWh",
+      "kind": "numeric"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "display": "numeric",
+      "min": -2,
+      "max": 4,
+      "warnBand": 0.5,
+      "alarmHigh": 5,
+      "alarmLow": -3
+    },
+    {
+      "key": "humidity",
+      "label": "湿度",
+      "labelKey": "channel.humidity",
+      "unit": "%",
+      "display": "numeric",
+      "max": 90,
+      "alarmHigh": 90
+    },
+    {
+      "key": "door",
+      "label": "门磁",
+      "labelKey": "channel.door",
+      "display": "bool",
+      "trueLabel": "开",
+      "falseLabel": "关",
+      "trueStatus": "warn"
+    }
+  ],
+  "commands": [
+    {
+      "id": "setTemperatureSetpoint",
+      "method": "setTemperatureSetpoint",
+      "param": "setpointC",
+      "min": -30,
+      "max": 10,
+      "label": "设定温度",
+      "labelKey": "command.setTemperatureSetpoint"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "overtemp",
+      "alarmType": "Temperature High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 8,
+        "humidity": 80,
+        "door": 0,
+        "power": 1
+      },
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp"
+    },
+    {
+      "id": "normal",
+      "telemetry": {
+        "temperature": 1,
+        "humidity": 75,
+        "door": 0,
+        "power": 1
+      },
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal"
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "setTemperatureSetpoint"
+    ],
+    "maxPerHour": 20
+  },
+  "policy": {
+    "cold_room": {
+      "minC": -2,
+      "maxC": 4,
+      "alarmHighC": 5,
+      "alarmLowC": -3
+    }
+  },
+  "summary": {
+    "normalWindow": "−2–4 °C",
+    "extras": [
+      "冷库分区温湿度、门、断电、能耗；HACCP 证据列。"
+    ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion",
+    "haccp_lot",
+    "defrost",
+    "energy_kwh"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
+  ]
+}

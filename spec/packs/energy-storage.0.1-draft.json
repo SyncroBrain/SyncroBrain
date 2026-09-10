@@ -1,0 +1,145 @@
+{
+  "slug": "energy-storage",
+  "version": "0.1-draft",
+  "title": "储能",
+  "titleKey": "pack.energyStorage.title",
+  "description": "PCS/BMS SOC/SOH、功率、温度、受约束充放电。不含电力市场。",
+  "vertical": "energy-storage",
+  "kind": "ess",
+  "assetKinds": [
+    "ess"
+  ],
+  "profileName": "energy-storage-ess-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.ess.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "kits": [
+    "kit-fan-pwm",
+    "kit-rly-4ch"
+  ],
+  "channels": [
+    {
+      "key": "soc_pct",
+      "label": "SOC",
+      "labelKey": "channel.soc_pct",
+      "unit": "%",
+      "kind": "numeric"
+    },
+    {
+      "key": "soh_pct",
+      "label": "SOH",
+      "labelKey": "channel.soh_pct",
+      "unit": "%",
+      "kind": "numeric"
+    },
+    {
+      "key": "power_kw",
+      "label": "功率",
+      "labelKey": "channel.power_kw",
+      "unit": "kW",
+      "kind": "numeric"
+    },
+    {
+      "key": "cell_temp_c",
+      "label": "电芯温度",
+      "labelKey": "channel.cell_temp_c",
+      "unit": "°C",
+      "kind": "numeric"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "soc_pct",
+      "label": "SOC",
+      "labelKey": "channel.soc_pct",
+      "unit": "%",
+      "display": "numeric",
+      "min": 10,
+      "max": 90,
+      "alarmLow": 8,
+      "alarmHigh": 95
+    },
+    {
+      "key": "cell_temp_c",
+      "label": "电芯温度",
+      "labelKey": "channel.cell_temp_c",
+      "unit": "°C",
+      "display": "numeric",
+      "max": 45,
+      "alarmHigh": 50
+    }
+  ],
+  "commands": [
+    {
+      "id": "setPowerKw",
+      "method": "setPowerKw",
+      "param": "powerKw",
+      "min": -50,
+      "max": 50,
+      "rollbackId": "setPowerKw",
+      "label": "设定功率",
+      "labelKey": "command.setPowerKw"
+    },
+    {
+      "id": "ping",
+      "method": "ping",
+      "label": "Ping",
+      "labelKey": "command.ping"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "overtemp",
+      "alarmType": "Cell Overtemp",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "soc_pct": 40,
+        "cell_temp_c": 55,
+        "power_kw": 0
+      },
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp"
+    },
+    {
+      "id": "normal",
+      "telemetry": {
+        "soc_pct": 55,
+        "cell_temp_c": 28,
+        "power_kw": 0
+      },
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal"
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "setPowerKw",
+      "ping"
+    ],
+    "maxPerHour": 20
+  },
+  "policy": {
+    "ess": {
+      "socMin": 10,
+      "socMax": 90,
+      "tempMaxC": 45
+    }
+  },
+  "summary": {
+    "normalWindow": "SOC 10–90% · 电芯 ≤45 °C",
+    "extras": [
+      "PCS/BMS SOC/SOH、功率、温度、受约束充放电。不含电力市场。"
+    ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
+  ]
+}

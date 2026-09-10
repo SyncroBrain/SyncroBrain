@@ -90,6 +90,9 @@ spawnInherit("node", ["dist/main"], gatewayDir, {
   LICENSE_ALLOW_DEV: "true",
   PORT: "13200",
   NODE_ENV: "test",
+  // Do not inherit a host webhook (4s fetch timeout per alarm).
+  ALARM_WEBHOOK_URL: "",
+  DOERFLOW_ENABLED: "false",
 });
 
 spawnInherit("pnpm", ["--ignore-workspace", "dev"], consoleDir, {

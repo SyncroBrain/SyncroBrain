@@ -51,6 +51,7 @@
           "unit": { "type": "string" },
           "sampleSec": { "type": "number" },
           "note": { "type": "string" },
+          "optional": { "type": "boolean" },
           "kind": { "type": "string", "enum": ["numeric", "bool", "enum", "geo"] }
         }
       }
@@ -85,6 +86,7 @@
         "properties": {
           "id": { "type": "string" },
           "label": { "type": "string" },
+          "labelKey": { "type": "string" },
           "method": { "type": "string" },
           "param": { "type": "string" },
           "min": { "type": "number" },
@@ -101,6 +103,7 @@
         "properties": {
           "id": { "type": "string" },
           "label": { "type": "string" },
+          "labelKey": { "type": "string" },
           "alarmType": { "type": "string" },
           "severity": { "type": "string" },
           "telemetry": { "type": "object", "additionalProperties": { "type": "number" } }

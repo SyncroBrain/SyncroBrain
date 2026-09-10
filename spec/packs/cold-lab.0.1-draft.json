@@ -17,21 +17,25 @@
     "temperature": {
       "unit": "Cel",
       "sampleIntervalSec": 60,
-      "openAfterSamples": 2
+      "openAfterSamples": 2,
+      "labelKey": "channel.temperature"
     },
     "door": {
       "unit": "1",
       "heartbeatSec": 60,
-      "edge": true
+      "edge": true,
+      "labelKey": "channel.door"
     },
     "power": {
       "unit": "1",
       "heartbeatSec": 60,
-      "edge": true
+      "edge": true,
+      "labelKey": "channel.power"
     },
     "gateway_online": {
       "unit": "1",
-      "sampleIntervalSec": 60
+      "sampleIntervalSec": 60,
+      "labelKey": "channel.gateway"
     }
   },
   "policy": {
@@ -81,5 +85,9 @@
     "warning": [
       "facilities"
     ]
-  }
+  },
+  "kits": [
+    "kit-env-node",
+    "kit-rly-4ch"
+  ]
 }

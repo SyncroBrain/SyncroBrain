@@ -5,18 +5,56 @@
   "spec": "spec/controller-kits.md",
   "vertical": "agri-irrigation",
   "kind": "irrigation_zone",
-  "kits": ["kit-valve-8z", "kit-rly-4ch", "kit-env-node"],
+  "kits": [
+    "kit-valve-8z",
+    "kit-rly-4ch",
+    "kit-env-node"
+  ],
   "channels": {
-    "soil_pct": { "unit": "%", "sampleIntervalSec": 300 },
-    "rain": { "unit": "1", "edge": true },
-    "flow_lpm": { "unit": "L/min", "sampleIntervalSec": 10 },
-    "pump": { "unit": "1" }
+    "soil_pct": {
+      "unit": "%",
+      "sampleIntervalSec": 300,
+      "labelKey": "channel.soil_pct"
+    },
+    "rain": {
+      "unit": "1",
+      "edge": true,
+      "labelKey": "channel.rain"
+    },
+    "flow_lpm": {
+      "unit": "L/min",
+      "sampleIntervalSec": 10,
+      "labelKey": "channel.flow_lpm"
+    },
+    "pump": {
+      "unit": "1",
+      "labelKey": "channel.pump"
+    }
   },
   "commands": [
-    { "id": "zoneOn", "method": "zoneOn", "param": "zone", "min": 1, "max": 8 },
-    { "id": "zoneOff", "method": "zoneOff" },
-    { "id": "pumpOn", "method": "pumpOn" },
-    { "id": "pumpOff", "method": "pumpOff" }
+    {
+      "id": "zoneOn",
+      "labelKey": "command.zoneOn",
+      "method": "zoneOn",
+      "param": "zone",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "id": "zoneOff",
+      "labelKey": "command.zoneOff",
+      "method": "zoneOff"
+    },
+    {
+      "id": "pumpOn",
+      "labelKey": "command.pumpOn",
+      "method": "pumpOn"
+    },
+    {
+      "id": "pumpOff",
+      "labelKey": "command.pumpOff",
+      "method": "pumpOff"
+    }
   ],
   "policy": {
     "soilLowPct": 25,
@@ -31,8 +69,17 @@
       "kitSlug": "kit-valve-8z",
       "mode": "manual",
       "enabled": true,
-      "triggers": [{ "type": "command", "commandId": "zoneOn" }],
-      "actions": [{ "commandId": "zoneOn" }]
+      "triggers": [
+        {
+          "type": "command",
+          "commandId": "zoneOn"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "zoneOn"
+        }
+      ]
     },
     {
       "id": "irr-soil-low",
@@ -40,8 +87,23 @@
       "kitSlug": "kit-valve-8z",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "threshold", "key": "soil_pct", "op": "lt", "value": 25 }],
-      "actions": [{ "commandId": "zoneOn", "params": { "zone": 1, "durationSec": 600 } }]
+      "triggers": [
+        {
+          "type": "threshold",
+          "key": "soil_pct",
+          "op": "lt",
+          "value": 25
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "zoneOn",
+          "params": {
+            "zone": 1,
+            "durationSec": 600
+          }
+        }
+      ]
     },
     {
       "id": "irr-rain-skip",
@@ -49,9 +111,32 @@
       "kitSlug": "kit-valve-8z",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "threshold", "key": "rain", "op": "eq", "value": 1 }],
-      "actions": [{ "commandId": "zoneOff" }],
-      "safety": { "interlocks": [{ "when": { "rain": 1 }, "deny": ["zoneOn", "pumpOn"] }] }
+      "triggers": [
+        {
+          "type": "threshold",
+          "key": "rain",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "zoneOff"
+        }
+      ],
+      "safety": {
+        "interlocks": [
+          {
+            "when": {
+              "rain": 1
+            },
+            "deny": [
+              "zoneOn",
+              "pumpOn"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "irr-schedule",
@@ -59,8 +144,20 @@
       "kitSlug": "kit-valve-8z",
       "mode": "policy",
       "enabled": true,
-      "triggers": [{ "type": "schedule" }],
-      "actions": [{ "commandId": "zoneOn", "params": { "zone": 1, "durationSec": 600 } }]
+      "triggers": [
+        {
+          "type": "schedule"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "zoneOn",
+          "params": {
+            "zone": 1,
+            "durationSec": 600
+          }
+        }
+      ]
     },
     {
       "id": "irr-ai-et",
@@ -68,14 +165,34 @@
       "kitSlug": "kit-valve-8z",
       "mode": "ai",
       "enabled": true,
-      "triggers": [{ "type": "ai" }],
-      "actions": [{ "commandId": "zoneOn" }],
-      "safety": { "requireEvidence": ["soil_pct"], "maxOnSec": 1800 }
+      "triggers": [
+        {
+          "type": "ai"
+        }
+      ],
+      "actions": [
+        {
+          "commandId": "zoneOn"
+        }
+      ],
+      "safety": {
+        "requireEvidence": [
+          "soil_pct"
+        ],
+        "maxOnSec": 1800
+      }
     }
   ],
   "safetyEnvelope": {
-    "allowlist": ["zoneOn", "zoneOff", "pumpOn", "pumpOff"],
+    "allowlist": [
+      "zoneOn",
+      "zoneOff",
+      "pumpOn",
+      "pumpOff"
+    ],
     "maxPerHour": 24,
-    "requireEvidence": ["soil_pct"]
+    "requireEvidence": [
+      "soil_pct"
+    ]
   }
 }

@@ -32,10 +32,10 @@ Entitlement 四模式（`off` / `shadow` / `enforce` / `offline_license`）与�
 | 产品 | 对 Cloud Lite 的关系 |
 |------|----------------------|
 | [LuminaryWorks](https://luminaryworks.dev) | 可选共享 Logto |
-| [DataLuminary](https://dataluminary.dev) | **可选大屏；默认用 TB Dashboard**。embed / export 为引用合同（`DATALUMINARY_EMBED_ENABLED` 默认 `false`，尚未交付 iframe 大屏）。启用时必须短期 embed token + origin/dashboard 白名单，浏览器不持凭据。见 [integrations/smart-site.md](./integrations/smart-site.md) |
+| [DataLuminary](https://dataluminary.dev) | **可选大屏；默认用 TB Dashboard**。Console iframe host 与 pull-mode export 已交付，**仍默认关闭**（`DATALUMINARY_EMBED_ENABLED` 默认 `false`）。启用时必须短期 embed token + origin/dashboard 白名单，浏览器不持凭据。DataLuminary 产品本身不随 Cloud Lite 打包。见 [integrations/smart-site.md](./integrations/smart-site.md) |
 | [BlockyEdu](https://blockyedu.com) | 可选培训；实体课见 [education-bridge.md](./education-bridge.md) |
 | [DoerFlow](https://doerflow.dev) | **可选双向变现**，**默认关闭**，**不进入 Build / Cloud Lite 默认栈**。未设 `DOERFLOW_ENABLED` 时 Gateway 必须 no-op。契约见 [integrations/doerflow.md](./integrations/doerflow.md) |
-| [VistaRemote](https://remote.vistacast.dev) | 可选；`remote-device ↔ asset` 绑定为 contract-only（实现未交付）。任何 remote intervention 仍过 Casbin + ActionPolicy / Safety Kernel |
+| [VistaRemote](https://remote.vistacast.dev) | 可选；`remote-device ↔ asset` 绑定为 **integration-verified**（SyncroBrain 只存 id）。远控会话仍在 VistaRemote，**绝不会**自动建立。任何 remote intervention 仍过 Casbin + ActionPolicy / Safety Kernel |
 | [VistaCast](https://vistacast.dev) | 可选视频 AI。签名 `alert.v1` Webhook 进 Incident/Scene；Cloud Lite 仍可单独部署。界面点击路径见 [playbooks/vistacast-bridge.md](../playbooks/vistacast-bridge.md)，契约见 [integrations/vistacast.md](./integrations/vistacast.md) |
 
 旧名 VibeEdu / VibeAgent 已废止。

@@ -48,11 +48,25 @@
       "note": "Optional addon. Down must not make standalone unready."
     },
     {
+      "key": "vistaremote",
+      "kind": "sibling-product",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "Optional addon. remote-device↔asset binding is local; down must not make standalone unready. Probe skipped unless VISTAREMOTE_BASE_URL is set."
+    },
+    {
       "key": "dataluminary",
       "kind": "sibling-product",
       "requirement": "optional",
       "probe": "none",
-      "note": "Embed/export is contract-only and default off."
+      "note": "Iframe host + pull export shipped; default-off. Down must not make standalone unready."
+    },
+    {
+      "key": "doerflow",
+      "kind": "sibling-product",
+      "requirement": "optional",
+      "probe": "none",
+      "note": "Optional addon, default-off. Probe none. Down must not make standalone unready."
     }
   ]
 }

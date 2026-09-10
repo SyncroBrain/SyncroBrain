@@ -1,0 +1,191 @@
+{
+  "slug": "cold-logistics",
+  "version": "0.1-draft",
+  "title": "冷链物流",
+  "titleKey": "pack.coldLogistics.title",
+  "description": "车辆/箱体温度、门、GPS、冲击、断网补传。不是 TMS。",
+  "vertical": "cold-logistics",
+  "kind": "vehicle_box",
+  "assetKinds": [
+    "vehicle_box"
+  ],
+  "profileName": "cold-logistics-vehicle_box-0.1-draft",
+  "artifacts": {
+    "deviceProfile": "device-profile.vehicle_box.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  },
+  "kits": [
+    "kit-cold-trk"
+  ],
+  "channels": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "kind": "numeric"
+    },
+    {
+      "key": "door",
+      "label": "门磁",
+      "labelKey": "channel.door",
+      "unit": "bool",
+      "kind": "bool"
+    },
+    {
+      "key": "gps",
+      "label": "GPS",
+      "labelKey": "channel.gps",
+      "unit": "1",
+      "kind": "geo"
+    },
+    {
+      "key": "lat",
+      "label": "纬度",
+      "labelKey": "channel.lat",
+      "unit": "deg",
+      "kind": "numeric",
+      "optional": true,
+      "note": "TB timeseries split of gps"
+    },
+    {
+      "key": "lon",
+      "label": "经度",
+      "labelKey": "channel.lon",
+      "unit": "deg",
+      "kind": "numeric",
+      "optional": true,
+      "note": "TB timeseries split of gps"
+    },
+    {
+      "key": "shock_g",
+      "label": "冲击",
+      "labelKey": "channel.shock_g",
+      "unit": "g",
+      "kind": "numeric"
+    },
+    {
+      "key": "gateway_online",
+      "label": "在线",
+      "labelKey": "channel.gateway",
+      "unit": "bool",
+      "kind": "bool"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "temperature",
+      "label": "温度",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "display": "numeric",
+      "min": 2,
+      "max": 8,
+      "alarmHigh": 8.5,
+      "alarmLow": 1.5
+    },
+    {
+      "key": "shock_g",
+      "label": "冲击",
+      "labelKey": "channel.shock_g",
+      "unit": "g",
+      "display": "numeric",
+      "max": 5,
+      "alarmHigh": 5
+    },
+    {
+      "key": "door",
+      "label": "门磁",
+      "labelKey": "channel.door",
+      "display": "bool",
+      "trueLabel": "开",
+      "falseLabel": "关",
+      "trueStatus": "warn"
+    }
+  ],
+  "commands": [
+    {
+      "id": "ping",
+      "method": "ping",
+      "label": "Ping",
+      "labelKey": "command.ping"
+    }
+  ],
+  "simulate": [
+    {
+      "id": "overtemp",
+      "alarmType": "Temperature High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 14,
+        "door": 0,
+        "gps": "0.00,0.00",
+        "lat": 0,
+        "lon": 0,
+        "shock_g": 0.2,
+        "geofence_breach": 0
+      },
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp"
+    },
+    {
+      "id": "geofence",
+      "alarmType": "Geofence Breach",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 4.5,
+        "door": 0,
+        "gps": "35.10,120.20",
+        "lat": 35.1,
+        "lon": 120.2,
+        "shock_g": 0.1,
+        "geofence_breach": 1
+      },
+      "label": "围栏",
+      "labelKey": "sim.scenario.geofence"
+    },
+    {
+      "id": "normal",
+      "telemetry": {
+        "temperature": 4.5,
+        "door": 0,
+        "gps": "0.00,0.00",
+        "lat": 0,
+        "lon": 0,
+        "shock_g": 0.1,
+        "geofence_breach": 0
+      },
+      "label": "正常窗",
+      "labelKey": "sim.scenario.normal"
+    }
+  ],
+  "safetyEnvelope": {
+    "allowlist": [
+      "ping"
+    ],
+    "maxPerHour": 20
+  },
+  "policy": {
+    "vehicle_box": {
+      "minC": 2,
+      "maxC": 8,
+      "alarmHighC": 8.5
+    }
+  },
+  "summary": {
+    "normalWindow": "2–8 °C 在途",
+    "extras": [
+      "车辆/箱体温度、门、GPS、冲击、断网补传。不是 TMS。"
+    ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
+  ]
+}

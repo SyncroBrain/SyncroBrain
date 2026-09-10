@@ -1,7 +1,7 @@
 #ifndef KIT_CONFIG_H
 #define KIT_CONFIG_H
 
-// kit-win-act | kit-valve-8z | kit-pond-ctrl | kit-env-node
+// kit-win-act | kit-valve-8z | kit-pond-ctrl | kit-env-node | kit-rly-4ch | kit-fan-pwm | kit-gw-esp | kit-cold-trk
 #ifndef KIT_SLUG
 #define KIT_SLUG "kit-win-act"
 #endif

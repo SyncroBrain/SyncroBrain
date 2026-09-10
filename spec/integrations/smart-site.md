@@ -46,7 +46,7 @@ remote-device ↔ asset   VistaRemote remoteDeviceId  ↔  SyncroBrain assetId  
 
 ## 3. DataLuminary embed / export 引用合同
 
-**当前实现状态：`DATALUMINARY_EMBED_ENABLED` 默认 `false`，Console 只显示「未接入」。SyncroBrain 尚未交付 iframe 大屏；默认看板仍是 ThingsBoard Dashboard。** 本节是启用时必须满足的合同，不是「已完成」声明。
+**当前实现状态：`DATALUMINARY_EMBED_ENABLED` 默认 `false`。Console iframe host 与 pull-mode export 已交付，但仍默认关闭；未启用时 Console 只显示「未接入」，默认看板仍是 ThingsBoard Dashboard。** DataLuminary 产品本身不随 Cloud Lite 打包。
 
 ### 3.1 embed（若启用）
 
@@ -55,8 +55,9 @@ remote-device ↔ asset   VistaRemote remoteDeviceId  ↔  SyncroBrain assetId  
 | 短期 token | Gateway 签发，TTL ≤ `DATALUMINARY_EMBED_TTL_SECONDS`（默认 300s，上限 900s），一次性用途、不可续期 |
 | origin 白名单 | `DATALUMINARY_EMBED_ORIGINS` 显式列出；不在白名单 → `403`，不接受通配 `*` |
 | dashboard 白名单 | `DATALUMINARY_EMBED_DASHBOARDS` 显式列出 `dashboardId`；不在白名单 → `403` |
+| iframe host | Console 向 `POST /integrations/dataluminary/embed-token` 换发 opaque `sbemb_…` grant，iframe `src` 为 `{DATALUMINARY_EMBED_BASE_URL}/embed?token=&dashboardId=&projectId=`（路径固定 `/embed`）。`DATALUMINARY_EMBED_BASE_URL` 为空时仍可 mint，但 `iframeReady=false` |
 | 浏览器不持凭据 | token 只携带 `projectId` / `dashboardId` / `exp` / `aud`；**不含** DataLuminary API key、TB 凭据、DB 连接串 |
-| 权限 | 需 `iot.integration:view`；签发写审计 |
+| 权限 | 签发需 `iot.integration:manage`；签发写审计。iframe 只读（`dashboard:read`），host 内无命令按钮 |
 | 默认关闭 | `DATALUMINARY_EMBED_ENABLED` 非 `true` 时端点返回 `404 INTEGRATION_DISABLED` |
 
 契约：[`dataluminary-embed.schema.json`](../../contracts/schemas/dataluminary-embed.schema.json)、`gateway.v1.yaml` 的 `/integrations/dataluminary/embed-token`。
@@ -65,10 +66,10 @@ remote-device ↔ asset   VistaRemote remoteDeviceId  ↔  SyncroBrain assetId  
 
 | 要求 | 细则 |
 |------|------|
-| 拉模式 | DataLuminary **拉** Gateway 的聚合导出，SyncroBrain 不推明细遥测 |
-| 粒度 | 时间窗 digest / incident report（`syncrobrain.telemetry-digest.v1` · `syncrobrain.incident-report.v1`），不是逐点遥测 |
+| 拉模式 | DataLuminary **拉** Gateway `GET /integrations/dataluminary/export?projectId=&envelope=&window=`，SyncroBrain 不推明细遥测 |
+| 粒度 | 时间窗 digest / incident report（`syncrobrain.telemetry-digest.v1` · `syncrobrain.incident-report.v1`），返回聚合 / hash / ref，不是逐点遥测 |
 | 传输 | 签名 HTTPS（跨产品事件平面），禁止 TB MQTT |
-| 凭据 | 服务端到服务端；浏览器不参与 |
+| 凭据 | 服务端到服务端；浏览器 iframe 不携带 export 凭据。需 `iot.integration:view`；未启用 → `404 INTEGRATION_DISABLED` |
 
 ## 4. remote intervention 与 command
 
@@ -98,7 +99,7 @@ Logto SSO 只解决登录。SyncroBrain 与兄弟产品是**两套 audience、�
 
 - `camera ↔ asset`：**integration-verified**（已实现，见 [vistacast.md](./vistacast.md)）
 - `tenant ↔ project`：**integration-verified**（已实现）
-- `remote-device ↔ asset`：**contract-only**（合同已固定，实现未交付）
-- DataLuminary embed / export：**contract-only，默认关闭**
+- `remote-device ↔ asset`：**integration-verified**（已实现绑定；远控会话仍在 VistaRemote，**绝不会**因告警自动建立）
+- DataLuminary iframe host / pull export：**shipped, default-off**（默认看板仍是 TB；不宣称 DataLuminary 产品已打包）
 
 对外只按上表宣称，不得把 contract-only 说成已交付。
