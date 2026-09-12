@@ -316,6 +316,11 @@ paths:
     get:
       operationId: listDutyRosterGaps
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: projectId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
       responses:
         "200":
           description: Sites with no duty roster (must not be marked live)
@@ -323,6 +328,19 @@ paths:
     get:
       operationId: listCalibrations
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: expired
+          in: query
+          required: false
+          schema: { type: string, enum: ["1", "true"] }
+        - name: channelId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
+        - name: projectId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
       responses:
         "200":
           description: Calibration certificates
