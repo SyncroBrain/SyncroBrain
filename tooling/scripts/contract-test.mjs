@@ -167,6 +167,14 @@ for (const name of requiredSchemas) {
     console.error(`${name} is not an object schema`);
     process.exit(1);
   }
+  if (name === "pack-manifest.schema.json") {
+    for (const key of ["ackSlaSec", "escalate"]) {
+      if (!parsed.properties[key]) {
+        console.error(`${name} missing property ${key}`);
+        process.exit(1);
+      }
+    }
+  }
 }
 
 const examplesDir = join(contracts, "examples");

@@ -354,6 +354,15 @@ paths:
     get:
       operationId: listReports
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: siteId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
+        - name: projectId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
       responses:
         "200":
           description: Compliance reports

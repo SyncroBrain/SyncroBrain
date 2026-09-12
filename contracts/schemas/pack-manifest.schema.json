@@ -121,6 +121,23 @@
     "policy": { "type": "object" },
     "summary": { "type": "object" },
     "reportColumns": { "type": "array", "items": { "type": "string" } },
+    "ackSlaSec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "critical": { "type": "number", "minimum": 0 },
+        "warning": { "type": "number", "minimum": 0 },
+        "criticalNext": { "type": "number", "minimum": 0 }
+      }
+    },
+    "escalate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "critical": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "warning": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
     "permissions": { "type": "array", "items": { "type": "string" } },
     "adapters": { "type": "object" },
     "kits": { "type": "array", "items": { "type": "string" } },
