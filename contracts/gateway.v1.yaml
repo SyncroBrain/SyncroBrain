@@ -142,6 +142,16 @@ paths:
     get:
       operationId: listAlarms
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: quality
+          in: query
+          required: false
+          description: |
+            Filter by AlarmRow.quality. `ok` | `unmapped` restrict results;
+            omit or `all` means no filter. Unknown values may return 400.
+          schema:
+            type: string
+            enum: [ok, unmapped, all]
       responses:
         "200":
           description: Alarm rows
@@ -181,6 +191,16 @@ paths:
     get:
       operationId: exportAlarmsCsv
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: quality
+          in: query
+          required: false
+          description: |
+            Filter by AlarmRow.quality. `ok` | `unmapped` restrict results;
+            omit or `all` means no filter. Unknown values may return 400.
+          schema:
+            type: string
+            enum: [ok, unmapped, all]
       responses:
         "200":
           description: |
