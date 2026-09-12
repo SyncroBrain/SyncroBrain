@@ -183,7 +183,10 @@ paths:
       security: [{ bearerAuth: [] }]
       responses:
         "200":
-          description: CSV
+          description: |
+            CSV with header columns: id, type, severity, status, acknowledged, cleared,
+            projectName, siteName, assetName, tbDeviceId, quality (ok|unmapped), startTs,
+            ackTs, ackNote, clearTs, clearNote
           content:
             text/csv:
               schema: { type: string }
