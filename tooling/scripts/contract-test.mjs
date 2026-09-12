@@ -6,6 +6,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { checkPackConsoleLocales } from "./lib/pack-console-locales.mjs";
 
 const metaRoot = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const contracts = join(metaRoot, "contracts");
@@ -229,6 +230,29 @@ for (const [exampleName, schemaName] of examplePairs) {
   if (required.some((c) => c.kind === "sibling-product" || c.kind === "control-plane")) {
     console.error("control-manifest.json marks a sibling product / control plane as required");
     process.exit(1);
+  }
+}
+
+/**
+ * Pack Factory: titleKey / labelKey / localeKeys[] in gateway packs must exist in
+ * Console en + zh. Gateway validatePackManifest only consults PACK_LOCALE_KEYS
+ * (optional env allowlist) and does not read Console locale JSON.
+ * Nested iot-console-web is gitignored — skip, do not fail Meta CI, when it is absent.
+ */
+{
+  const localeCheck = checkPackConsoleLocales(metaRoot);
+  if (localeCheck.skipped) {
+    console.log(`skip pack locale check: ${localeCheck.reason}`);
+  } else if (!localeCheck.ok) {
+    if (localeCheck.missingEn?.length) {
+      console.error(`pack locale keys missing in en/console.json: ${localeCheck.missingEn.join(", ")}`);
+    }
+    if (localeCheck.missingZh?.length) {
+      console.error(`pack locale keys missing in zh/console.json: ${localeCheck.missingZh.join(", ")}`);
+    }
+    process.exit(1);
+  } else {
+    console.log(`pack locale keys ok (${localeCheck.keyCount} keys in Console en+zh)`);
   }
 }
 
