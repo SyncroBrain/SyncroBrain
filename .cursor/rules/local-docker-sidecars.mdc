@@ -1,0 +1,36 @@
+---
+description: Local Docker — no crash-loop demo sidecars; profile-gate heavy services
+alwaysApply: true
+---
+
+# Local Docker sidecars (LuminaryWorks ecosystem)
+
+Idle products must not burn Docker Desktop CPU/RAM. Demo generators and heavy optional services are **opt-in** and must not restart forever on failure.
+
+## Required
+
+- Default `docker compose up` starts only the product **core** (API/DB/web or documented minimal set).
+- Lavfi/ffmpeg publishers, synthetic cameras, Ollama, SFU, Doris, SeaTunnel, etc. use Compose **profiles** (or a clearly named overlay).
+- Lab/demo generators use `restart: on-failure:N` (small N) or `restart: "no"` — not infinite `unless-stopped`.
+- One publisher per MediaMTX / ZLM / SFU path. Distinct paths if multiple lab publishers exist.
+- Install/public overlays must **not** remap conflicting publishers onto the same catch-all profile (e.g. do not put VistaCast `rtsp-publisher` + `rtmp-publisher` both under `ai`).
+- Document stop vs destroy when using `unless-stopped` (Desktop reboot revives stopped-but-not-removed containers).
+
+## Forbidden
+
+- Default-on demo stream / load generators with no real traffic value
+- Two services publishing the same stream path
+- `restart: unless-stopped` on disposable lab publishers that exit non-zero on publish failure
+- Collapsing `rtsp` + `ingest` (or similar) demo publishers into one profile without distinct paths
+
+## Reference
+
+- Index + cheat sheet: `LuminaryWorks/deploy/LOCAL_DOCKER_STACKS.md`
+- VistaCast publishers: `VistaCast/deploy/docker-compose.yml` (`demo` vs `demo-rtmp`, `on-failure:5`)
+- Identity auto-start: `LuminaryWorks/identity/LOCAL_DEV_DOCKER.md`
+
+## Scope
+
+Applies to LuminaryWorks MetaRepo and all ecosystem products: DataLuminary, BlockyEdu, DoerFlow, VistaRemote, VistaCast, SyncroBrain (and nested deploy trees).
+
+Re-sync from LuminaryWorks: `pnpm sync:cursor-local-docker-rule`
