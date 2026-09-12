@@ -151,6 +151,32 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AlarmRow"
+  /alarms/webhook/test:
+    post:
+      operationId: testAlarmWebhook
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.incident:ack. Pings ALARM_WEBHOOK_URL without creating a TB alarm.
+      responses:
+        "200":
+          description: Delivery result of the ping (no TB alarm created)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResult"
+  /alarms/webhook/last:
+    get:
+      operationId: getLastAlarmWebhook
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.incident:view. Last in-memory webhook POST (cleared on Gateway restart).
+      responses:
+        "200":
+          description: configured flag plus last attempt or null
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookLastPeek"
   /alarms/export.csv:
     get:
       operationId: exportAlarmsCsv
@@ -1339,3 +1365,67 @@ components:
         projectId: { type: string }
         assetId: { type: string }
         assetName: { type: string }
+        siteName: { type: string }
+        tbDeviceId: { type: string, description: ThingsBoard originator entity id }
+        quality:
+          type: string
+          enum: [ok, unmapped]
+          description: ok when the TB originator is in asset_maps; unmapped otherwise
+    WebhookResult:
+      type: object
+      required: [delivered]
+      properties:
+        delivered: { type: boolean }
+        skipped: { type: boolean, description: True when ALARM_WEBHOOK_URL is unset }
+        status: { type: integer }
+        error: { type: string }
+    WebhookLastPeek:
+      type: object
+      required: [configured, last]
+      properties:
+        configured:
+          type: boolean
+          description: True when ALARM_WEBHOOK_URL is set
+        last:
+          nullable: true
+          description: Last in-memory POST; null if none yet; cleared on Gateway restart
+          allOf:
+            - $ref: "#/components/schemas/WebhookLast"
+    WebhookLast:
+      type: object
+      required: [at, event, target, delivered, payload]
+      properties:
+        at: { type: string, format: date-time }
+        event: { type: string }
+        target:
+          type: string
+          nullable: true
+          description: Redacted URL origin+pathname when configured; null when skipped
+        delivered: { type: boolean }
+        skipped: { type: boolean }
+        status: { type: integer }
+        error: { type: string }
+        payload:
+          $ref: "#/components/schemas/WebhookEnvelope"
+    WebhookEnvelope:
+      type: object
+      required: [source, event, at, alarm, site, asset, type, severity, openedAt, drill, deepLink]
+      properties:
+        source: { type: string, const: syncrobrain-iot-gateway }
+        event: { type: string, description: alarm.created / alarm.acked / alarm.cleared }
+        at: { type: string, format: date-time }
+        alarm:
+          type: object
+          additionalProperties: true
+          description: Nested alarm row kept as-is
+        site: { type: string, nullable: true, description: siteName else siteId }
+        asset: { type: string, nullable: true, description: assetName else assetId }
+        type: { type: string, nullable: true }
+        severity: { type: string, nullable: true }
+        openedAt: { type: string, format: date-time }
+        drill: { type: boolean }
+        deepLink:
+          type: string
+          description: |
+            CONSOLE_PUBLIC_URL with no trailing slash, plus /incidents?project= when
+            alarm.projectId is present; otherwise /incidents.
