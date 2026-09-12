@@ -381,6 +381,15 @@ paths:
     get:
       operationId: listWorkOrders
       security: [{ bearerAuth: [] }]
+      parameters:
+        - name: incidentId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
+        - name: projectId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
       responses:
         "200":
           description: Work orders from incident close
