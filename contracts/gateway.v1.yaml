@@ -1486,7 +1486,7 @@ components:
           $ref: "#/components/schemas/WebhookEnvelope"
     WebhookEnvelope:
       type: object
-      required: [source, event, at, alarm, site, asset, type, severity, openedAt, drill, deepLink]
+      required: [source, event, at, alarm, site, asset, type, severity, openedAt, drill, deepLink, quality]
       properties:
         source: { type: string, const: syncrobrain-iot-gateway }
         event: { type: string, description: alarm.created / alarm.acked / alarm.cleared }
@@ -1506,3 +1506,7 @@ components:
           description: |
             CONSOLE_PUBLIC_URL with no trailing slash, plus /incidents?project= when
             alarm.projectId is present; otherwise /incidents.
+        quality:
+          type: string
+          enum: [ok, unmapped]
+          description: AlarmRow.quality; ok when TB originator mapped to asset
