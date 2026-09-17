@@ -39,4 +39,4 @@ Payment clearing, VPP, full TMS/WMS, vendor SKU “hardware-verified”.
 
 ## Fault drill
 
-Software-side checklist + live-stack template: [fault-drill-checklist.md](./fault-drill-checklist.md).
+Software-side checklist + live-stack template: [fault-drill-checklist.md](../fault-drill-checklist.md).

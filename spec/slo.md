@@ -18,4 +18,4 @@
 - 边缘重启：`POST /edge/nodes` lastSeen
 - kill switch：远程控制 fail closed
 
-活栈演练不是 L1 出门门；记录放 `plan/validation/evidence/`（勾选模板：[fault-drill-checklist.md](../plan/validation/evidence/fault-drill-checklist.md)）。
+活栈演练不是 L1 出门门；记录放 `plan/validation/evidence/`（勾选模板：[fault-drill-checklist.md](../plan/validation/fault-drill-checklist.md)）。
