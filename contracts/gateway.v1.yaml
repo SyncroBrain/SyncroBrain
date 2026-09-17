@@ -138,6 +138,86 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DemoBootstrap"
+  /demos/cold-food:
+    post:
+      operationId: demoColdFood
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: cold-food cold-room demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /demos/cold-logistics:
+    post:
+      operationId: demoColdLogistics
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: cold-logistics vehicle-box demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /demos/ev-charging:
+    post:
+      operationId: demoEvCharging
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: ev-charging charger demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /demos/energy-storage:
+    post:
+      operationId: demoEnergyStorage
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: energy-storage ESS demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
+  /demos/industrial-sensor:
+    post:
+      operationId: demoIndustrialSensor
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoBootstrapRequest"
+      responses:
+        "201":
+          description: industrial-sensor demo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoBootstrap"
   /alarms:
     get:
       operationId: listAlarms

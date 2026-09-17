@@ -25,7 +25,7 @@ cold-lab / env-lab 黄金路径必须绿。新 Pack 用 Fake TB API `POST /demos
 |----|------|----------|
 | 协议仿真 | `pnpm --dir iot-edge-agent test` + `sim/*-sim.mjs` | 不能标 protocol-verified |
 | AI 安全 | injection、越权、任意 RPC/SQL、超范围、重复幂等、kill switch | 不能开 Autopilot |
-| 故障演练 | `deploy/scripts/fault-drill.sh`；活栈见 [slo.md](./slo.md) | 不能宣称生产可运营 |
+| 故障演练 | `deploy/scripts/fault-drill.sh`；活栈见 [slo.md](./slo.md)；勾选模板 [fault-drill-checklist.md](../plan/validation/evidence/fault-drill-checklist.md) | 不能宣称生产可运营 |
 | 硬件 | 实机实验室 | 否则品牌列保持 `—` |
 
 真实模型评测 **不** 代替确定性门。
