@@ -15,6 +15,11 @@
     "ruleChain": "rule-chain.json",
     "ruleChainMetadata": "rule-chain-metadata.json"
   },
+  "ackSlaSec": {
+    "critical": 600,
+    "warning": 1800,
+    "criticalNext": 1200
+  },
   "kits": [
     "kit-env-node",
     "kit-rly-4ch"

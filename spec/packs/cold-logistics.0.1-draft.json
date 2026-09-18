@@ -15,6 +15,11 @@
     "ruleChain": "rule-chain.json",
     "ruleChainMetadata": "rule-chain-metadata.json"
   },
+  "ackSlaSec": {
+    "critical": 900,
+    "warning": 2400,
+    "criticalNext": 1800
+  },
   "kits": [
     "kit-cold-trk"
   ],

@@ -19,7 +19,9 @@
 |------|------|-------------|
 | [ ] | Edge 协议仿真（含 outbox consume、kill switch） | `node --test iot-edge-agent/test/protocols.test.mjs` |
 | [ ] | Gateway unit | `pnpm --ignore-workspace --dir iot-gateway test:unit`（脚本内） |
-| [ ] | Gateway API（Fake TB） | `pnpm --ignore-workspace --dir iot-gateway test:api`（脚本内） |
+| [ ] | Gateway API（Fake TB） | `pnpm --ignore-workspace --dir iot-gateway test:api`（脚本内；含 cold-lab 四场景） |
+
+**Fake TB 四场景（cold-lab）**：`overtemp`（温度）→ `door`（门磁）→ `powerLoss`（断电）→ `offline`（网关离线）。每条路径：simulate 开单 →（可选 webhook 记录）→ ack → clear。规格：`iot-gateway/test/api/fault-drill-scenarios.spec.ts`。
 
 一键：
 

@@ -2,20 +2,29 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://syncrobrain.com/schemas/telemetry-envelope.schema.json",
   "title": "SyncroBrain telemetry envelope",
+  "description": "Published Pack/Gateway telemetry envelope (schemaVersion telemetry-envelope/1.0). Device production MQTT remains ThingsBoard flat keys; quality coexists as companion *_quality string keys. Distinct from alarm mapping quality ok|unmapped.",
   "type": "object",
   "required": ["schemaVersion", "eventTime", "channelId", "value"],
   "properties": {
-    "schemaVersion": { "type": "string" },
+    "schemaVersion": {
+      "type": "string",
+      "description": "Practical envelope version, e.g. telemetry-envelope/1.0"
+    },
     "tenantId": { "type": "string" },
     "siteId": { "type": "string" },
     "assetId": { "type": "string" },
     "channelId": { "type": "string" },
+    "type": {
+      "type": "string",
+      "description": "Optional Pack channel key used when flattening to TB (e.g. temperature)"
+    },
     "eventTime": { "type": "string" },
     "ingestedAt": { "type": "string" },
     "value": {},
     "unit": { "type": "string" },
     "quality": {
       "type": "string",
+      "description": "Telemetry point quality (not alarm mapping quality)",
       "enum": ["ok", "late", "out_of_order", "clock_skew", "backfill", "unmapped", "buffer_overflow"]
     },
     "idempotencyKey": { "type": "string" }

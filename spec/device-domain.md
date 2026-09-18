@@ -4,7 +4,7 @@
 > **HTTP v0.1**：仍以 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml) 为准。  
 > **运行时**：设备、遥测、Alarm 的权威在 TB CE；Gateway 存映射与 Pack 版本。见 [architecture.md](./architecture.md)。
 
-现行 OpenAPI 不在此改。新 HTTP 合同另开评审。信封草案 [`contracts/drafts/telemetry-envelope.md`](../contracts/drafts/telemetry-envelope.md) 用于 Pack 内部规范化，**设备生产路径用 TB MQTT topic**。
+现行 OpenAPI 不在此改。新 HTTP 合同另开评审。遥测信封正式合同 [`contracts/telemetry-envelope.md`](../contracts/telemetry-envelope.md)（`telemetry-envelope/1.0`）用于 Pack/Gateway 规范化，**设备生产路径用 TB MQTT topic**。
 
 ## 1. 层级
 
@@ -66,7 +66,7 @@ Build：`Asset` / 遗留 `Device` 必须带 `tbDeviceId`（及可选 `tbTenantId
 | eventTime | 设备侧事件时间 |
 | ingestedAt | 平台接收时间 |
 | value, unit | 物理量 |
-| quality | `ok` \| `late` \| `out_of_order` \| `clock_skew` \| `backfill` \| `unmapped` |
+| quality | `ok` \| `late` \| `out_of_order` \| `clock_skew` \| `backfill` \| `unmapped` \| `buffer_overflow` |
 | idempotencyKey | 网关生成；用于补传去重 |
 
 乱序与迟到数据：写入时序时不覆盖较新的 `ok` 点；Incident 判定以 Policy 的窗口定义为准。断网补传必须带 `quality=backfill`。
@@ -167,4 +167,4 @@ DoerFlow 回调 **禁止** 直接下发设备命令，也 **禁止** 自动 clos
 
 Pack 是版本化制品，不是控制台里随手改的脚本。不能被 3 个客户复用的改动按专业服务交付，不打进 Pack 主版本。
 
-遥测信封 JSON 草案：[contracts/drafts/telemetry-envelope.md](../contracts/drafts/telemetry-envelope.md)。SLO 与通知：[reliability.md](./reliability.md)。
+遥测信封正式合同：[contracts/telemetry-envelope.md](../contracts/telemetry-envelope.md)。SLO 与通知：[reliability.md](./reliability.md)。

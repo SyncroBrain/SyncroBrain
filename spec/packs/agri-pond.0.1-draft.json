@@ -5,6 +5,11 @@
   "spec": "spec/controller-kits.md",
   "vertical": "agri-pond",
   "kind": "pond",
+  "ackSlaSec": {
+    "critical": 600,
+    "warning": 1800,
+    "criticalNext": 1200
+  },
   "kits": [
     "kit-pond-ctrl",
     "kit-env-node"

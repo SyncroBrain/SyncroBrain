@@ -60,6 +60,10 @@
 
 漏报、通知失败、命令超时必须可审计。AI 超时或策略冲突 **fail closed**，确定性规则与边缘阈值继续运行。
 
+### 4.1 TB 精简（与 Multi-Vertical 边界）
+
+Cloud Lite 继续把 **ThingsBoard CE** 当作设备 / 遥测 / RPC / Alarm 输入权威。工程上：演示与 CI 走 Fake TB（`TB_MODE=fake`），生产默认单节点 TB，**默认 Build 无 EMQX**，Gateway 不 fork TB。把「post-TB 运行时」换成自研或其它 Broker **单独开架构门**，不在本 Multi-Vertical 切片交付。
+
 ## 5. 阶段关系
 
 | 已完成 | 含义 |

@@ -10,7 +10,7 @@
 | [schemas/smart-site-binding.schema.json](./schemas/smart-site-binding.schema.json) | 跨产品绑定 | `tenant↔project` · `camera↔asset` · `remote-device↔asset`；只放 id，不放凭据 |
 | [schemas/dataluminary-embed.schema.json](./schemas/dataluminary-embed.schema.json) | **默认关；iframe host 已交付** | 短期只读 embed grant + origin/dashboard 白名单；Console iframe 与 pull export 默认关闭，默认看板仍是 TB Dashboard |
 | [schemas/pack-manifest.schema.json](./schemas/pack-manifest.schema.json) | **Pack Factory** | Industry Pack manifest |
-| [schemas/telemetry-envelope.schema.json](./schemas/telemetry-envelope.schema.json) | Pack 内部信封 | 设备生产 MQTT 仍用 TB topic |
+| [schemas/telemetry-envelope.schema.json](./schemas/telemetry-envelope.schema.json) · [telemetry-envelope.md](./telemetry-envelope.md) | **正式** Pack/Gateway 信封 | `telemetry-envelope/1.0`；设备生产 MQTT 仍用 TB topic；质量共存 `*_quality` |
 | [schemas/command.schema.json](./schemas/command.schema.json) | 命令 | 幂等投递与回执 |
 | [schemas/incident.schema.json](./schemas/incident.schema.json) | Incident 内核 | 与 TB Alarm 映射 |
 | [schemas/edge-registration.schema.json](./schemas/edge-registration.schema.json) | EdgeAgent | 节点注册 |
@@ -26,7 +26,7 @@
 | [schemas/doerflow-callback.schema.json](./schemas/doerflow-callback.schema.json) | 生命周期 callback | HMAC；禁止设备命令 |
 | [schemas/telemetry-digest.v1.schema.json](./schemas/telemetry-digest.v1.schema.json) | 时间窗 digest | 聚合 + hash；非逐点、非 TelemetryEnvelope |
 | [schemas/incident-report.v1.schema.json](./schemas/incident-report.v1.schema.json) | 批次 incident report | hash/引用；无凭据 |
-| [examples/](./examples/) | 合同样例 | provider / invoke / event / digest / report / control-manifest / smart-site-binding / dataluminary-embed |
-| [drafts/telemetry-envelope.md](./drafts/telemetry-envelope.md) | 叙事草案 | 与 JSON Schema 对齐 |
+| [examples/](./examples/) | 合同样例 | provider / invoke / event / digest / report / control-manifest / smart-site-binding / dataluminary-embed / telemetry-envelope |
+| [drafts/telemetry-envelope.md](./drafts/telemetry-envelope.md) | 迁出桩 | 指向已发布 [telemetry-envelope.md](./telemetry-envelope.md) |
 
 契约烟测（无活栈）：`pnpm test:contract`。

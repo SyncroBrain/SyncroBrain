@@ -176,6 +176,24 @@ for (const name of requiredSchemas) {
       }
     }
   }
+  if (name === "telemetry-envelope.schema.json") {
+    const qualityEnum = parsed.properties?.quality?.enum;
+    const requiredQuality = [
+      "ok",
+      "late",
+      "out_of_order",
+      "clock_skew",
+      "backfill",
+      "unmapped",
+      "buffer_overflow",
+    ];
+    for (const q of requiredQuality) {
+      if (!Array.isArray(qualityEnum) || !qualityEnum.includes(q)) {
+        console.error(`${name} quality enum missing ${q}`);
+        process.exit(1);
+      }
+    }
+  }
 }
 
 const examplesDir = join(contracts, "examples");
@@ -189,6 +207,7 @@ const examplePairs = [
   ["control-manifest.json", "control-manifest.schema.json"],
   ["smart-site-binding.json", "smart-site-binding.schema.json"],
   ["dataluminary-embed.json", "dataluminary-embed.schema.json"],
+  ["telemetry-envelope.json", "telemetry-envelope.schema.json"],
 ];
 for (const [exampleName, schemaName] of examplePairs) {
   const examplePath = join(examplesDir, exampleName);

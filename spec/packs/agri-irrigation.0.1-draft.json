@@ -5,6 +5,11 @@
   "spec": "spec/controller-kits.md",
   "vertical": "agri-irrigation",
   "kind": "irrigation_zone",
+  "ackSlaSec": {
+    "critical": 1800,
+    "warning": 7200,
+    "criticalNext": 3600
+  },
   "kits": [
     "kit-valve-8z",
     "kit-rly-4ch",

@@ -73,9 +73,70 @@
     },
     "dedupeOpenIncidentPerChannel": true
   },
+  "simulate": [
+    {
+      "id": "overtemp",
+      "labelKey": "sim.scenario.overtemp",
+      "alarmType": "Temperature High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 12.5,
+        "door": 0,
+        "power": 1,
+        "gateway_online": 1
+      }
+    },
+    {
+      "id": "door",
+      "labelKey": "sim.scenario.door",
+      "alarmType": "Door Open",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 5,
+        "door": 1,
+        "power": 1,
+        "gateway_online": 1
+      }
+    },
+    {
+      "id": "powerLoss",
+      "labelKey": "sim.scenario.powerLoss",
+      "alarmType": "Power Loss",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 5,
+        "door": 0,
+        "power": 0,
+        "gateway_online": 1
+      }
+    },
+    {
+      "id": "offline",
+      "labelKey": "sim.scenario.offline",
+      "alarmType": "Gateway Offline",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 5,
+        "door": 0,
+        "power": 1,
+        "gateway_online": 0
+      }
+    },
+    {
+      "id": "normal",
+      "labelKey": "sim.scenario.normal",
+      "telemetry": {
+        "temperature": 5,
+        "door": 0,
+        "power": 1,
+        "gateway_online": 1
+      }
+    }
+  ],
   "ackSlaSec": {
     "critical": 600,
-    "warning": 1800
+    "warning": 1800,
+    "criticalNext": 1200
   },
   "escalate": {
     "critical": [

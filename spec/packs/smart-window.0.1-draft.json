@@ -5,6 +5,11 @@
   "spec": "spec/controller-kits.md",
   "vertical": "smart-window",
   "kind": "window",
+  "ackSlaSec": {
+    "critical": 1800,
+    "warning": 7200,
+    "criticalNext": 3600
+  },
   "kits": [
     "kit-win-act",
     "kit-env-node"

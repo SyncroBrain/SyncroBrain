@@ -70,6 +70,12 @@ HTTP 服务继续使用 NestJS + **Fastify**（`FastifyAdapter`）。
 
 Gateway 调 TB 使用官方 REST / WebSocket，不 fork TB 源码进产品。白牌只改 SyncroBrain Console；分发 TB 时保留 Apache-2.0 NOTICE 与商标约束，见 [licensing.md](./licensing.md)。
 
+### 3.1 ThingsBoard 精简立场（本阶段）
+
+- **Cloud Lite 仍以 ThingsBoard CE 为权威**：设备、遥测、RPC、Alarm 输入均落在 TB；Gateway 做 Incident / Pack / 命令编排，不替代 Transport。
+- **工程精简**：演示与 CI 用 Fake TB（`TB_MODE=fake`）；生产默认为 **单节点 TB**；**默认 Build 不交付 EMQX**；Gateway **不 fork** TB 源码。
+- **明确延后**：「去 TB / post-TB 运行时」属独立架构门，**不在**本 Multi-Vertical 切片范围内。见 [production-scope.md](./production-scope.md)。
+
 ## 4. Build 必须具备
 
 - Compose 一键起 TB + PG + Gateway + Console
@@ -138,7 +144,7 @@ Build 以 **ThingsBoard MQTT API** 为准，不发明第二套生产 topic。
 
 禁止把 `lw/v1/*` 或 CloudEvents 发到 TB MQTT topic、禁止把 `EVENT_BUS_MQTT_URL` 指向 ThingsBoard `:1883`、禁止把设备 token 放进跨产品信封。`home-care` 载荷只走签名 Webhook。
 
-当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。Gateway 新 API 另开合同，禁止静默破坏 v1。信封草案仅用于 Pack 内部规范化，不是设备必须实现的第二协议。跨产品变现信封是 CloudEvents（[doerflow.v1.yaml](../contracts/doerflow.v1.yaml)），**不是** `telemetry-envelope`，也 **不得** 发到 TB MQTT topic。
+当前 HTTP 合同仍为 [`contracts/device.v1.yaml`](../contracts/device.v1.yaml)。Gateway 新 API 另开合同，禁止静默破坏 v1。已发布遥测信封 [`contracts/telemetry-envelope.md`](../contracts/telemetry-envelope.md) 用于 Pack/Gateway 规范化，不是设备必须实现的第二协议。跨产品变现信封是 CloudEvents（[doerflow.v1.yaml](../contracts/doerflow.v1.yaml)），**不是** `telemetry-envelope`，也 **不得** 发到 TB MQTT topic。
 
 ### 6.4 可选 DoerFlow（默认关）
 

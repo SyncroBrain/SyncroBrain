@@ -15,6 +15,11 @@
     "ruleChain": "rule-chain.json",
     "ruleChainMetadata": "rule-chain-metadata.json"
   },
+  "ackSlaSec": {
+    "critical": 300,
+    "warning": 900,
+    "criticalNext": 600
+  },
   "kits": [
     "kit-fan-pwm",
     "kit-rly-4ch"
