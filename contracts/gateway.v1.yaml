@@ -272,8 +272,9 @@ paths:
       operationId: listAlarmWebhookAttempts
       security: [{ bearerAuth: [] }]
       description: |
-        Requires iot.incident:view. Recent persisted DeliveryAttempt rows for the webhook channel
-        (survives Gateway restart; distinct from in-memory GET /alarms/webhook/last).
+        Requires iot.incident:view. Recent persisted DeliveryAttempt rows
+        (webhook / wecom / dingtalk / sms channels; survives Gateway restart;
+        distinct from in-memory GET /alarms/webhook/last).
       parameters:
         - name: limit
           in: query
@@ -1629,6 +1630,12 @@ components:
         configured:
           type: boolean
           description: True when ALARM_WEBHOOK_URL is set
+        channels:
+          type: object
+          description: |
+            WeCom / DingTalk / SMS adapter status (live URL, mock mode, or unset).
+            Mock is for DeliveryAttempt demos only — not a claim of real channel delivery.
+          additionalProperties: true
         last:
           nullable: true
           description: Last in-memory POST; null if none yet; cleared on Gateway restart

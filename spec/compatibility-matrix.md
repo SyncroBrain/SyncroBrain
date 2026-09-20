@@ -14,3 +14,14 @@
 | MQTT/HTTP GPS | 遥测信封 | gps-sim | protocol-verified | — |
 
 运营话术：可演示标准协议闭环；具体桩/PCS/探头需客户提供型号后进入 `hardware-verified` 队列。
+
+## 待实机队列
+
+下列型号已进入实机实验室排队（软件前置与参考固件就绪），**状态仍为 `protocol-verified`**，品牌列 **未** 标 `hardware-verified`。勾选清单见 [hardware-lab-checklist.md](../plan/validation/hardware-lab-checklist.md)；验收条款见 [iot-lab-acceptance.md](./iot-lab-acceptance.md) §7。
+
+| 型号 | 队列状态 | 矩阵状态列 | 品牌列 |
+|------|----------|------------|--------|
+| ESP32-C3 DevKit | 待实机（queued for hardware-verified） | protocol-verified | 未实机，不得标 hardware-verified |
+| ESP32-S3 DevKitC-1 | 待实机（queued for hardware-verified） | protocol-verified | 未实机，不得标 hardware-verified |
+
+全部清单行勾选并填写日期/执行人之前，禁止把上表升级为 `hardware-verified`。
