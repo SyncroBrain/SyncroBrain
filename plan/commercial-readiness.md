@@ -31,7 +31,8 @@
 | 缺口 | 现状 |
 |------|------|
 | **hardware-verified** | 兼容矩阵以 kit-sim / Fake TB / protocol-verified 为主；ESP32 等参考固件**未**标 hardware-verified |
-| **活栈 Isolated E2E 现证** | `pnpm e2e:isolated` 在 release-gates 的绿跑记录为 **2026-09-10** 历史快照；**不得**当作「今日最新」证据，下次绿跑前须重跑补证 |
+| **活栈 Isolated E2E 现证** | `pnpm e2e:isolated` 在 release-gates 的绿跑记录为 **2026-09-10** 历史快照；**不得**当作「今日最新」证据，下次绿跑前须重跑补证。**L1**（无活栈）于 **2026-09-20** 本机通过；L1 绿 **不等于** isolated E2E 现证 |
+| **备份恢复实演** | 已有 `backup.sh` / `restore.sh` 与 **软件语法 drycheck**（`deploy/scripts/backup-restore-drycheck.sh`，已挂 fault-drill）；**尚无**对活栈 Postgres/TB 卷的真实备份恢复勾选记录 |
 | **真实企微 / 钉钉 / SMS** | 当前是通用 Webhook POST；**无**已验证的企微机器人 / SMS 适配器真实送达证据 |
 | **1h 断网离线 soak** | fault-drill **明确不扩** 1h 断网 / 实机实验室；无 1h offline soak 通过记录 |
 | **已签署客户合同** | 法律草稿在 `legal/`；**尚无**≥1 份付费签署合同作为 First Revenue 退出门槛 |
