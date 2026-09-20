@@ -119,6 +119,47 @@
       "labelKey": "sim.scenario.overtemp"
     },
     {
+      "id": "door",
+      "alarmType": "Door Open",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 1,
+        "humidity": 75,
+        "door": 1,
+        "power": 1
+      },
+      "label": "开门",
+      "labelKey": "sim.scenario.door"
+    },
+    {
+      "id": "powerLoss",
+      "alarmType": "Power Loss",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 1,
+        "humidity": 75,
+        "door": 0,
+        "power": 0
+      },
+      "label": "断电",
+      "labelKey": "sim.scenario.powerLoss"
+    },
+    {
+      "id": "defrost",
+      "alarmType": "Defrost",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 1,
+        "humidity": 75,
+        "door": 0,
+        "power": 1,
+        "energy_kwh": 12,
+        "defrost": 1
+      },
+      "label": "除霜",
+      "labelKey": "sim.scenario.defrost"
+    },
+    {
       "id": "normal",
       "telemetry": {
         "temperature": 1,

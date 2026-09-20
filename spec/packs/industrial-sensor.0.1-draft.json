@@ -105,6 +105,45 @@
       "labelKey": "sim.scenario.overtemp"
     },
     {
+      "id": "pressure",
+      "alarmType": "Pressure High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 42,
+        "pressure": 720,
+        "vibration": 1.2,
+        "digital": 0
+      },
+      "label": "压力超阈",
+      "labelKey": "sim.scenario.pressure"
+    },
+    {
+      "id": "vibration",
+      "alarmType": "Vibration High",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 42,
+        "pressure": 350,
+        "vibration": 9.5,
+        "digital": 0
+      },
+      "label": "振动超阈",
+      "labelKey": "sim.scenario.vibration"
+    },
+    {
+      "id": "digital",
+      "alarmType": "Digital Alarm",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 42,
+        "pressure": 350,
+        "vibration": 1.2,
+        "digital": 1
+      },
+      "label": "数字量告警",
+      "labelKey": "sim.scenario.digital"
+    },
+    {
       "id": "normal",
       "telemetry": {
         "temperature": 42,

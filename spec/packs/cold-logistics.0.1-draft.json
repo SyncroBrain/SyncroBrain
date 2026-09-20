@@ -151,6 +151,57 @@
       "labelKey": "sim.scenario.geofence"
     },
     {
+      "id": "door",
+      "alarmType": "Door Open",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 4.5,
+        "door": 1,
+        "gps": "0.00,0.00",
+        "lat": 0,
+        "lon": 0,
+        "shock_g": 0.1,
+        "geofence_breach": 0,
+        "gateway_online": 1
+      },
+      "label": "开门",
+      "labelKey": "sim.scenario.door"
+    },
+    {
+      "id": "shock",
+      "alarmType": "Shock",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 4.5,
+        "door": 0,
+        "gps": "0.00,0.00",
+        "lat": 0,
+        "lon": 0,
+        "shock_g": 6,
+        "geofence_breach": 0,
+        "gateway_online": 1
+      },
+      "label": "冲击",
+      "labelKey": "sim.scenario.shock"
+    },
+    {
+      "id": "offline",
+      "alarmType": "Gateway Offline",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "temperature": 4.5,
+        "door": 0,
+        "gps": "0.00,0.00",
+        "lat": 0,
+        "lon": 0,
+        "shock_g": 0.1,
+        "geofence_breach": 0,
+        "gateway_online": 0
+      },
+      "label": "网关离线",
+      "labelKey": "sim.scenario.offline"
+    },
+    {
       "id": "normal",
       "telemetry": {
         "temperature": 4.5,

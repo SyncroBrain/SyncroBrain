@@ -115,6 +115,16 @@
       },
       "label": "正常窗",
       "labelKey": "sim.scenario.normal"
+    },
+    {
+      "id": "socLow",
+      "telemetry": {
+        "soc_pct": 5,
+        "cell_temp_c": 28,
+        "power_kw": 0
+      },
+      "label": "SOC 越界",
+      "labelKey": "sim.scenario.socLow"
     }
   ],
   "safetyEnvelope": {
