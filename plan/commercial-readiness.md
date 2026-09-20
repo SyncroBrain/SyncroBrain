@@ -31,7 +31,7 @@
 | 缺口 | 现状 |
 |------|------|
 | **hardware-verified** | 兼容矩阵以 kit-sim / Fake TB / protocol-verified 为主；ESP32 等参考固件**未**标 hardware-verified |
-| **活栈 Isolated E2E 现证** | `pnpm e2e:isolated` 在 release-gates 的绿跑记录为 **2026-09-10** 历史快照；**不得**当作「今日最新」证据，下次绿跑前须重跑补证。**L1**（无活栈）于 **2026-09-20** 本机通过；L1 绿 **不等于** isolated E2E 现证 |
+| **活栈 Isolated E2E 现证** | **2026-09-20** 已补证：`pnpm e2e:isolated` **32 passed**；同日活栈 `E2E_REQUIRE_STACK=1` **32 passed**（见 `spec/release-gates.md`）。声称日若距此过久须重跑。**L1** 同日通过。仍不得据此宣称多垂直完成或 hardware-verified |
 | **备份恢复实演** | 已有 `backup.sh` / `restore.sh` 与 **软件语法 drycheck**（`deploy/scripts/backup-restore-drycheck.sh`，已挂 fault-drill）；**尚无**对活栈 Postgres/TB 卷的真实备份恢复勾选记录 |
 | **真实企微 / 钉钉 / SMS** | 当前是通用 Webhook POST；**无**已验证的企微机器人 / SMS 适配器真实送达证据 |
 | **1h 断网离线 soak** | fault-drill **明确不扩** 1h 断网 / 实机实验室；无 1h offline soak 通过记录 |
@@ -58,7 +58,7 @@
 在 A 之外，须**额外**全部满足，才可对渠道 / 招标说「可生产运营」：
 
 - [ ] 目标硬件至少一类标为 **hardware-verified**（有现场或台架证据）
-- [ ] Isolated E2E（或约定等价活栈门）在**声称日附近**有绿跑，而非仅 2026-09-10 快照
+- [x] Isolated E2E（或约定等价活栈门）在**声称日附近**有绿跑 — **2026-09-20** isolated + live 各 32 passed（非 2026-09-10 快照）
 - [ ] 至少一条 **真实** 企微或钉钉（国内关键升级路径含 SMS）送达证据，记入 Audit / DeliveryAttempt
 - [ ] 约定时长的离线 / 断网 soak（规格目标含 **≥1h**）有通过记录
 - [ ] 备份恢复演练通过；Private / HA 档位与客户合同一致
