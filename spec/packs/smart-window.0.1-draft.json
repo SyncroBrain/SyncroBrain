@@ -63,6 +63,58 @@
     "heatVentC": 28,
     "ventPct": 30
   },
+  "simulate": [
+    {
+      "id": "overtemp",
+      "label": "超温",
+      "labelKey": "sim.scenario.overtemp",
+      "alarmType": "Temperature High",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 32,
+        "rain": 0,
+        "position_pct": 80,
+        "limit_open": 0,
+        "limit_close": 0
+      }
+    },
+    {
+      "id": "heatVent",
+      "label": "高温开缝",
+      "labelKey": "sim.scenario.heatVent",
+      "alarmType": "Temperature High",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 32,
+        "rain": 0,
+        "position_pct": 30,
+        "limit_open": 0,
+        "limit_close": 0
+      }
+    },
+    {
+      "id": "rain",
+      "label": "降雨关窗",
+      "labelKey": "sim.scenario.rain",
+      "alarmType": "Rain Close",
+      "severity": "WARNING",
+      "telemetry": {
+        "temperature": 22,
+        "rain": 1,
+        "position_pct": 80
+      }
+    },
+    {
+      "id": "normal",
+      "label": "晴好",
+      "labelKey": "sim.scenario.normal",
+      "telemetry": {
+        "temperature": 24,
+        "rain": 0,
+        "position_pct": 0
+      }
+    }
+  ],
   "scenes": [
     {
       "id": "win-manual",
