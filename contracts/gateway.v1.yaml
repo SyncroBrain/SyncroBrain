@@ -267,6 +267,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WebhookLastPeek"
+  /alarms/webhook/attempts:
+    get:
+      operationId: listAlarmWebhookAttempts
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.incident:view. Recent persisted DeliveryAttempt rows for the webhook channel
+        (survives Gateway restart; distinct from in-memory GET /alarms/webhook/last).
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: |
+            Max rows to return. Parsed as integer; default 50 when omitted or non-finite.
+          schema:
+            type: integer
+            minimum: 1
+            default: 50
+      responses:
+        "200":
+          description: DeliveryAttempt rows newest-first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryAttempt"
   /alarms/export.csv:
     get:
       operationId: exportAlarmsCsv
@@ -495,6 +521,27 @@ paths:
       responses:
         "200":
           description: Replaced duty roster
+  /sites/{id}/drill-checklist:
+    get:
+      operationId: getSiteDrillChecklist
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.site:view. Fault-drill checklist for one site (reliability.md §4).
+        Category complete iff a closed drill=true incident of that type has Ack (+ soft notify).
+        protectedEligible also requires a duty roster on the site.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Site id
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Site drill checklist plus duty/protection eligibility
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteDrillChecklist"
   /duty-roster/gaps:
     get:
       operationId: listDutyRosterGaps
@@ -507,6 +554,45 @@ paths:
       responses:
         "200":
           description: Sites with no duty roster (must not be marked live)
+  /protection-status:
+    get:
+      operationId: getProtectionStatus
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.site:view. Project-scoped (or global when projectId omitted) protection status:
+        duty roster present on all sites in scope AND 4/4 drill categories complete.
+        Categories aggregate across sites (any site completing a category counts).
+      parameters:
+        - name: projectId
+          in: query
+          required: false
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Duty gaps plus aggregated drill checklist and protectedEligible
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProtectionStatus"
+  /projects/{id}/protection-status:
+    get:
+      operationId: getProjectProtectionStatus
+      security: [{ bearerAuth: [] }]
+      description: |
+        Requires iot.site:view. Same as GET /protection-status?projectId={id}.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Project id
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Duty gaps plus aggregated drill checklist and protectedEligible
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProtectionStatus"
   /calibrations:
     get:
       operationId: listCalibrations
@@ -1590,3 +1676,94 @@ components:
           type: string
           enum: [ok, unmapped]
           description: AlarmRow.quality; ok when TB originator mapped to asset
+    DeliveryAttempt:
+      type: object
+      required: [id, channel, status, attempts, at]
+      properties:
+        id: { type: string, format: uuid }
+        incidentId: { type: string, format: uuid, nullable: true }
+        channel: { type: string, description: Delivery channel; webhook attempts use "webhook" }
+        status:
+          type: string
+          enum: [success, fail, skipped]
+        attempts: { type: integer, minimum: 1 }
+        lastError: { type: string, nullable: true }
+        at: { type: string, format: date-time }
+        event: { type: string, nullable: true, description: e.g. alarm.created / alarm.acked }
+        projectId: { type: string, format: uuid, nullable: true }
+        httpStatus: { type: integer, nullable: true }
+    DrillChecklistItem:
+      type: object
+      required: [id, complete]
+      properties:
+        id:
+          type: string
+          enum: [temperature, door, power, offline]
+        complete: { type: boolean }
+        incidentId:
+          type: string
+          format: uuid
+          description: Present when complete is true
+    SiteDrillChecklist:
+      type: object
+      required:
+        [siteId, dutyReady, items, completeCount, total, drillsComplete, protectedEligible]
+      properties:
+        siteId: { type: string, format: uuid }
+        dutyReady: { type: boolean, description: True when the site has at least one duty roster row }
+        items:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/DrillChecklistItem"
+        completeCount: { type: integer, minimum: 0, maximum: 4 }
+        total: { type: integer, const: 4 }
+        drillsComplete: { type: boolean, description: True when completeCount === 4 }
+        protectedEligible:
+          type: boolean
+          description: True only when dutyReady and drillsComplete
+    DutyGapSite:
+      type: object
+      required: [id, name, projectId]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        projectId: { type: string, format: uuid }
+    ProtectionStatus:
+      type: object
+      required:
+        [
+          projectId,
+          dutyGaps,
+          dutyReady,
+          items,
+          completeCount,
+          total,
+          drillsComplete,
+          protectedEligible,
+        ]
+      properties:
+        projectId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Scoped project id, or null when listing global status
+        dutyGaps:
+          type: array
+          description: Sites in scope with no duty roster
+          items:
+            $ref: "#/components/schemas/DutyGapSite"
+        dutyReady: { type: boolean, description: True when dutyGaps is empty }
+        items:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/DrillChecklistItem"
+        completeCount: { type: integer, minimum: 0, maximum: 4 }
+        total: { type: integer, const: 4 }
+        drillsComplete: { type: boolean }
+        protectedEligible:
+          type: boolean
+          description: True only when dutyReady and drillsComplete

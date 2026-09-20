@@ -201,5 +201,52 @@
     "requireEvidence": [
       "soil_pct"
     ]
-  }
+  },
+  "simulate": [
+    {
+      "id": "overtemp",
+      "label": "土壤过干",
+      "labelKey": "sim.scenario.overtemp",
+      "alarmType": "Soil Dry",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "soil_pct": 12,
+        "rain": 0,
+        "pump": 0
+      }
+    },
+    {
+      "id": "rain",
+      "label": "降雨跳过",
+      "labelKey": "sim.scenario.rain",
+      "telemetry": {
+        "soil_pct": 18,
+        "rain": 1,
+        "pump": 0
+      }
+    },
+    {
+      "id": "dryRun",
+      "label": "干转保护",
+      "labelKey": "sim.scenario.dryRun",
+      "alarmType": "Dry Run",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "soil_pct": 12,
+        "rain": 0,
+        "flow_lpm": 0,
+        "pump": 1
+      }
+    },
+    {
+      "id": "normal",
+      "label": "墒情正常",
+      "labelKey": "sim.scenario.normal",
+      "telemetry": {
+        "soil_pct": 42,
+        "rain": 0,
+        "pump": 0
+      }
+    }
+  ]
 }

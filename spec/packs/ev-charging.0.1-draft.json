@@ -130,6 +130,19 @@
       "labelKey": "sim.scenario.overtemp"
     },
     {
+      "id": "powerLimit",
+      "label": "功率限制",
+      "labelKey": "sim.scenario.powerLimit",
+      "alarmType": "Power Limit",
+      "severity": "WARNING",
+      "telemetry": {
+        "power_kw": 60,
+        "fault": 0,
+        "connector_status": 2,
+        "session_kwh": 8.5
+      }
+    },
+    {
       "id": "normal",
       "telemetry": {
         "power_kw": 22,

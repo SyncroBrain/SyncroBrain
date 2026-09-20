@@ -66,6 +66,7 @@
 |------|------|
 | [multi-vertical-production.md](./multi-vertical-production.md) | **当前**阶段 |
 | [first-revenue.md](./first-revenue.md) | **触达准备**：演示教练、交接包、报价话术 |
+| [commercial-readiness.md](./commercial-readiness.md) | **诚实商用边界**：软件试点已就绪 vs 禁止无限制生产宣称 |
 | [showcase-freeze.md](./showcase-freeze.md) | Showcase 已关闭（内部演示） |
 | [showcase.md](./showcase.md) | Showcase 回顾 |
 | [build.md](./build.md) | Build 8 周（已冻结） |

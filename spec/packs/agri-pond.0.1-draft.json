@@ -194,5 +194,57 @@
     "requireEvidence": [
       "water_level_m"
     ]
-  }
+  },
+  "simulate": [
+    {
+      "id": "overtemp",
+      "label": "溶氧过低",
+      "labelKey": "sim.scenario.overtemp",
+      "alarmType": "Low Dissolved Oxygen",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "do_mgl": 2.1,
+        "water_temp_c": 24,
+        "water_level_m": 1.2,
+        "aerator": 0
+      }
+    },
+    {
+      "id": "heat",
+      "label": "高温喷水",
+      "labelKey": "sim.scenario.heat",
+      "alarmType": "Water Overtemp",
+      "severity": "WARNING",
+      "telemetry": {
+        "do_mgl": 6,
+        "water_temp_c": 32,
+        "water_level_m": 1.2
+      }
+    },
+    {
+      "id": "lowWater",
+      "label": "低水位互锁",
+      "labelKey": "sim.scenario.lowWater",
+      "alarmType": "Low Water",
+      "severity": "CRITICAL",
+      "telemetry": {
+        "do_mgl": 6,
+        "water_temp_c": 24,
+        "water_level_m": 0.1,
+        "aerator": 0,
+        "sprayer": 0
+      }
+    },
+    {
+      "id": "normal",
+      "label": "正常",
+      "labelKey": "sim.scenario.normal",
+      "telemetry": {
+        "do_mgl": 6.5,
+        "water_temp_c": 24,
+        "water_level_m": 1.2,
+        "aerator": 0
+      }
+    }
+  ]
 }

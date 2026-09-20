@@ -143,7 +143,11 @@ MQTT：
 | GET | `/api/v1/reports` | `iot.report:view` |
 | POST | `/api/v1/reports/:id/export` | `iot.report:export` |
 | GET | `/api/v1/audit-events` | `iot.audit:view` |
-| GET/PUT | `/api/v1/sites/:id/duty-roster` | `iot.site:manage` |
+| GET/PUT | `/api/v1/sites/:id/duty-roster` | GET `iot.site:view`；PUT `iot.site:manage` |
+| GET | `/api/v1/sites/:id/drill-checklist` | `iot.site:view` |
+| GET | `/api/v1/protection-status` | `iot.site:view`（可选 `projectId`） |
+| GET | `/api/v1/projects/:id/protection-status` | `iot.site:view` |
+| GET | `/api/v1/alarms/webhook/attempts` | `iot.incident:view`（可选 `limit`；DeliveryAttempt） |
 | GET/POST | `/api/v1/education-labs/sessions` | 教师：`iot.asset:manage`（见 [education-bridge.md](./education-bridge.md)） |
 | GET/DELETE | `/api/v1/education-labs/sessions/:id` | GET `iot.asset:view`；DELETE `iot.asset:manage` |
 | POST | `/api/v1/education-labs/sessions/:id/intent` | `iot.device:control`（学生 dry-run 走 `/scenes/:id/evaluate` 且 dispatch=false） |
