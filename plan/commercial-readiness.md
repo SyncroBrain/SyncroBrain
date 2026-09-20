@@ -43,7 +43,7 @@
 | **活栈 Isolated E2E 现证** | **2026-09-20**：`pnpm e2e:isolated` **32 passed**；活栈 `E2E_REQUIRE_STACK=1` **32 passed**（见 `spec/release-gates.md`） |
 | **备份恢复实演** | **2026-09-20** 活栈 `WRITE_EVIDENCE=1 ./deploy/scripts/backup-restore-live.sh` 通过（非破坏性 dump + 临时库 restore）；证据 [validation/backup-restore-live-last.md](./validation/backup-restore-live-last.md) |
 | **真实企微 / 钉钉 / SMS** | 适配器已落地；**尚无**客户凭证下的真实机器人/SMS 送达绿证（Mock 仅演示 DeliveryAttempt） |
-| **1h 断网离线 soak** | 脚本 `deploy/scripts/offline-soak.sh`（`SOAK_SECONDS` 默认 3600）；全时长跑通后写入 [validation/offline-soak-last.md](./validation/offline-soak-last.md) |
+| **1h 断网离线 soak** | **2026-09-20** `WRITE_EVIDENCE=1 SOAK_SECONDS=3600 ./deploy/scripts/offline-soak.sh` 通过（TB 停服 3600s，Gateway health 全程 200）；证据 [validation/offline-soak-last.md](./validation/offline-soak-last.md) |
 | **已签署客户合同** | 法律草稿在 `legal/`；**尚无**≥1 份付费签署合同 |
 
 ---
@@ -69,7 +69,7 @@
 - [ ] 目标硬件至少一类标为 **hardware-verified**（台架清单勾完 + 改矩阵；有板后）
 - [x] Isolated E2E（或约定等价活栈门）在**声称日附近**有绿跑 — **2026-09-20** isolated + live 各 32 passed
 - [ ] 至少一条 **真实** 企微或钉钉（国内关键升级路径含 SMS）送达证据，记入 Audit / DeliveryAttempt（贴凭证后一跑）
-- [ ] 约定时长的离线 / 断网 soak（规格目标含 **≥1h**）有通过记录 — 脚本已就绪；见 `offline-soak-last.md`
+- [x] 约定时长的离线 / 断网 soak（规格目标含 **≥1h**）有通过记录 — **2026-09-20** `offline-soak-last.md`（3600s）
 - [x] 备份恢复演练通过（非破坏性活栈）— **2026-09-20** `backup-restore-live-last.md`；Private / HA 档位仍须与客户合同一致
 - [ ] **≥1** 份已签署付费合同（或等效 PO），范围与 SKU 写清
 - [x] 值班 / 升级路径与 [spec/reliability.md](../spec/reliability.md) 对齐，通知失败可开单可审计（软件侧）
@@ -79,11 +79,12 @@
 1. 企微或钉钉（或 SMS）**真实凭证** → 配 `NOTIFY_*` → 探测成功 → 勾 B「真实送达」  
 2. ESP32 等**实机台架** → [hardware-lab-checklist.md](./validation/hardware-lab-checklist.md) → 改兼容矩阵  
 3. **签署**付费合同 / PO  
-4. 全时长 **≥1h** soak 证据文件（脚本默认已支持；跑完勾 B）
+
+（全时长 soak 与备份恢复活栈已于 2026-09-20 有证据。）
 
 ---
 
 ## 4. 一句话对外口径
 
-> SyncroBrain Cloud Lite **可以**做软件陪装试点报价：Pack、模拟栈、离线许可、Private 安装、投递可观测（Webhook + 企微/钉钉/SMS 适配器）、E2E 现证与备份恢复活栈演练已齐。  
-> **不可以**在未补硬件验证、真实通道凭证送达、全时长离线 soak 与签署合同前，宣称无限制生产运营。
+> SyncroBrain Cloud Lite **可以**做软件陪装试点报价：Pack、模拟栈、离线许可、Private 安装、投递可观测（Webhook + 企微/钉钉/SMS 适配器）、E2E 现证、备份恢复活栈与 **1h TB 离线 soak** 已齐。  
+> **不可以**在未补硬件验证、真实通道凭证送达与签署合同前，宣称无限制生产运营。

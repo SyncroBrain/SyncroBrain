@@ -42,8 +42,8 @@
 | [ ] | Webhook probe | 配 `ALARM_WEBHOOK_URL`；create/ack/clear 后看投递结果（Console 设置 → Webhook 或 Gateway 日志） | |
 | [ ] | Duty gap | 无值班/空窗时段开单或升级路径；确认未误标「受保护」 | |
 | [ ] | Command timeout | Outbox 命令超时 / Pack TTL 回执路径；超时后状态可审计 | |
-| [ ] | Offline soak（断网 / TB 不可达） | `SOAK_SECONDS=3600 WRITE_EVIDENCE=1 ./deploy/scripts/offline-soak.sh`（自检可 `SOAK_SECONDS=30`）；见 [offline-soak-evidence.md](./offline-soak-evidence.md) · last：[offline-soak-last.md](./offline-soak-last.md) | |
-| [ ] | Backup/restore live（非破坏性） | `WRITE_EVIDENCE=1 ./deploy/scripts/backup-restore-live.sh`（`pg_restore --list` + 临时库）；last：[backup-restore-live-last.md](./backup-restore-live-last.md) | |
+| [x] | Offline soak（断网 / TB 不可达） | `SOAK_SECONDS=3600 WRITE_EVIDENCE=1 ./deploy/scripts/offline-soak.sh`（自检可 `SOAK_SECONDS=30`）；见 [offline-soak-evidence.md](./offline-soak-evidence.md) · last：[offline-soak-last.md](./offline-soak-last.md) | **2026-09-20** pass；3600s；pollOk=121 |
+| [x] | Backup/restore live（非破坏性） | `WRITE_EVIDENCE=1 ./deploy/scripts/backup-restore-live.sh`（`pg_restore --list` + 临时库）；last：[backup-restore-live-last.md](./backup-restore-live-last.md) | **2026-09-20** pass；非破坏性 |
 
 可选一键活栈（**默认关闭**，L1 保持 no-live）：
 
