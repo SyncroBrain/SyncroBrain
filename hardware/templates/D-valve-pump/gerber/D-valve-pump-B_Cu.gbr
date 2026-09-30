@@ -1,0 +1,9 @@
+G04 SyncroBrain reference gerber. Not a released fab package.*
+%TF.GenerationSoftware,SyncroBrain,hw-template,0.1*%
+%FSLAX46Y46*%
+%MOMM*%
+%ADD12C,0.200000*%
+D12*
+X2000000Y2000000D02*
+X78000000Y2000000D01*
+M02*

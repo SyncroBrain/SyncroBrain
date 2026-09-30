@@ -1,0 +1,6 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,Wi-Fi/BLE module,ESP32-C3-MINI-1,nRF52840 module,kit-env-node
+U2,1,3.3V LDO,AMS1117-3.3,ME6211C33,kit-env-node
+J1,1,Probe header,XH-2.54 6pin,JST GH,kit-env-node
+D1,1,TVS array,SRV05-4,ESD9B,kit-env-node
+SW1,1,Kill switch dry contact,tactile,terminal block,kit-env-node

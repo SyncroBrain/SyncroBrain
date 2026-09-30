@@ -1,0 +1,23 @@
+(kicad_sch
+  (version 20231120)
+  (generator "syncrobrain-hw-template")
+  (generator_version "0.1")
+  (uuid "a0e5c3b2-1111-4111-8111-442d76616c76")
+  (paper "A4")
+  (title_block
+    (title "Valve and pump driver")
+    (date "2026-09-21")
+    (rev "0.1-reference")
+    (comment 1 "Not hardware-verified. Review before fab.")
+    (comment 2 "ESP32-C3 or CH32V307 + radio module")
+  )
+  (lib_symbols)
+  (text "Valve and pump driver\nKit kit-valve-8z / kit-pond-ctrl\nMCU ESP32-C3 or CH32V307 + radio module\nReference only — local kill, 3.3V logic, isolated actuator supply."
+    (at 25.4 25.4 0)
+    (effects (font (size 2.54 2.54)) (justify left))
+    (uuid "b0e5c3b2-2222-4222-8222-442d76616c76")
+  )
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

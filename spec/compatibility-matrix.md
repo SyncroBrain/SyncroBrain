@@ -13,7 +13,7 @@
 | OPC UA | 1.04 subscribe | `iot-edge-agent` opcua-sim | protocol-verified | — |
 | MQTT/HTTP GPS | 遥测信封 | gps-sim | protocol-verified | — |
 
-运营话术：可演示标准协议闭环；具体桩/PCS/探头需客户提供型号后进入 `hardware-verified` 队列。
+运营话术：可演示标准协议闭环；具体桩/PCS/探头需客户提供型号后进入 `hardware-verified` 队列。芯片与 PCB 模板（含非乐鑫方案）见 [hardware-templates.md](./hardware-templates.md)，**模板 ≠ 已认证硬件**。
 
 ## 待实机队列
 

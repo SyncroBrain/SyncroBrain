@@ -1,0 +1,23 @@
+(kicad_sch
+  (version 20231120)
+  (generator "syncrobrain-hw-template")
+  (generator_version "0.1")
+  (uuid "a0e5c3b2-1111-4111-8111-422d72656c61")
+  (paper "A4")
+  (title_block
+    (title "Four relay actuator")
+    (date "2026-09-21")
+    (rev "0.1-reference")
+    (comment 1 "Not hardware-verified. Review before fab.")
+    (comment 2 "ESP32-C3 module (alt: BK7231N protocol path)")
+  )
+  (lib_symbols)
+  (text "Four relay actuator\nKit kit-rly-4ch\nMCU ESP32-C3 module (alt: BK7231N protocol path)\nReference only — local kill, 3.3V logic, isolated actuator supply."
+    (at 25.4 25.4 0)
+    (effects (font (size 2.54 2.54)) (justify left))
+    (uuid "b0e5c3b2-2222-4222-8222-422d72656c61")
+  )
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

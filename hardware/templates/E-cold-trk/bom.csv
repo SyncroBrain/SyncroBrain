@@ -1,0 +1,6 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,MCU,ESP32-C3-MINI-1,CH32V203,kit-cold-trk
+U4,1,Cat-1 module,Quectel EC800,SIMCom A7670,kit-cold-trk
+U5,1,GNSS,module built-in,AT6558,kit-cold-trk
+J_TEMP,1,Temperature probe,DS18B20,NTC,kit-cold-trk
+BT1,1,Li-ion pack,18650 holder,pouch,kit-cold-trk

@@ -1,0 +1,6 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,Wi-Fi module,ESP32-C3-MINI-1,BK7231N module,kit-rly-4ch
+K1-K4,4,Relay 12/24V,Hongfa HF32,Omron G5V,kit-rly-4ch
+Q1-Q4,4,Coil driver,SS8050,2N3904,kit-rly-4ch
+D1-D4,4,Flyback diode,1N4148,SS14,kit-rly-4ch
+U2,1,3.3V LDO,AMS1117-3.3,ME6211C33,kit-rly-4ch

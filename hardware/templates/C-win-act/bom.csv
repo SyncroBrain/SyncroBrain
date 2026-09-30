@@ -1,0 +1,6 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,Wi-Fi module,ESP32-C3-MINI-1,ESP32-S3-MINI,kit-win-act
+U3,1,H-bridge,DRV8871,dual relay,kit-win-act
+SW_OPEN,1,Open limit,microswitch,hall,kit-win-act
+SW_CLOSE,1,Close limit,microswitch,hall,kit-win-act
+J_RAIN,1,Rain contact,terminal,XH,kit-win-act

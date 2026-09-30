@@ -13,6 +13,7 @@
     "sim": "node sim/ocpp-sim.mjs && node sim/modbus-sim.mjs && node sim/opcua-sim.mjs && node sim/gps-sim.mjs && node sim/esp32-kit-sim.mjs"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=24.0.0",
+    "pnpm": ">=11"
   }
 }

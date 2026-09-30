@@ -1,7 +1,7 @@
 # 公版控制器台架：先仿真，再实机
 
 > 软件闭环已是 `protocol-verified`。未实机前不要把具体品牌写进「已兼容」。  
-> Kit 合同：[spec/controller-kits.md](../spec/controller-kits.md)。场景：[spec/scenes.md](../spec/scenes.md)。
+> Kit 合同：[spec/controller-kits.md](../spec/controller-kits.md)。芯片与 PCB 模板：[spec/hardware-templates.md](../spec/hardware-templates.md)。场景：[spec/scenes.md](../spec/scenes.md)。
 
 按这个顺序做：**Console 模拟设备 → MQTT 模拟设备 → 买件组网 → 真 ESP32**。跳步买 220 V 电机没有意义。
 

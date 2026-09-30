@@ -1,0 +1,11 @@
+; SyncroBrain reference drill. Not hardware-verified.
+M48
+METRIC,TZ
+T01C0.800
+%
+T01
+X8.000Y12.000
+X12.000Y12.000
+X8.000Y16.000
+X12.000Y16.000
+M30

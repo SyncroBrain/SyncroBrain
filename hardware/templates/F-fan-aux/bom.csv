@@ -1,0 +1,4 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,Wi-Fi module,ESP32-C3-MINI-1,ESP32-S3-MINI,kit-fan-pwm
+U6,1,PWM isolator,optocoupler,0-10V isolator,kit-fan-pwm
+J_FAN,1,Fan output,terminal,XH,kit-fan-pwm

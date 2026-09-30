@@ -39,7 +39,7 @@
 
 | 缺口 | 现状 |
 |------|------|
-| **hardware-verified** | 矩阵仍为 protocol-verified；台架清单见 [validation/hardware-lab-checklist.md](./validation/hardware-lab-checklist.md)。**有板前不升级矩阵** |
+| **hardware-verified** | 矩阵仍为 protocol-verified。设计模板（芯片/PCB/行业集成，含非乐鑫）见 [spec/hardware-templates.md](../spec/hardware-templates.md)，**不是**认证。台架清单见 [validation/hardware-lab-checklist.md](./validation/hardware-lab-checklist.md)。**有板前不升级矩阵** |
 | **活栈 Isolated E2E 现证** | **2026-09-20**：`pnpm e2e:isolated` **32 passed**；活栈 `E2E_REQUIRE_STACK=1` **32 passed**（见 `spec/release-gates.md`） |
 | **备份恢复实演** | **2026-09-20** 活栈 `WRITE_EVIDENCE=1 ./deploy/scripts/backup-restore-live.sh` 通过（非破坏性 dump + 临时库 restore）；证据 [validation/backup-restore-live-last.md](./validation/backup-restore-live-last.md) |
 | **真实企微 / 钉钉 / 飞书** | **2026-09-20** Gateway 实发：企微与飞书自定义机器人各一条，`DeliveryAttempt` `wecom`/`feishu` 均为 success（HTTP 200，非 Mock）。密钥只在本机 `iot-gateway/.env`，未入库。SMS 仍未接 |

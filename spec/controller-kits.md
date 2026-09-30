@@ -41,7 +41,7 @@ SyncroBrain 做 **IoT 平台**。公版控制器是给集成商与项目现场�
 
 ## 3. MCU 与 BOM 原则
 
-- 默认 MCU **级别**为 **ESP32 类**（Wi-Fi；可选 4G DTU 挂在网关侧）。选型以现场能买到的模组为准（如 ESP32-C3 / ESP32-S3 级），**不写未实机的具体品牌型号**。
+- 默认公版固件是 **ESP32-C3 / S3 级 Wi-Fi**。其它主流芯片（Beken、Nordic、STM32WL、Cat-1 模组、工控机网关等）见 [hardware-templates.md](./hardware-templates.md)。那是设计模板，**未实机不得写入兼容矩阵的 hardware-verified**。
 - 执行器电源与 MCU 隔离：12/24 V 继电器或 H 桥；限位、过流、干转必须有硬件或固件互锁，不能只靠云端。
 - **双来源**：模组、继电器、推杆/阀至少两条采购路径。具体型号在设计伙伴现场后写入 Kit `1.0` BOM 表。
 - 不卖自有芯片；硬件合同走渠道。参考固件是通道合同的实现，不是锁定手段。
@@ -178,7 +178,7 @@ Gateway HTTP 合同：[gateway.v1.yaml](../contracts/gateway.v1.yaml) `/controll
 
 | 版本 | 何时 |
 |------|------|
-| `0.1-draft` | 现在；通道与命令冻结意图，BOM 无具体 SKU |
+| `0.1-draft` | 现在；通道与命令冻结意图。芯片与电路板只在 [hardware-templates.md](./hardware-templates.md) 作模板，不是 1.0 BOM |
 | `1.0` | 至少 1 条公版路径 + 1 条协议路径在仿真闭环通过，且 3 个项目能共用通道 key |
 | `2.0` | 打破通道 key 或命令 id |
 

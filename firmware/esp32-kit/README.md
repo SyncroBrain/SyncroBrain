@@ -2,7 +2,7 @@
 
 Arduino sketch，面向 **ESP32-C3 DevKit** 与 **ESP32-S3 DevKitC-1**。
 
-这是参考实现，**不是**生产 SKU，**不是**二进制发行包。完成实机 MQTT 上报与 RPC 之前，兼容矩阵不得标 `hardware-verified`。
+这是参考实现，**不是**生产 SKU，**不是**二进制发行包。完成实机 MQTT 上报与 RPC 之前，兼容矩阵不得标 `hardware-verified`。其它芯片与电路板模板见 [spec/hardware-templates.md](../../spec/hardware-templates.md)。
 
 ## ThingsBoard MQTT
 

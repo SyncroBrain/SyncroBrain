@@ -1,0 +1,6 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,MCU module,ESP32-C3-MINI-1,CH32V307 + FC41D,kit-valve-8z / kit-pond-ctrl
+K_PUMP,1,Pump contactor,24V relay,SSR,kit-valve-8z / kit-pond-ctrl
+K_VALVE,4,Valve drivers,MOS+relay,ULN2803,kit-valve-8z / kit-pond-ctrl
+J_420,1,4-20mA isolated input,ISO124 style,optocoupler ADC,kit-valve-8z / kit-pond-ctrl
+J_FLOW,1,Flow pulse,terminal,XH,kit-valve-8z / kit-pond-ctrl

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "A-env-node",
+    "kit": "kit-env-node",
+    "title": "Environment sensor node"
+  },
+  {
+    "id": "B-relay-4ch",
+    "kit": "kit-rly-4ch",
+    "title": "Four relay actuator"
+  },
+  {
+    "id": "C-win-act",
+    "kit": "kit-win-act",
+    "title": "Window linear actuator"
+  },
+  {
+    "id": "D-valve-pump",
+    "kit": "kit-valve-8z / kit-pond-ctrl",
+    "title": "Valve and pump driver"
+  },
+  {
+    "id": "E-cold-trk",
+    "kit": "kit-cold-trk",
+    "title": "Cold-chain tracker"
+  },
+  {
+    "id": "F-fan-aux",
+    "kit": "kit-fan-pwm",
+    "title": "Aux fan for EV or ESS shed"
+  },
+  {
+    "id": "G-gateway",
+    "kit": "kit-gw-esp",
+    "title": "RS485 field gateway carrier"
+  }
+]

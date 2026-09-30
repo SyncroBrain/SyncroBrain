@@ -1,0 +1,4 @@
+ref,qty,value,example_mfr,alternate,kit
+U1,1,Wi-Fi module,ESP32-S3-MINI-1,ESP32-C3-MINI-1,kit-gw-esp
+U7,1,Isolated RS485,ISO3082,MAX3485 + opto,kit-gw-esp
+J_ETH,0,Ethernet not on this board,use N100 box,RK3568,kit-gw-esp

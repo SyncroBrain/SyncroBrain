@@ -14,7 +14,8 @@
 | [slo.md](./slo.md) | SLO 与故障演练 |
 | [release-gates.md](./release-gates.md) | L1 / E2E / 协议 / AI 安全出门门 |
 | [multi-vertical.md](./multi-vertical.md) | Pack 目录与二开约定 |
-| [controller-kits.md](./controller-kits.md) | **公版控制器**：ESP32 执行器/传感 Kit；公版或协议接入 |
+| [controller-kits.md](./controller-kits.md) | **公版控制器**：执行器/传感 Kit；公版或协议接入 |
+| [hardware-templates.md](./hardware-templates.md) | **硬件模板**：主流芯片档、电路板框图、行业集成（未实机，非 hardware-verified） |
 | [../playbooks/controller-bench.md](../playbooks/controller-bench.md) | 台架：先仿真，再买件组网 |
 | [../playbooks/vistacast-bridge.md](../playbooks/vistacast-bridge.md) | 可选 VistaCast：Console / Admin 点击接入 |
 | [scenes.md](./scenes.md) | 场景中台：手动 / 策略自动 / AI 自动 / 外部事件 |
