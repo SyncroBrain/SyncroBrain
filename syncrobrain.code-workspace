@@ -1,11 +1,29 @@
 {
   "folders": [
-    { "name": "🏠 Meta-Repo", "path": "." },
-    { "name": "⚙️ iot-gateway", "path": "iot-gateway" },
-    { "name": "🌐 iot-console-web", "path": "iot-console-web" },
-    { "name": "🌍 Website", "path": "website" },
-    { "name": "📚 Docs", "path": "docs" },
-    { "name": "🐳 Deploy", "path": "deploy" }
+    {
+      "name": "🏠 Meta-Repo",
+      "path": "."
+    },
+    {
+      "name": "⚙️ iot-gateway",
+      "path": "iot-gateway"
+    },
+    {
+      "name": "🌐 iot-console-web",
+      "path": "iot-console-web"
+    },
+    {
+      "name": "🌍 Website",
+      "path": "website"
+    },
+    {
+      "name": "📚 Docs",
+      "path": "docs"
+    },
+    {
+      "name": "🐳 Deploy",
+      "path": "deploy"
+    }
   ],
   "settings": {
     "editor.formatOnSave": true,
@@ -38,11 +56,66 @@
     "search.exclude": {
       "**/node_modules": true,
       "**/dist": true,
+      "**/build": true,
       "**/out": true,
-      "**/.next": true
-    }
+      "**/.next": true,
+      "**/coverage": true,
+      "**/.cache": true,
+      "**/doc_build": true,
+      "**/.rspress": true,
+      "**/*.tsbuildinfo": true,
+      "**/target": true,
+      "**/.cxx": true,
+      "**/app/build": true,
+      "**/.worktrees": true,
+      "**/dist-electron": true,
+      "**/dist-viewer": true,
+      "**/.wrangler": true
+    },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/build/**": true,
+      "**/out/**": true,
+      "**/.next/**": true,
+      "**/coverage/**": true,
+      "**/.cache/**": true,
+      "**/doc_build/**": true,
+      "**/.rspress/**": true,
+      "**/*.tsbuildinfo": true,
+      "**/target/**": true,
+      "**/.cxx/**": true,
+      "**/app/build/**": true,
+      "**/.worktrees/**": true,
+      "**/dist-electron/**": true,
+      "**/dist-viewer/**": true,
+      "**/.wrangler/**": true
+    },
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/out": true,
+      "**/.next": true,
+      "**/coverage": true,
+      "**/.cache": true,
+      "**/doc_build": true,
+      "**/.rspress": true,
+      "**/*.tsbuildinfo": true,
+      "**/target": true,
+      "**/.cxx": true,
+      "**/app/build": true,
+      "**/.worktrees": true,
+      "**/dist-electron": true,
+      "**/dist-viewer": true,
+      "**/.wrangler": true
+    },
+    "search.useIgnoreFiles": true
   },
   "extensions": {
-    "recommendations": ["biomejs.biome", "editorconfig.editorconfig"]
+    "recommendations": [
+      "biomejs.biome",
+      "editorconfig.editorconfig"
+    ]
   }
 }
