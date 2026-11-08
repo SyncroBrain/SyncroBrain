@@ -165,17 +165,19 @@ docker compose -f docker-compose.dev.yml -f docker-compose.smoke.yml \
 
 ## 6. Entitlement 模式
 
-Gateway 用 `ENTITLEMENT_MODE` 统一四种形态，默认 **`off`**（Cloud Lite standalone 不依赖任何控制面）：
+Gateway 用 `ENTITLEMENT_MODE` 统一四种形态，默认 **`off`**（Cloud Lite standalone 不依赖任何控制面）。在线检查走 `@luminaryworks/entitlement-client`（与 DataTalk 等产品同一包）。`offline_license` 不进入该客户端的传输模式，仍只读本地签名许可。
 
 | 模式 | 行为 | 适用 |
 |------|------|------|
 | `off` | 不检查、不外呼。所有 feature 视为允许 | 开发、standalone 演示 |
-| `shadow` | 检查并审计/上报，**不阻断** | 上线前观察期 |
+| `shadow_read` | 调用控制面并审计差异，**不阻断**。环境变量 `shadow` 是兼容别名，进程对外报告 `shadow_read` | 上线前观察期 |
 | `enforce` | 在线检查 Entitlement 控制面；缺权限 → `402/403` | 有中央控制面的托管交付 |
 | `offline_license` | 只读本地 Ed25519 签名许可（`LICENSE_FILE`），**不外呼** | 私有化 / 断网 |
 
-- 在线控制面：`ENTITLEMENT_BASE_URL`（默认 `http://entitlement:3040`，**DNS + 共享网络**，不是 `host.docker.internal`），服务凭据 `ENTITLEMENT_SERVICE_KEY`
-- `enforce` 且控制面不可达 → 按 `ENTITLEMENT_FAIL_MODE`（默认 `closed`）；`shadow` 永不阻断
+- 在线控制面：`ENTITLEMENT_BASE_URL`（默认 `http://entitlement:3040`，**DNS + 共享网络**，不是 `host.docker.internal`），服务凭据 `ENTITLEMENT_SERVICE_KEY`（别名 `ENTITLEMENT_SERVICE_API_KEY`）
+- 产品码固定 `PRODUCT_CODE=syncrobrain`。部署级调用设 `ENTITLEMENT_DEPLOYMENT_ID`（不发送 `X-Act-As-Subject`，主体类型为 DEPLOYMENT）。仅在代用户调用时设 `ENTITLEMENT_SUBJECT_ID`
+- `enforce` 且控制面不可达 → 按 `ENTITLEMENT_FAIL_MODE`（默认 `closed`）；`shadow_read` 永不阻断
+- 迁移：把已部署的 `ENTITLEMENT_MODE=shadow` 改为 `shadow_read`。旧值仍被接受。`/ready` 警告码仍是 `ENTITLEMENT_SHADOW`，审计动作仍是 `entitlement.shadow`
 - `offline_license` 等价于旧 `LICENSE_ENFORCEMENT=block`，保留向后兼容
 - Entitlement **永不**替代 Casbin，也**永不**替代 Safety Kernel
 

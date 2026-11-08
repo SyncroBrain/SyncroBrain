@@ -185,7 +185,7 @@ standalone 必需服务：`thingsboard` · `iot-postgres`（或 external-db）·
 ├── iot-edge-agent    # profile: edge
 ├── emqx / redis / minio / DataTalk    # 仅合同或证据触发
 ├── Logto 或客户 IdP  # 外部；control-plane 叠加层
-├── Entitlement :3040 # 外部；ENTITLEMENT_MODE=off|shadow|enforce|offline_license
+├── Entitlement :3040 # 外部；ENTITLEMENT_MODE=off|shadow_read|enforce|offline_license
 └── DoerFlow / VistaCast / VistaRemote / DataLuminary 适配器  # Gateway 模块；默认关；不进默认 compose
 ```
 

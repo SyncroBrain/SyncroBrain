@@ -63,7 +63,7 @@
 | `LICENSE_PUBLIC_KEY` / `_FILE` | 签发方公钥 |
 | `DEPLOY_PROFILE=prod\|private\|ha` | 拒绝演示默认口令后才启动 |
 | `samples/license.private-single.json` | 实验室签名样例 |
-| `ENTITLEMENT_MODE=off\|shadow\|enforce\|offline_license` | 统一入口；默认 `off`。`offline_license` 等价旧 `LICENSE_ENFORCEMENT=block`。模式语义见 [deployment.md §6](./deployment.md#6-entitlement-模式) |
+| `ENTITLEMENT_MODE=off\|shadow_read\|enforce\|offline_license` | 统一入口；默认 `off`。`shadow` 是 `shadow_read` 的兼容别名。`offline_license` 等价旧 `LICENSE_ENFORCEMENT=block`。模式语义见 [deployment.md §6](./deployment.md#6-entitlement-模式) |
 
 产品码仍为 `syncrobrain`。这不是 Stripe / LuminaryWorks 在线计费。合同文本见 [legal/](../legal/README.md)（须律师审阅）。
 

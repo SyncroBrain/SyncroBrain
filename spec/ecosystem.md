@@ -18,7 +18,7 @@
 - Entitlement `syncrobrain` 是收费 SKU 门槛，不是全家桶前置
 - 不成交不推兄弟产品
 
-Entitlement 四模式（`off` / `shadow` / `enforce` / `offline_license`）与外部 OIDC 见 [deployment.md §6–§7](./deployment.md#6-entitlement-模式)。Entitlement 永不替代 Casbin，也永不替代 Safety Kernel。
+Entitlement 四模式（`off` / `shadow_read` / `enforce` / `offline_license`；`shadow` 为 `shadow_read` 的兼容别名）与外部 OIDC 见 [deployment.md §6–§7](./deployment.md#6-entitlement-模式)。Entitlement 永不替代 Casbin，也永不替代 Safety Kernel。
 
 ## 在产品家族中的位置
 

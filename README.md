@@ -110,7 +110,9 @@ pnpm --dir docs dev              # :13014
 
 Logto 为可选统一登录（Audience `https://api.iotchain.local`）。Casbin `iot.*` 在 gateway。Build 可用演示登录。详情：[ONBOARDING.md](./ONBOARDING.md)。
 
-## LuminaryWorks 生态
+## 平台接入
+
+本产品是独立产品，接入 LuminaryWorks 平台以使用统一登录、账单与 AI 访问。This product is an independent product that integrates with the LuminaryWorks Platform for unified sign-in, billing and AI access.
 
 Cloud Lite **独立可售**。下表可选。
 
