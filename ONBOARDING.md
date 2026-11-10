@@ -108,6 +108,29 @@ pnpm install && pnpm dev
 
 可选 DoerFlow（**默认关**）：Gateway `DOERFLOW_ENABLED=true` 且许可含 feature `doerflow`。不进入 Compose。契约：[spec/integrations/doerflow.md](./spec/integrations/doerflow.md)。
 
+### 4. 中央 Entitlement（可选，Docker 侧车）
+
+日常改 Gateway / Console：**不必**起 Entitlement。Gateway 默认 `ENTITLEMENT_MODE=off`（不打中央）。`offline_license` 仍只读本地签名许可，不把本地功能码改写成中央目录码。
+
+要联调中央目录时，在 **MetaRepo 根目录**执行（委托 sibling LuminaryWorks；Entitlement **不**进入本产品默认 `docker compose`）：
+
+```bash
+pnpm ent:sidecar                 # Docker: db + identity + entitlement → :3040
+curl -fsS http://127.0.0.1:3040/ready
+```
+
+然后在 `iot-gateway/.env` 设为（与 `LuminaryWorks/deploy/env/control-plane.env` **同钥**）：
+
+```bash
+ENTITLEMENT_MODE=shadow_read
+ENTITLEMENT_BASE_URL=http://localhost:3040
+ENTITLEMENT_SERVICE_API_KEY=…   # 与控制面一致
+```
+
+在线 `check` / `allocate` / `consume` / `release` 会把本地 SKU 功能码映到中央 `syncrobrain` 目录（例如 `doerflow` → `doerflow.commerce`，`edge` → `mqtt`）。`packs` / `demos` / `offline-license` 为 **local-only**（不映射到中央 `console`，避免超授）。没有对应中央码的本地功能在 `enforce` 下拒绝，在 `shadow_read` 下只审计、不阻断。生产 `ENTITLEMENT_MODE=enforce` 时请保持 `ENTITLEMENT_FAIL_MODE=closed`（默认）；`open` 会在控制面不可达时放行，仅限有意的灾难演练。
+
+停止：`pnpm ent:sidecar:down`。权威说明：sibling `LuminaryWorks/deploy/LOCAL_DOCKER_STACKS.md`「Entitlement Docker sidecar」。`pnpm ent:dev` 仅用于改 Entitlement **源码**，不是产品日常路径。
+
 统一登录：Console `pnpm dev` 打开 `http://localhost:15180/login`，使用 Headless 面板（需 Logto `:3001`）。Redirect：`http://localhost:15180/auth/callback`。Gateway 须设 `IDP_ISSUER=http://localhost:3001/oidc`。
 
 ## 按角色单独开发

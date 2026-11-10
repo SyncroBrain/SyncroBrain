@@ -15,27 +15,48 @@
     "kit-rly-4ch",
     "kit-env-node"
   ],
-  "channels": {
-    "soil_pct": {
+  "channels": [
+    {
+      "key": "soil_pct",
+      "label": "soil_pct",
+      "labelKey": "channel.soil_pct",
       "unit": "%",
-      "sampleIntervalSec": 300,
-      "labelKey": "channel.soil_pct"
+      "sampleSec": 300,
+      "kind": "numeric"
     },
-    "rain": {
+    {
+      "key": "rain",
+      "label": "rain",
+      "labelKey": "channel.rain",
       "unit": "1",
-      "edge": true,
-      "labelKey": "channel.rain"
+      "sampleSec": 60,
+      "kind": "bool"
     },
-    "flow_lpm": {
+    {
+      "key": "flow_lpm",
+      "label": "flow_lpm",
+      "labelKey": "channel.flow_lpm",
       "unit": "L/min",
-      "sampleIntervalSec": 10,
-      "labelKey": "channel.flow_lpm"
+      "sampleSec": 10,
+      "kind": "numeric"
     },
-    "pump": {
+    {
+      "key": "pump",
+      "label": "pump",
+      "labelKey": "channel.pump",
       "unit": "1",
-      "labelKey": "channel.pump"
+      "sampleSec": 60,
+      "kind": "bool"
+    },
+    {
+      "key": "valve_n",
+      "label": "valve_n",
+      "labelKey": "channel.valve_n",
+      "unit": "1",
+      "sampleSec": 60,
+      "kind": "bool"
     }
-  },
+  ],
   "commands": [
     {
       "id": "zoneOn",
@@ -248,5 +269,23 @@
         "pump": 0
       }
     }
-  ]
+  ],
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion",
+    "commands",
+    "denials"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch",
+    "iot.controller:view",
+    "iot.scene:manage"
+  ],
+  "artifacts": {
+    "deviceProfile": "device-profile.irrigation_zone.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
+  }
 }

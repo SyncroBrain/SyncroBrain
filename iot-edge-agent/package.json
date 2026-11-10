@@ -9,7 +9,7 @@
     "dev": "node --watch src/index.mjs",
     "start": "node src/index.mjs",
     "test": "node --test test/*.test.mjs",
-    "lint": "node --check src/index.mjs && node --check src/agent.mjs && node --check src/sdk/connector.mjs && node --check src/scene/kernel.mjs && node --check src/kits/catalog.mjs && node --check src/protocols/esp32-mqtt.mjs",
+    "lint": "node --check src/index.mjs && node --check src/agent.mjs && node --check src/outbox-client.mjs && node --check src/sdk/connector.mjs && node --check src/scene/kernel.mjs && node --check src/kits/catalog.mjs && node --check src/protocols/esp32-mqtt.mjs",
     "sim": "node sim/ocpp-sim.mjs && node sim/modbus-sim.mjs && node sim/opcua-sim.mjs && node sim/gps-sim.mjs && node sim/esp32-kit-sim.mjs"
   },
   "engines": {

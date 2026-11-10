@@ -26,7 +26,11 @@
     "e2e:require-stack": "E2E_REQUIRE_STACK=1 pnpm --dir iot-console-web e2e",
     "e2e:isolated": "node tooling/scripts/e2e-isolated.mjs",
     "acceptance:evidence": "node tooling/scripts/acceptance-evidence.mjs",
-    "acceptance:prepare": "node tooling/scripts/acceptance-evidence.mjs"
+    "acceptance:prepare": "node tooling/scripts/acceptance-evidence.mjs",
+    "ent:sidecar": "node ./scripts/ent-sidecar.mjs ent:sidecar",
+    "ent:sidecar:down": "node ./scripts/ent-sidecar.mjs ent:sidecar:down",
+    "ent:sidecar:ps": "node ./scripts/ent-sidecar.mjs ent:sidecar:ps",
+    "ent:sidecar:ready": "node ./scripts/ent-sidecar.mjs ent:sidecar:ready"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16"

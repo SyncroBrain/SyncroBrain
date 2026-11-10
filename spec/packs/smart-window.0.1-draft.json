@@ -14,23 +14,48 @@
     "kit-win-act",
     "kit-env-node"
   ],
-  "channels": {
-    "position_pct": {
+  "channels": [
+    {
+      "key": "position_pct",
+      "label": "position_pct",
+      "labelKey": "channel.position_pct",
       "unit": "%",
-      "sampleIntervalSec": 5,
-      "labelKey": "channel.position_pct"
+      "sampleSec": 5,
+      "kind": "numeric"
     },
-    "rain": {
+    {
+      "key": "rain",
+      "label": "rain",
+      "labelKey": "channel.rain",
       "unit": "1",
-      "edge": true,
-      "labelKey": "channel.rain"
+      "sampleSec": 60,
+      "kind": "bool"
     },
-    "temperature": {
-      "unit": "Cel",
-      "sampleIntervalSec": 60,
-      "labelKey": "channel.temperature"
+    {
+      "key": "temperature",
+      "label": "temperature",
+      "labelKey": "channel.temperature",
+      "unit": "°C",
+      "sampleSec": 60,
+      "kind": "numeric"
+    },
+    {
+      "key": "limit_open",
+      "label": "limit_open",
+      "labelKey": "channel.limit_open",
+      "unit": "1",
+      "sampleSec": 5,
+      "kind": "bool"
+    },
+    {
+      "key": "limit_close",
+      "label": "limit_close",
+      "labelKey": "channel.limit_close",
+      "unit": "1",
+      "sampleSec": 5,
+      "kind": "bool"
     }
-  },
+  ],
   "commands": [
     {
       "id": "open",
@@ -225,5 +250,23 @@
       "limit_open",
       "limit_close"
     ]
+  },
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion",
+    "commands",
+    "denials"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch",
+    "iot.controller:view",
+    "iot.scene:manage"
+  ],
+  "artifacts": {
+    "deviceProfile": "device-profile.window.json",
+    "ruleChain": "rule-chain.json",
+    "ruleChainMetadata": "rule-chain-metadata.json"
   }
 }

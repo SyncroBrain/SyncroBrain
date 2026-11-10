@@ -84,6 +84,9 @@ pnpm --dir iot-gateway dev       # :13200
 pnpm --dir iot-console-web dev   # :15180
 pnpm --dir website dev           # :13013
 pnpm --dir docs dev              # :13014
+
+# 可选：中央 Entitlement Docker 侧车（会员 / 目录联调）
+# pnpm ent:sidecar           # → http://127.0.0.1:3040 ；默认 ENTITLEMENT_MODE=off 可不启
 ```
 
 | 命令 | 作用 |
@@ -101,6 +104,7 @@ pnpm --dir docs dev              # :13014
 | `E2E_REQUIRE_STACK=1 pnpm e2e` | 活 TB 栈未起则失败 |
 | `pnpm test:contract` | OpenAPI 文件烟测 |
 | `pnpm acceptance:evidence` | 可选证据包（不调用模型 API，**不是门**） |
+| `pnpm ent:sidecar` | 委托 sibling LuminaryWorks 起 Entitlement Docker（`:3040`）；`ent:sidecar:down` 停止。不进入产品默认 compose |
 
 付费档位：`deploy/INSTALL-PRIVATE.md` · `deploy/HA.md`。合同草稿：`legal/`（须律师审阅）。
 

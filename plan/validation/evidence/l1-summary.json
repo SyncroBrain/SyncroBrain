@@ -1,22 +1,28 @@
 {
-  "date": "2026-08-31",
+  "date": "2026-11-10",
   "gates": {
     "l1": "passed",
-    "isolatedE2e": "14 passed, wrapper exit 0",
-    "faultDrill": "passed",
+    "isolatedE2e": "32 passed, wrapper exit 0",
+    "faultDrill": "not_rerun",
     "protocolVerified": true,
     "hardwareVerified": false
   },
   "counts": {
-    "gatewayUnit": 43,
-    "gatewayApi": 16,
-    "consoleUnit": 39,
-    "edgeProtocols": 7
+    "gatewayUnit": 314,
+    "gatewayApi": 85,
+    "consoleUnit": 71,
+    "edgeProtocolsAndKits": 15,
+    "isolatedE2e": 32
   },
   "notes": [
-    "Incident opens from TB/Fake alarms; ack required before close",
-    "Postgres migration DomainOps covers duty/calibration/report/outbox attempts",
-    "Outbox pull GET /edge/commands; Fake TB inlines Edge receipt",
+    "RPC sendAssetRpc → CommandService.dispatch → Safety Kernel (Forbidden on deny)",
+    "EdgeAgent HTTP outbox pull /edge/commands + receipt; Rejected fails command",
+    "Live telemetry triggers applyPackPolicy with throttle; scene.enabled respected; AI autonomy requires ActionPolicy",
+    "AI_MODE=stub reaches stubComplete; tool intents prefer model/stub text over raw user string",
+    "Pack channels: industrial analog, window limit_*, irrigation valve_n; install validates simulate/safety/report/locale; rule-chain names match slug",
+    "Pack rollback restores previous pack_applications row; packs-golden asserts alarm + ack per slug",
+    "Console OEM footer renders footerNote/legalName/supportUrl/customDomain/TB credit; Alarms/Overview/DemoCoach pack-driven",
+    "Entitlement local↔central feature-map + unit tests; pnpm ent:sidecar DX in README/ONBOARDING",
     "Brand column remains — (protocol-verified only)"
   ]
 }

@@ -138,5 +138,14 @@
   },
   "kits": [
     "kit-env-node"
+  ],
+  "reportColumns": [
+    "site",
+    "period",
+    "packVersion"
+  ],
+  "permissions": [
+    "iot.incident:view",
+    "iot.command:dispatch"
   ]
 }

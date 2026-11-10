@@ -52,6 +52,13 @@
       "labelKey": "channel.digital",
       "unit": "bool",
       "kind": "bool"
+    },
+    {
+      "key": "analog",
+      "label": "Analog",
+      "labelKey": "channel.analog",
+      "unit": "V",
+      "kind": "numeric"
     }
   ],
   "metrics": [

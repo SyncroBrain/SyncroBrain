@@ -3,7 +3,16 @@
   "$id": "https://syncrobrain.com/schemas/pack-manifest.schema.json",
   "title": "SyncroBrain Industry Pack Manifest",
   "type": "object",
-  "required": ["slug", "version", "kind", "artifacts"],
+  "required": [
+    "slug",
+    "version",
+    "kind",
+    "artifacts",
+    "simulate",
+    "safetyEnvelope",
+    "reportColumns",
+    "permissions"
+  ],
   "additionalProperties": true,
   "properties": {
     "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,62}$" },
@@ -97,6 +106,7 @@
     },
     "simulate": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": ["id", "telemetry"],
@@ -112,6 +122,7 @@
     },
     "safetyEnvelope": {
       "type": "object",
+      "minProperties": 1,
       "properties": {
         "allowlist": { "type": "array", "items": { "type": "string" } },
         "maxPerHour": { "type": "integer", "minimum": 0 },
@@ -120,7 +131,11 @@
     },
     "policy": { "type": "object" },
     "summary": { "type": "object" },
-    "reportColumns": { "type": "array", "items": { "type": "string" } },
+    "reportColumns": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
     "ackSlaSec": {
       "type": "object",
       "additionalProperties": false,
@@ -138,7 +153,7 @@
         "warning": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       }
     },
-    "permissions": { "type": "array", "items": { "type": "string" } },
+    "permissions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "adapters": { "type": "object" },
     "kits": { "type": "array", "items": { "type": "string" } },
     "scenes": { "type": "array" }
